@@ -1,0 +1,71 @@
+.overlay {
+  position: fixed;
+  z-index: 22;
+  top: 0;
+  left: 0;
+
+  overflow-x: hidden;
+
+  width: 0;
+  height: 100%;
+
+  transition: 0.5s;
+
+  background-color: rgba(216, 216, 216, 0.849);
+}
+
+.overlay-content {
+  position: relative;
+
+  /* top: 25%; */
+  width: 100%;
+
+  text-align: center;
+
+  /* margin-top: 30px; */
+}
+
+.overlay a:hover,
+.overlay a:focus {
+  color: #f1f1f1;
+}
+
+.overlay .overlay_closebtn {
+  position: absolute;
+  z-index: 2300;
+  top: 20px;
+  right: 20px;
+
+  border-radius: 50%;
+  background-color: #f1f1f185;
+}
+
+.leftmenuCollapsed {
+  position: relative;
+  z-index: 1000;
+
+  align-self: stretch;
+
+  width: 333px;
+  height: 100vh;
+
+  background-color: #095c5c;
+}
+
+.leftmenuCollapsed-content {
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  justify-content: flex-start;
+
+  padding: 30px 25px 0 46px;
+}
+
+@media screen and (max-height: 450px) {
+  .overlay .overlay_closebtn {
+    top: 15px;
+    right: 35px;
+
+    font-size: 40px;
+  }
+}

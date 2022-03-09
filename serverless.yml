@@ -1,0 +1,34 @@
+dental-app-frontend:
+  component: "@sls-next/serverless-component@3.6.0"
+  inputs:
+    build:
+      env:
+        STRIPE_PK_KEY: "pk_test_51ISNerEE2uETn4H3tqYplaINZlDwEa8CM7ohtp7YbxF7KJnUysRK8rjssQxSbruzaL6uJz4951GhHoZcHM3qWcLN00drEQTQ5M"
+        GOOGLE_KEY: "AIzaSyBbfv-_DpOYnSn3EewiTToy8T7DKB-dS7Y"
+    cloudfront:
+      originAccessIdentityId: E22X5WX2U4EHCV
+      distributionId: E2ZNCDO32JFC9X
+
+#      paths:
+#        - "/*"
+#      origins:
+#        - url: "https://d2qhfgui1ud2x4.cloudfront.net"
+#          protocolPolicy: "https-only"
+#          pathPatterns:
+#            api/*:
+#              viewerProtocolPolicy: "redirect-to-https"
+#              allowedHttpMethods:
+#                - "GET"
+#                - "HEAD"
+#                - "OPTIONS"
+#                - "PUT"
+#                - "PATCH"
+#                - "POST"
+#                - "DELETE"
+#              minTTL: 0
+#              maxTTL: 300
+#              defaultTTL: 10
+#              forward:
+#                headers: "all"
+#                cookies: "all"
+#                queryString: true

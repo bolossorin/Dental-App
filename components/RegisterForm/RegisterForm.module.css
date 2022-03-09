@@ -1,0 +1,104 @@
+.button-nextStep {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 30px;
+
+  cursor: pointer;
+  transition: background 0.3s linear;
+  text-align: center;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+
+  color: var(--color-white);
+  border: solid 1px var(--color-green);
+  border-radius: 10px;
+  background-color: var(--color-green);
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+
+  font-family: PT Sans;
+  font-size: 9px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+}
+
+.button-nextStep:hover {
+  color: var(--color-green);
+  background-color: var(--color-white);
+}
+
+.button-SubmitRegister {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 30px;
+
+  cursor: pointer;
+  transition: background 0.3s linear;
+  text-align: center;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+
+  color: var(--color-white);
+  border: solid 1px var(--color-green);
+  border-radius: 10px;
+  background-color: var(--color-green);
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+
+  font-family: PT Sans;
+  font-size: 9px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+}
+
+.button-SubmitRegister:hover {
+  color: var(--color-green);
+  background-color: var(--color-white);
+}
+
+.button-Back {
+  display: flex;
+  align-items: center;
+  flex-wrap: nowrap;
+  justify-content: center;
+
+  width: 100%;
+  margin-top: 10px;
+  padding: 13px 30px;
+
+  cursor: pointer;
+  transition: background 0.3s linear;
+  text-align: center;
+  letter-spacing: 0.75px;
+  text-transform: uppercase;
+
+  color: var(--color-green);
+  border: solid 1px var(--color-green);
+  border-radius: 10px;
+  background-color: var(--color-white);
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, 0.08);
+
+  font-family: PT Sans;
+  font-size: 9px;
+  font-weight: bold;
+  font-style: normal;
+  font-stretch: normal;
+  line-height: normal;
+}
+
+.button-Back:hover {
+  color: var(--color-white);
+  background-color: var(--color-green);
+}

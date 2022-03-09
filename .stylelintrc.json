@@ -1,0 +1,14 @@
+{
+  "extends": ["stylelint-config-standard", "stylelint-order-config-standard"],
+  "plugins": ["stylelint-order"],
+  "rules": {
+    "indentation": "tab",
+    "color-hex-case": "upper",
+    "font-family-no-missing-generic-family-keyword": [
+      true,
+      {
+        "ignoreFontFamilies": ["Arial", "PT Sans", "SF Pro Display", "PT serif"]
+      }
+    ]
+  }
+}

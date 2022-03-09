@@ -1,0 +1,100 @@
+.dentist_target {
+  cursor: pointer;
+}
+
+.meMarkerImage {
+  width: 32px;
+  height: 32px;
+}
+
+.targerImage {
+  position: relative;
+
+  width: 30px;
+  height: 30px;
+}
+
+.dentist_target:hover .targetImage {
+  background: darkcyan;
+}
+
+/* new */
+.dentist_target_card_box {
+  position: relative;
+  z-index: 1200;
+  top: -22px;
+  left: -4px;
+
+  /* width: 100px;
+  height: 100px;
+  background-color: #fff; */
+  transform: rotate(-65deg);
+
+  border-right: 50px solid transparent;
+  border-bottom: 50px solid rgba(0, 0, 0, 0.199);
+  border-left: 50px solid transparent;
+}
+
+.dentist_target_card_circle {
+  /* display: none; */
+  position: absolute;
+  z-index: 1400;
+  top: -1px;
+  left: 41px;
+
+  width: 125px;
+  height: 125px;
+
+  border-radius: 50%;
+  background: rgba(255, 0, 0, 0.726);
+}
+
+.dentist_target_card_circle_img {
+  width: 125px;
+  height: 125px;
+
+  transform: scale(0.85);
+
+  border-radius: 50%;
+}
+
+.dentist_target_card_name {
+  position: absolute;
+  top: 120px;
+  left: 10px;
+
+  width: 100px;
+
+  text-align: center;
+
+  color: rgba(10, 8, 71, 0.438);
+  background: rgba(252, 252, 252, 0.61);
+
+  font-size: 12px;
+  font-weight: bolder;
+}
+
+.Google-react-map-wrapper {
+  width: 45vw;
+  height: 85vh;
+
+  border: 0;
+}
+
+@media (max-width: 990px) {
+  .Google-react-map-wrapper {
+    width: 85vw;
+    height: 70vh;
+
+    border: 0;
+  }
+}
+
+@media (max-width: 560px) {
+  .Google-react-map-wrapper {
+    width: 80vw;
+    height: 50vh;
+
+    border: 0;
+  }
+}
