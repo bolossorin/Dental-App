@@ -1,13 +1,13 @@
-dental-app-frontend:
-  component: "@sls-next/serverless-component@3.6.0"
+dental-app-frontend-v1:
+  component: "@sls-next/serverless-component@latest"
   inputs:
     build:
       env:
         STRIPE_PK_KEY: "pk_test_51ISNerEE2uETn4H3tqYplaINZlDwEa8CM7ohtp7YbxF7KJnUysRK8rjssQxSbruzaL6uJz4951GhHoZcHM3qWcLN00drEQTQ5M"
         GOOGLE_KEY: "AIzaSyBbfv-_DpOYnSn3EewiTToy8T7DKB-dS7Y"
-    cloudfront:
-      originAccessIdentityId: E22X5WX2U4EHCV
-      distributionId: E2ZNCDO32JFC9X
+#    cloudfront:
+#      originAccessIdentityId: E22X5WX2U4EHCV
+#      distributionId: E2ZNCDO32JFC9X
 
 #      paths:
 #        - "/*"

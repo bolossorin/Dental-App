@@ -9,6 +9,10 @@ module.exports = {
       {
         source: '/api/:path*',
         destination: 'https://d2u0unnpqhu2n5.cloudfront.net/api/:path*' // Proxy to Backend
+      },
+      {
+        source: '/images/:path*',
+        destination: 'https://d2u0unnpqhu2n5.cloudfront.net/images/:path*' // Proxy to Images
       }
     ]
   }
