@@ -1,38 +1,31 @@
-import { Input } from "../Input/Input";
-import { IRegisterFormChilds, Spinner } from "../index";
-import { useForm } from "react-hook-form";
-import { useState } from "react";
+import {Input} from "../Input/Input";
+import {IRegisterFormChilds, Spinner} from "../index";
+import {useForm} from "react-hook-form";
+import {useState} from "react";
 import axios from "axios";
 import Router from "next/router";
-import { API } from "../../api/AWS-gateway";
-import { ISetNotofication } from "../Toast";
-import { expHandler } from "../../utils/exeptionHandler";
+import {API} from "../../api/AWS-gateway";
+import {ISetNotofication} from "../Toast";
 
 export interface IValidateEmailForm {
   setNotification: ISetNotofication;
   userData: IRegisterFormChilds;
 }
+
 export interface IValidateEmailFormChilds {
   code: string;
 }
 
-export interface ILoginResponse {
-  token: string;
-  userId: string;
-}
-
-export const ValidateEmail: React.FC<IValidateEmailForm> = ({
-  setNotification,
-  userData,
-}) => {
+export const ValidateEmail: React.FC<IValidateEmailForm> = ({setNotification, userData,}) => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     reset,
     clearErrors,
-    setValue,
+    setValue
   } = useForm<IValidateEmailFormChilds>();
+
   const [loading, setLoading] = useState<boolean>(false);
 
   const onVerify = async (formData: IValidateEmailFormChilds) => {
@@ -65,8 +58,7 @@ export const ValidateEmail: React.FC<IValidateEmailForm> = ({
         }, 5000);
       }
     } catch (exp: any) {
-      const message = expHandler(exp);
-      setNotification({ type: "error", message: "Incorrect code" });
+      setNotification({type: "error", message: "Incorrect code"});
     } finally {
       setLoading(false);
     }
@@ -79,33 +71,27 @@ export const ValidateEmail: React.FC<IValidateEmailForm> = ({
         <p className="form-login-subtitle gray">Current FYD users</p>
         <div className="form-login-input">
           <Input
-            {...register("code", {
-              required: { value: true, message: "code is required" },
-            })}
+            {...register("code", {required: {value: true, message: "code is required"}})}
             error={errors.code}
-            aria-invalid={errors.code ? true : false}
+            aria-invalid={!!errors.code}
             type="text"
             autoComplete=""
             name="code"
             id="code"
             placeholder="code"
             maxLength={18}
-            readOnly={loading}
-          />
-          {!loading && (
-            <img
-              className="form-login-input-close"
-              src="../images/close.svg"
-              onClick={() => setValue("code", "")}
-            />
-          )}
+            readOnly={loading} />
+          {!loading && (<img
+            className="form-login-input-close"
+            src={"../images/close.svg"}
+            onClick={() => setValue("code", "")}
+            alt='' />)}
         </div>
         <div className="form-login-buttons">
           <button
             className="button-green-loginBtn"
             onClick={() => clearErrors()}
-            disabled={loading}
-          >
+            disabled={loading}>
             {loading ? <Spinner /> : "Verify"}
           </button>
         </div>

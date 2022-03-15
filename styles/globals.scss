@@ -302,7 +302,7 @@ label {
   border-color: #86b7fe;
   outline: 0;
   background-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253 , .25);
 }
 
 /* stylelint-disable */
@@ -321,7 +321,7 @@ label {
 .btn-success.active:focus,
 .btn-success:active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgb(60 153 110 / 50%);
+  box-shadow: 0 0 0 0.25rem rgba(60, 153, 110,  .5);
 }
 /* stylelint-enable */
 .AppWrapper [type="button"]:not(:disabled),
@@ -375,7 +375,7 @@ label {
   border-color: #86b7fe;
   outline: 0;
   background-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgb(13 110 253 / 25%);
+  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
 }
 
 #coupon_input_img {
@@ -461,18 +461,18 @@ label {
   }
 }
 
-@import "../components/LoginForm/LoginForm.module.css";
+@import "../components/login/LoginForm/LoginForm.module.scss";
 @import "../components/RegisterForm/RegisterForm.module.css";
 @import "../components/Header/Header.module.css";
 @import "../components/Spinner/spinner.module.css";
-@import "../components/Profile/Profile.module.css";
+//@import "../components/Profile/Profile.module.css";
 @import "../components/LeftMenu/OnHeader/Sidebar.module.css";
 @import "../components/Footer/Footer.module.css";
-@import "../components/Search/Search.module.css";
-@import "../components/Search/Map/Map.module.css";
-@import "../components/Person/Person.module.css";
-@import "../components/Galery/Galery.module.css";
-@import "../components/Account/account.module.css";
+//@import "../components/Search/Search.module.css";
+//@import "../components/Search/Map/Map.module.css";
+//@import "../components/Person/Person.module.css";
+//@import "../components/Galery/Galery.module.css";
+//@import "../components/Account/account.module.css";
 
 /*end of line*/
 @import "react-loading-skeleton/dist/skeleton.css";

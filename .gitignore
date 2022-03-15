@@ -1,3 +1,4 @@
+# IDE
 .idea
 .vscode
 
@@ -96,7 +97,6 @@ dist
 .vuepress/dist
 
 # Serverless directories
-
 .serverless/
 .serverless_nextjs
 

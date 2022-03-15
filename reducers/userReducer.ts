@@ -34,9 +34,7 @@ export enum UserTypes {
 export type userPayload = {
   [UserTypes.RESET]: undefined;
   [UserTypes.LOGOUT]: undefined;
-  [UserTypes.LOGIN]: {
-    email: string;
-  };
+  [UserTypes.LOGIN]: {};
   [UserTypes.SET_INFO]: {
     title: string;
     username: string;
@@ -126,55 +124,55 @@ export const userReducer = (
 ): TUserReducerState => {
   switch (action.type) {
     case UserTypes.RESET:
-      return { ...state, email: "" };
+      return {...state, email: ""};
     case UserTypes.LOGIN:
-      return { ...state, ...action.payload, isLogged: true };
+      return {...state, ...action.payload, isLogged: true};
     case UserTypes.LOGOUT:
-      return { ...UserInitialState };
+      return {...UserInitialState};
     case UserTypes.SET_INFO:
-      return { ...state, ...action.payload };
+      return {...state, ...action.payload};
     case UserTypes.SET_AVATAR_URL:
-      return { ...state, avatar_url: action.payload.avatar_ul };
+      return {...state, avatar_url: action.payload.avatar_ul};
     case UserTypes.SET_COVER_URL:
-      return { ...state, cover_url: action.payload.cover_ul };
+      return {...state, cover_url: action.payload.cover_ul};
     case UserTypes.SET_FULL_DATA:
-      return { ...state, ...action.payload };
+      return {...state, ...action.payload};
     case UserTypes.SET_LOCATIONS:
-      return { ...state, locations: action.payload.locations };
+      return {...state, locations: action.payload.locations};
     case UserTypes.REMOVE_LOCATION:
       const afterRemovingLocation =
         state.locations?.filter((item) => item.key !== action.payload.id) ||
         null;
-      return { ...state, locations: afterRemovingLocation };
+      return {...state, locations: afterRemovingLocation};
     case UserTypes.REMOVE_SERVICE:
       const afterRemovingService =
         state.services?.filter((item) => item.key !== action.payload.key) ||
         null;
-      return { ...state, services: afterRemovingService };
+      return {...state, services: afterRemovingService};
     case UserTypes.ADD_LOCATION:
       const afterAddingLocation =
         state.locations?.concat(action.payload.location) || null;
-      return { ...state, locations: afterAddingLocation };
+      return {...state, locations: afterAddingLocation};
     case UserTypes.ADD_SERVICES:
       const afterAddingServices =
         state.services?.concat(action.payload.services) ||
         action.payload.services;
-      return { ...state, services: afterAddingServices };
+      return {...state, services: afterAddingServices};
     case UserTypes.SET_ALL_SERVICES:
-      return { ...state, allowedServices: action.payload.allowedServices };
+      return {...state, allowedServices: action.payload.allowedServices};
     case UserTypes.SET_GALLERY:
-      return { ...state, gallery: action.payload.gallery };
+      return {...state, gallery: action.payload.gallery};
     case UserTypes.ADD_TO_GALLERY:
       const afterAddingGallery =
         state.gallery?.concat(action.payload.item) || null;
-      return { ...state, gallery: afterAddingGallery };
+      return {...state, gallery: afterAddingGallery};
     case UserTypes.REMOVE_FROM_GALLERY:
       const afterRemovingPhoto =
         state.gallery?.filter((item) => item.key !== action.payload.key) ||
         null;
-      return { ...state, gallery: afterRemovingPhoto };
+      return {...state, gallery: afterRemovingPhoto};
     case UserTypes.UPDATE_ITEM_GALLERY:
-      const { key, ...updated } = action.payload.item;
+      const {key, ...updated} = action.payload.item;
       const afterUpdateGallery =
         state.gallery?.map((item) => {
           let i = item;
@@ -191,7 +189,7 @@ export const userReducer = (
           }
           return i;
         }) || null;
-      return { ...state, gallery: afterUpdateGallery };
+      return {...state, gallery: afterUpdateGallery};
     default:
       return state;
   }

@@ -27,4 +27,9 @@ export const API = {
   SET_DENTIST_GALLERY: "/api/dentist/gallery",
 
   GET_ALL_DENTISTS: "/api/dentist/search/dentists",
+
+  // Admin
+  LOGIN_ADMIN: "/api/admin/login",
+  PASSWORD_RESET_ADMIN: "/api/admin/reset-password",
+  PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
 };

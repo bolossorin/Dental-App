@@ -1,8 +1,26 @@
-
 module.exports = {
   env: {
     STRIPE_PK_KEY: process.env.STRIPE_PK_KEY,
     GOOGLE_KEY: process.env.GOOGLE_KEY,
+  },
+  images: {
+    domains: [],
+  },
+  webpack(config) {
+    config.module.rules.push({
+      loader: "@svgr/webpack",
+      options: {
+        prettier: false,
+        svgo: true,
+        svgoConfig: {
+          plugins: [{removeViewBox: false}],
+        },
+        titleProp: true,
+      },
+      test: /\.svg$/,
+    });
+
+    return config;
   },
   async rewrites() {
     return [

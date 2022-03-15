@@ -1,12 +1,13 @@
-import { Input } from "../Input/Input";
+import {Input} from "../Input/Input";
 import ValidateCard from "./CheckCardForm";
-import { useForm } from "react-hook-form";
-import { useState, useCallback } from "react";
-import { API } from "../../api/AWS-gateway";
+import {useForm} from "react-hook-form";
+import {useState, useCallback} from "react";
+import {API} from "../../api/AWS-gateway";
 import axios from "axios";
-import { ValidateEmail } from "./ValidateEmailForm";
-import notify, { ISetNotofication } from "../../components/Toast";
-import { expHandler } from "../../utils/exeptionHandler";
+import {ValidateEmail} from "./ValidateEmailForm";
+import notify, {ISetNotofication} from "../../components/Toast";
+import {expHandler} from "../../utils/exeptionHandler";
+import {ShowPassword} from "../common/ShowPassword/ShowPassword";
 
 export interface IRegisterFormChilds {
   name: string;
@@ -24,27 +25,25 @@ export const RegisterForm: React.FC = () => {
   const {
     register,
     handleSubmit,
-    formState: { errors },
+    formState: {errors},
     reset,
     clearErrors,
     setValue,
     setError,
   } = useForm<IRegisterFormChilds>();
-  const [nextStep, setNextStep] = useState<
-    "cardCheck" | "emailCheck" | "register"
-  >("register");
+  const [nextStep, setNextStep] = useState<"cardCheck" | "emailCheck" | "register">("register");
   const [userData, setRegistratedValues] = useState<IRegisterFormChilds>();
-  const [isPassHidden, hidePassword] = useState<boolean>(true);
+  const [isPassHidden, setIsPassHidden] = useState<boolean>(true);
 
   const setNotification = useCallback<ISetNotofication>(
-    ({ ...notifyProps }) => {
-      notify({ ...notifyProps });
+    ({...notifyProps}) => {
+      notify({...notifyProps});
     },
     []
   );
 
   const onInvalid = (message: string) => {
-    setNotification({ type: "error", message });
+    setNotification({type: "error", message});
   };
 
   const switchToCardCheck = async (formData: IRegisterFormChilds) => {
@@ -54,7 +53,7 @@ export const RegisterForm: React.FC = () => {
 
   const onSubmit = async () => {
     try {
-      const { data } = await axios.post<IRegisterResponse>(API.REGISTER, {
+      const {data} = await axios.post<IRegisterResponse>(API.REGISTER, {
         username: userData?.name,
         email: userData?.email,
         gdcNumber: userData?.gdc,
@@ -66,7 +65,7 @@ export const RegisterForm: React.FC = () => {
       }
     } catch (e: any) {
       const message = expHandler(e);
-      setNotification({ type: "error", message });
+      setNotification({type: "error", message});
     }
   };
 
@@ -85,13 +84,13 @@ export const RegisterForm: React.FC = () => {
             <div className="form-login-input">
               <Input
                 {...register("name", {
-                  required: { value: true, message: "name is required" },
+                  required: {value: true, message: "name is required"},
                 })}
                 error={errors.name}
                 aria-invalid={errors.name ? true : false}
                 type="text"
                 onInvalid={() => {
-                  setError("name", { message: "invalid name" });
+                  setError("name", {message: "invalid name"});
                 }}
                 autoComplete="new-password"
                 name="name"
@@ -108,13 +107,13 @@ export const RegisterForm: React.FC = () => {
             <div className="form-login-input">
               <Input
                 {...register("email", {
-                  required: { value: true, message: "email is required" },
+                  required: {value: true, message: "email is required"},
                 })}
                 placeholder="email"
                 error={errors.email}
                 aria-invalid={errors.email ? true : false}
                 onInvalid={() => {
-                  setError("email", { message: "invalid email" });
+                  setError("email", {message: "invalid email"});
                 }}
                 type="email"
                 autoComplete="new-password"
@@ -130,13 +129,13 @@ export const RegisterForm: React.FC = () => {
             <div className="form-login-input">
               <Input
                 {...register("gdc", {
-                  required: { value: true, message: "gdc is required" },
+                  required: {value: true, message: "gdc is required"},
                 })}
                 placeholder="GDC number (this cannot be updated later) "
                 error={errors.gdc}
                 aria-invalid={errors.gdc ? true : false}
                 onInvalid={() => {
-                  setError("gdc", { message: "invalid gdc number" });
+                  setError("gdc", {message: "invalid gdc number"});
                 }}
                 type="text"
                 autoComplete="new-password"
@@ -154,7 +153,7 @@ export const RegisterForm: React.FC = () => {
             <div className="form-login-input">
               <Input
                 {...register("password", {
-                  required: { value: true, message: "password is required" },
+                  required: {value: true, message: "password is required"},
                 })}
                 placeholder="password"
                 error={errors.password}
@@ -170,20 +169,7 @@ export const RegisterForm: React.FC = () => {
                 id="password"
                 minLength={8}
               />
-              {!isPassHidden && (
-                <img
-                  className="form-login-input-eye"
-                  src="../images/eye-blocked.svg"
-                  onClick={() => hidePassword(true)}
-                />
-              )}
-              {isPassHidden && (
-                <img
-                  className="form-login-input-eye"
-                  src="../images/eye.svg"
-                  onClick={() => hidePassword(false)}
-                />
-              )}
+              <ShowPassword isPassHidden={isPassHidden} setIsPassHidden={setIsPassHidden} />
             </div>
             <div className="form-login-buttons">
               <button className="button-nextStep" onClick={() => clearErrors()}>
