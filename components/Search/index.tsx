@@ -8,6 +8,7 @@ import {DentistCards} from "./Card";
 import {GoogleMap} from "./Map";
 import {SearchParams} from "./SearchParams";
 import {API} from "../../api/AWS-gateway";
+import {nearlyDentistsInitial} from "../../mock/search";
 
 export interface ILocation {
   lat: number;
@@ -65,78 +66,6 @@ const findRequest = (obj: {
   });
 };
 
-const nearlyDentistsInitial = [
-  {
-    accountType: 'free',
-    avatar_url: '../images/doctor1.png',
-    email: 'email#email.com',
-    key: '1',
-    lat: 52.2042666,
-    lng: 0.1149085,
-    location: {
-      lat: 52.2042666,
-      lng: 0.1149085
-    },
-    username: 'Dr Jane Doe',
-    qualifications: 'Doctor'
-  },
-  {
-    accountType: 'free',
-    avatar_url: '../images/doctor2.png',
-    email: 'email#email.com',
-    key: '2',
-    lat: 51.2042666,
-    lng: 1.1149085,
-    location: {
-      lat: 51.2042666,
-      lng: 0.1149085
-    },
-    username: 'Karina Ole',
-    qualifications: 'Doctor'
-  },
-  {
-    accountType: 'pay',
-    avatar_url: '../images/doctor3.png',
-    email: 'email#email.com',
-    key: '3',
-    lat: 12.2042666,
-    lng: 1.1149085,
-    location: {
-      lat: 12.2042666,
-      lng: 1.1149085,
-    },
-    username: 'Mary Mask',
-    qualifications: 'Doctor'
-  },
-  {
-    accountType: 'free',
-    avatar_url: '../images/doctor1.png',
-    email: 'email#email.com',
-    key: '4',
-    lat: 56.2042666,
-    lng: 8.1149085,
-    location: {
-      lat: 56.2042666,
-      lng: 8.1149085,
-    },
-    username: 'Dr Jane Doe',
-    qualifications: 'Doctor'
-  },
-  {
-    accountType: 'free',
-    avatar_url: '../images/doctor2.png',
-    email: 'email#email.com',
-    key: '5',
-    lat: 2.2042666,
-    lng: 3.1149085,
-    location: {
-      lat: 2.2042666,
-      lng: 3.1149085,
-    },
-    username: 'Karina Ole',
-    qualifications: 'Doctor'
-  },
-]
 
 const Search: React.FC<SearchProps> = () => {
   const [showMap, setShowMap] = useState(true);
@@ -174,7 +103,7 @@ const Search: React.FC<SearchProps> = () => {
   };
 
   return (
-    <>
+    <main>
       <SearchParams
         setShowMap={setShowMap}
         showMap={showMap}
@@ -193,7 +122,7 @@ const Search: React.FC<SearchProps> = () => {
           nearlyDentists={nearlyDentists}
           setMyLocation={setMyLocation} />
       </div>
-    </>
+    </main>
   );
 };
 

@@ -18,11 +18,11 @@ export const Header: React.FC = () => {
   const [logOut] = useLogout(() => setToggle(false));
 
   return (
-    <>
+    <div className='header-wrapper'>
       <div className="header_shadow" />
       <div className="header bg-green">
         <div className="menu" id="mobile_menu">
-          {isLogged ? (<svg
+          {!isLogged ? (<svg
             className="menu-logo"
             xmlns="http://www.w3.org/2000/svg"
             height="28px"
@@ -42,7 +42,7 @@ export const Header: React.FC = () => {
             alt='' />
         </Link>
         <div className="header_actions">
-          {!isLogged ? (<>
+          {isLogged ? (<>
             <button className="button-green-login" onClick={() => Router.push(routes.login)}>Login</button>
             <button className="button-green-register" onClick={() => Router.push(routes.register)}>Register</button>
           </>) : (<button className="button-green-login" onClick={logOut}>Logout</button>)}
@@ -50,6 +50,6 @@ export const Header: React.FC = () => {
         <div />
       </div>
       <CollapsedSidebar logout={logOut} setToggle={setToggle} toggle={toggle} state={state.userState} />
-    </>
+    </div>
   );
 };

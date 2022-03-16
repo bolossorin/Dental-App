@@ -1,14 +1,8 @@
-import { useContext } from "react";
-import Router from "next/router";
-import { AppContext } from "../context/app.context";
-import { UserTypes } from "../reducers";
-import { IDentistFullDataResponse } from "../components";
-import { IUserGallery } from "../reducers/types";
+// components
+import {IDentistFullDataResponse} from "../components";
+import {IUserGallery} from "../reducers/types";
 
-export const useGetDentist = (
-  dentist: IDentistFullDataResponse,
-  galleryData: IUserGallery[]
-) => {
+export const useGetDentist = (dentist: IDentistFullDataResponse, galleryData: IUserGallery[]) => {
   return {
     email: dentist.bio.email,
     username: dentist.bio.username,

@@ -5,10 +5,19 @@ html,
 body {
   margin:      0;
   padding:     0;
-
   color:       var(--black);
-
   font-family: "Noto Sans KR", sans-serif;
+  height:      100%;
+}
+
+#__next {
+  height:         100%;
+  display:        flex;
+  flex-direction: column;
+}
+
+.main {
+  flex: 1 1 auto;
 }
 
 ::-webkit-input-placeholder {
@@ -472,10 +481,10 @@ label {
 @import "../components/Spinner/spinner.module.css";
 @import "../components/Profile/Profile.module.css";
 @import "../components/LeftMenu/OnHeader/Sidebar.module.css";
-@import "../components/Footer/Footer.module.css";
+@import "../components/Footer/Footer.module";
 @import "../components/Search/Search.module";
 @import "../components/Search/Map/Map.module.css";
-@import "../components/Person/Person.module.css";
+@import "../components/Person/Person.module";
 @import "../components/Galery/Galery.module.css";
 @import "../components/Account/account.module.css";
 

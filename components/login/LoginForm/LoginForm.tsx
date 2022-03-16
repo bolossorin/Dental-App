@@ -35,7 +35,7 @@ export interface IDentistFullDataResponse
   bio: IDentistBio;
   avatar_url: Null_Or_<string>;
   cover_url: Null_Or_<string>;
-  accountType: "free" | "premium";
+  accountType: string;
 }
 
 const loginSchema = Yup.object().shape({

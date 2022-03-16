@@ -13,12 +13,12 @@ const Home = (): JSX.Element => {
   const {loading} = useLocalData();
 
   return (
-    <main>
-      {loading && <Skeleton width={"100vw"} height={"70px"} />}
+    <>
       {!loading && <Header />}
+      {loading && <Skeleton width={"100vw"} height={"70px"} />}
       <Search />
       <Footer />
-    </main>
+    </>
   );
 };
 
