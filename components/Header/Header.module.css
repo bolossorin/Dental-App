@@ -74,8 +74,8 @@
   border: solid 2px var(--color-green);
   border-radius: 20px;
   background-color: var(--color-green);
-  -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0,  .8);
-  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, .8);
+  -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0,  .08);
+  box-shadow: 0 2px 48px 0 rgba(0, 0, 0, .08);
 
   font-family: PT Sans, sans-serif;
   font-size: 10px;
@@ -106,9 +106,7 @@
   .button-green-logout,
   .button-green-login,
   .button-green-register {
-    width: 70px;
-    min-width: 40px;
-    margin: 0;
+    padding: 12px 12px;
   }
 }
 

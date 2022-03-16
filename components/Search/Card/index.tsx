@@ -1,46 +1,45 @@
-import { SearchDentistiResult } from "..";
-import Link from "next/link";
-import { dentists } from "../../../mock/search";
+// libs
+import cn from "classnames";
+
+// components
+import {SearchDentistiResult} from "..";
 
 interface IDentistCardsProps {
-  dentists: SearchDentistiResult[];
-  selectTarget: (dent: SearchDentistiResult) => void;
+  nearlyDentists: SearchDentistiResult[];
+  setSelectedDentist: (dent: SearchDentistiResult) => void;
   selectedTarget: SearchDentistiResult | undefined;
+  setMyLocation: any;
 }
 
-export const DentistCards: React.FC<IDentistCardsProps> = ({
-  dentists,
-  selectedTarget,
-  selectTarget,
-}) => {
+export const DentistCards: React.FC<IDentistCardsProps> = (
+  {
+    setMyLocation,
+    nearlyDentists,
+    selectedTarget,
+    setSelectedDentist
+  }) => {
   return (
     <div className="main-index index-main-box left-size">
       <div className="index-gallery-box">
-        {dentists.map((item, idx) => (
+        {nearlyDentists.map((item, idx) => (
           <a href={`/search/${item.email}`} target={"_blank"}>
             <div
-              className="index-gallery-image-box"
-              style={{
-                boxShadow:
-                  selectedTarget === item ? "15px 8px 20px 1px" : "none",
-              }}
+              className={cn("index-gallery-image-box", {'active': selectedTarget === item})}
               onClick={() => {
-                selectTarget(item);
-              }}
-              key={idx}
-            >
+                setMyLocation(item.location)
+                setSelectedDentist(item);
+              }} key={idx}>
               <img
                 className="index-gallery-image"
                 src={item.avatar_url || "../images/empty_avatar.png"}
-                alt="gallery image"
-              />
-              <p className="index-gallery-image-watermark"></p>
-              {item.accountType !== "free" && (
-                <img
-                  className="index-gallery-image-watermark-img"
-                  src="../images/check_circle.svg"
-                  alt="check"
-                />
+                alt="gallery image" />
+              {item.accountType !== "free" && (<>
+                  <p className="index-gallery-image-watermark" />
+                  <img
+                    className="index-gallery-image-watermark-img"
+                    src={"../images/check_circle.svg"}
+                    alt="check" />
+                </>
               )}
               <div className="index-gallery-image-description">
                 <p className="index-gallery-image-title">{item.username}</p>

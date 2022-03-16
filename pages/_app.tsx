@@ -1,10 +1,15 @@
+// libs
+import {ToastContainer} from "react-toastify";
+import type {AppProps} from "next/app";
+
+// components
+import {AppProvider} from "../context/app.context";
+
+// assets
 import "../styles/globals.scss";
 import "react-toastify/dist/ReactToastify.css";
-import { ToastContainer } from "react-toastify";
-import type { AppProps } from "next/app";
-import { AppProvider } from "../context/app.context";
 
-function ApplicationWrapper({ Component, pageProps }: AppProps): JSX.Element {
+function ApplicationWrapper({Component, pageProps}: AppProps): JSX.Element {
   return (
     <AppProvider>
       <Component {...pageProps} />

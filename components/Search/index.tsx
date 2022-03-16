@@ -1,10 +1,13 @@
-import { DentistCards } from "./Card";
-import { GoogleMap } from "./Map";
-import { SearchParams } from "./SearchParams";
-import { useEffect, useState } from "react";
-import { dentists } from "../../mock/search";
+import {useEffect, useState} from "react";
+
+// libs
 import axios from "axios";
-import { API } from "../../api/AWS-gateway";
+
+// components
+import {DentistCards} from "./Card";
+import {GoogleMap} from "./Map";
+import {SearchParams} from "./SearchParams";
+import {API} from "../../api/AWS-gateway";
 
 export interface ILocation {
   lat: number;
@@ -33,12 +36,13 @@ export interface SearchDentistiResult {
   key: string;
   lat: number;
   lng: number;
-  location: string;
+  location: object;
   username: string;
   qualifications: string;
 }
 
-interface SearchProps {}
+interface SearchProps {
+}
 
 const findRequest = (obj: {
   lat: number;
@@ -46,10 +50,7 @@ const findRequest = (obj: {
   service: string | undefined;
   miles: MILES | undefined;
 }) => {
-  return new Promise<SearchDentistiResult[]>(async (resolve, rej) => {
-    // setTimeout(() => {
-    //   resolve(dentists);
-    // }, 3000);
+  return new Promise<SearchDentistiResult[]>(async (resolve) => {
     const body = {
       lat: obj.lat,
       lng: obj.lng,
@@ -64,22 +65,95 @@ const findRequest = (obj: {
   });
 };
 
+const nearlyDentistsInitial = [
+  {
+    accountType: 'free',
+    avatar_url: '../images/doctor1.png',
+    email: 'email#email.com',
+    key: '1',
+    lat: 52.2042666,
+    lng: 0.1149085,
+    location: {
+      lat: 52.2042666,
+      lng: 0.1149085
+    },
+    username: 'Dr Jane Doe',
+    qualifications: 'Doctor'
+  },
+  {
+    accountType: 'free',
+    avatar_url: '../images/doctor2.png',
+    email: 'email#email.com',
+    key: '2',
+    lat: 51.2042666,
+    lng: 1.1149085,
+    location: {
+      lat: 51.2042666,
+      lng: 0.1149085
+    },
+    username: 'Karina Ole',
+    qualifications: 'Doctor'
+  },
+  {
+    accountType: 'pay',
+    avatar_url: '../images/doctor3.png',
+    email: 'email#email.com',
+    key: '3',
+    lat: 12.2042666,
+    lng: 1.1149085,
+    location: {
+      lat: 12.2042666,
+      lng: 1.1149085,
+    },
+    username: 'Mary Mask',
+    qualifications: 'Doctor'
+  },
+  {
+    accountType: 'free',
+    avatar_url: '../images/doctor1.png',
+    email: 'email#email.com',
+    key: '4',
+    lat: 56.2042666,
+    lng: 8.1149085,
+    location: {
+      lat: 56.2042666,
+      lng: 8.1149085,
+    },
+    username: 'Dr Jane Doe',
+    qualifications: 'Doctor'
+  },
+  {
+    accountType: 'free',
+    avatar_url: '../images/doctor2.png',
+    email: 'email#email.com',
+    key: '5',
+    lat: 2.2042666,
+    lng: 3.1149085,
+    location: {
+      lat: 2.2042666,
+      lng: 3.1149085,
+    },
+    username: 'Karina Ole',
+    qualifications: 'Doctor'
+  },
+]
+
 const Search: React.FC<SearchProps> = () => {
   const [showMap, setShowMap] = useState(true);
   const [selectedDentist, setSelectedDent] = useState<SearchDentistiResult>();
-  const [nearlyDentists, setDentist] = useState<SearchDentistiResult[]>([]);
+  const [nearlyDentists, setDentist] = useState<SearchDentistiResult[]>(nearlyDentistsInitial);
 
   const [myLocation, setMyLocation] = useState<ILocation>();
 
-  const setSelectedDentist = (dent: any) => {
-    setSelectedDent(dent);
-  };
+  const setSelectedDentist = (dent: any) => setSelectedDent(dent);
 
   useEffect(() => {
     (async () => {
       try {
-        const { data } = await axios.get<any>(API.GET_ALL_DENTISTS);
-      } catch (exp) {}
+        await axios.get<any>(API.GET_ALL_DENTISTS);
+      } catch (exp) {
+        console.log(exp, 'error')
+      }
     })();
   }, []);
 
@@ -94,7 +168,9 @@ const Search: React.FC<SearchProps> = () => {
         });
         setDentist(dentists);
       }
-    } catch (exp) {}
+    } catch (exp) {
+      console.error(exp, 'error')
+    }
   };
 
   return (
@@ -103,24 +179,19 @@ const Search: React.FC<SearchProps> = () => {
         setShowMap={setShowMap}
         showMap={showMap}
         findDentist={findDentist}
-        myLocation={myLocation}
-        setMyLocation={setMyLocation}
-      />
+        setMyLocation={setMyLocation} />
       <div className="index-box-to-box">
-        {showMap && (
-          <GoogleMap
-            targets={nearlyDentists}
-            selectTarget={setSelectedDentist}
-            selectedTarget={selectedDentist}
-            myLocation={myLocation}
-            setMyLocation={setMyLocation}
-          />
-        )}
-        <DentistCards
-          selectTarget={setSelectedDentist}
+        {showMap && (<GoogleMap
+          nearlyDentists={nearlyDentists}
+          setSelectedDentist={setSelectedDentist}
           selectedTarget={selectedDentist}
-          dentists={nearlyDentists}
-        />
+          myLocation={myLocation}
+          setMyLocation={setMyLocation} />)}
+        <DentistCards
+          setSelectedDentist={setSelectedDentist}
+          selectedTarget={selectedDentist}
+          nearlyDentists={nearlyDentists}
+          setMyLocation={setMyLocation} />
       </div>
     </>
   );

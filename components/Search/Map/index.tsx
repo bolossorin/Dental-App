@@ -1,15 +1,18 @@
-import React, { useEffect, useCallback, useState } from "react";
+import React, {useEffect, useCallback} from "react";
+
+// libs
 import GoogleMapReact from "google-map-react";
-// import { dentists } from '../../../mock/search';
-import { API } from "../../../api/AWS-gateway";
-import { MeMarker } from "./Markers/Me";
-import { DentistMarker } from "./Markers/Target";
-import { ISetNotofication } from "../../Toast";
+
+// components
+import {MeMarker} from "./Markers/Me";
+import {DentistMarker} from "./Markers/Target";
+import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import { ILocation, SearchDentistiResult } from "..";
+import {ILocation, SearchDentistiResult} from "..";
+
 interface IMapProps {
-  targets: SearchDentistiResult[];
-  selectTarget: (dent: SearchDentistiResult) => void;
+  nearlyDentists: SearchDentistiResult[];
+  setSelectedDentist: (dent: SearchDentistiResult) => void;
   selectedTarget: SearchDentistiResult | undefined;
   myLocation: ILocation | undefined;
   setMyLocation: (loc: ILocation) => void;
@@ -22,16 +25,17 @@ const Locations = {
   },
 };
 
-export const GoogleMap: React.FC<IMapProps> = ({
-  targets,
-  selectTarget,
-  selectedTarget,
-  myLocation,
-  setMyLocation,
-}) => {
+export const GoogleMap: React.FC<IMapProps> = (
+  {
+    nearlyDentists,
+    setSelectedDentist,
+    selectedTarget,
+    myLocation,
+    setMyLocation,
+  }) => {
   const setNotification = useCallback<ISetNotofication>(
-    ({ ...notifyProps }) => {
-      notify({ ...notifyProps });
+    ({...notifyProps}) => {
+      notify({...notifyProps});
     },
     []
   );
@@ -75,12 +79,11 @@ export const GoogleMap: React.FC<IMapProps> = ({
           <div className="Google-react-map-wrapper">
             <GoogleMapReact
               center={myLocation}
-              bootstrapURLKeys={{ key: `${process.env.GOOGLE_KEY}` }}
+              bootstrapURLKeys={{key: `${process.env.GOOGLE_KEY}`}}
               defaultCenter={Locations.cambridge}
-              defaultZoom={13}
-            >
+              defaultZoom={13}>
               <MeMarker {...myLocation} />
-              {targets.map((target) => {
+              {nearlyDentists.map((target) => {
                 return (
                   <DentistMarker
                     key={target.key}
@@ -88,7 +91,7 @@ export const GoogleMap: React.FC<IMapProps> = ({
                     lat={target.lat}
                     lng={target.lng}
                     selectedTarget={selectedTarget}
-                    selectTarget={selectTarget}
+                    setSelectedDentist={setSelectedDentist}
                   />
                 );
               })}

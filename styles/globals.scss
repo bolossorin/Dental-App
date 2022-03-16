@@ -3,111 +3,111 @@
 
 html,
 body {
-  margin: 0;
-  padding: 0;
+  margin:      0;
+  padding:     0;
 
-  color: var(--black);
+  color:       var(--black);
 
   font-family: "Noto Sans KR", sans-serif;
 }
 
 ::-webkit-input-placeholder {
-  text-align: left;
+  text-align:     left;
   letter-spacing: normal;
 
-  color: #707070;
+  color:          #707070;
 
   /* Chrome */
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-family:    Arial, sans-serif;
+  font-size:      14px;
+  font-weight:    normal;
+  font-style:     normal;
+  font-stretch:   normal;
+  line-height:    normal;
 }
 
 ::-moz-placeholder {
-  text-align: left;
+  text-align:     left;
   letter-spacing: normal;
 
-  color: #707070;
+  color:          #707070;
 
   /* Firefox 19+ */
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-family:    Arial, sans-serif;
+  font-size:      14px;
+  font-weight:    normal;
+  font-style:     normal;
+  font-stretch:   normal;
+  line-height:    normal;
 }
 
 :-moz-placeholder {
-  text-align: left;
+  text-align:     left;
   letter-spacing: normal;
 
-  color: #707070;
+  color:          #707070;
 
   /* Firefox 4 - 18 */
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-family:    Arial, sans-serif;
+  font-size:      14px;
+  font-weight:    normal;
+  font-style:     normal;
+  font-stretch:   normal;
+  line-height:    normal;
 }
 
 :-ms-input-placeholder {
-  text-align: left;
+  text-align:     left;
   letter-spacing: normal;
 
-  color: #707070;
+  color:          #707070;
 
   /* IE 10+ */
-  font-family: Arial;
-  font-size: 14px;
-  font-weight: normal;
-  font-style: normal;
-  font-stretch: normal;
-  line-height: normal;
+  font-family:    Arial, sans-serif;
+  font-size:      14px;
+  font-weight:    normal;
+  font-style:     normal;
+  font-stretch:   normal;
+  line-height:    normal;
 }
 
 :root {
-  --black: #3b434e;
-  --gray-light: #ebebeb;
-  --gray: #a4a4a4;
-  --gray-dark: #6c7077;
-  --white: white;
-  --primary: #7351f5;
+  --black:         #3b434e;
+  --gray-light:    #ebebeb;
+  --gray:          #a4a4a4;
+  --gray-dark:     #6c7077;
+  --white:         white;
+  --primary:       #7351f5;
   --primary-hover: #6344df;
-  --red-light: #fea291;
-  --red: #fc836d;
-  --green: #007b48;
-  --green-light: #c8f8e4;
+  --red-light:     #fea291;
+  --red:           #fc836d;
+  --green:         #007b48;
+  --green-light:   #c8f8e4;
 
   /* --font-family: 'Noto Sans KR', sans-serif; */
-  --color-green: #095c5c;
-  --color-white: #fff;
-  --color-gray: #787878;
-  --color-black: #1f1f1f;
+  --color-green:   #095c5c;
+  --color-white:   #fff;
+  --color-gray:    #787878;
+  --color-black:   #1f1f1f;
 }
 
 *,
 *::after,
 *::before {
   box-sizing: border-box;
-  margin: 0;
-  padding: 0;
+  margin:     0;
+  padding:    0;
 }
 
 img {
   max-width: 100%;
-  height: auto;
+  height:    auto;
 }
 
 a {
   text-decoration: none;
 
-  color: inherit;
+  color:           inherit;
 }
 
 /* COLORS */
@@ -168,22 +168,22 @@ fieldset.FormGroup {
 }
 
 .AppWrapper {
-  margin: 0;
+  margin:                      0;
 
-  color: #212529;
+  color:                       #212529;
 
-  font-family: sans-serif, Verdana;
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-family:                 sans-serif, Verdana;
+  font-size:                   1rem;
+  font-weight:                 400;
+  line-height:                 1.5;
 
-  -webkit-text-size-adjust: 100%;
+  -webkit-text-size-adjust:    100%;
   -webkit-tap-highlight-color: transparent;
 }
 
 @media (min-width: 1200px) {
   .col-xl-6 {
-    flex: 0 0 auto;
+    flex:  0 0 auto;
 
     width: 50%;
   }
@@ -191,21 +191,21 @@ fieldset.FormGroup {
 
 @media (min-width: 1200px) {
   .col-xl-8 {
-    flex: 0 0 auto;
+    flex:  0 0 auto;
 
     width: 66.66666667%;
   }
 }
 
 .col-12 {
-  flex: 0 0 auto;
+  flex:  0 0 auto;
 
   width: 100%;
 }
 
 .mx-auto {
   margin-right: auto !important;
-  margin-left: auto !important;
+  margin-left:  auto !important;
 }
 
 .mt-3 {
@@ -221,25 +221,25 @@ label {
 }
 
 .form-control {
-  display: block;
+  display:            block;
 
-  width: 100%;
-  padding: 0.375rem 0.75rem;
+  width:              100%;
+  padding:            0.375rem 0.75rem;
 
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  color: #212529;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  background-color: #fff;
-  background-clip: padding-box;
+  color:              #212529;
+  border:             1px solid #ced4da;
+  border-radius:      0.25rem;
+  background-color:   #fff;
+  background-clip:    padding-box;
 
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size:          1rem;
+  font-weight:        400;
+  line-height:        1.5;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  -moz-appearance:    none;
+  appearance:         none;
 }
 
 .AppWrapper > button,
@@ -247,44 +247,44 @@ label {
 .AppWrapper > optgroup,
 .AppWrapper > select,
 .AppWrapper > textarea {
-  margin: 0;
+  margin:      0;
 
   font-family: inherit;
-  font-size: inherit;
+  font-size:   inherit;
   line-height: inherit;
 }
 
 .btn-danger {
-  padding: 10px 20px;
+  padding:          10px 20px;
 
-  color: #fff;
-  border: none;
-  border-color: #970707;
-  border-radius: 5px;
-  outline: none;
+  color:            #fff;
+  border:           none;
+  border-color:     #970707;
+  border-radius:    5px;
+  outline:          none;
   background-color: #ac0303;
 }
 
 .btn-danger:hover {
-  color: #fff;
-  border-color: #740505;
+  color:            #fff;
+  border-color:     #740505;
   background-color: #8b0000;
 }
 
 .btn-success {
-  padding: 10px 20px;
+  padding:          10px 20px;
 
-  color: #fff;
-  border: none;
-  border-color: #198754;
-  border-radius: 5px;
-  outline: none;
+  color:            #fff;
+  border:           none;
+  border-color:     #198754;
+  border-radius:    5px;
+  outline:          none;
   background-color: #198754;
 }
 
 .btn-success:hover {
-  color: #fff;
-  border-color: #146c43;
+  color:            #fff;
+  border-color:     #146c43;
   background-color: #157347;
 }
 
@@ -298,11 +298,11 @@ label {
 }
 
 .form-control:focus {
-  color: #212529;
-  border-color: #86b7fe;
-  outline: 0;
+  color:            #212529;
+  border-color:     #86b7fe;
+  outline:          0;
   background-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253 , .25);
+  box-shadow:       0 0 0 0.25rem rgba(13, 110, 253, .25);
 }
 
 /* stylelint-disable */
@@ -311,8 +311,8 @@ label {
 .btn-success.active,
 .btn-success:active,
 .show > .btn-success.dropdown-toggle {
-  color: #fff;
-  border-color: #13653f;
+  color:            #fff;
+  border-color:     #13653f;
   background-color: #146c43;
 }
 
@@ -321,8 +321,9 @@ label {
 .btn-success.active:focus,
 .btn-success:active:focus,
 .show > .btn-success.dropdown-toggle:focus {
-  box-shadow: 0 0 0 0.25rem rgba(60, 153, 110,  .5);
+  box-shadow: 0 0 0 0.25rem rgba(60, 153, 110, .5);
 }
+
 /* stylelint-enable */
 .AppWrapper [type="button"]:not(:disabled),
 .AppWrapper [type="reset"]:not(:disabled),
@@ -333,14 +334,14 @@ label {
 
 #coupon_input_container {
   /* direction: rtl; */
-  display: flex;
-  align-items: center;
+  display:         flex;
+  align-items:     center;
   justify-content: center;
 
-  max-width: 200px;
+  max-width:       200px;
 
   /* position: relative; */
-  margin: 0 5px 0 20px;
+  margin:          0 5px 0 20px;
 }
 
 #coupon_input {
@@ -349,42 +350,42 @@ label {
 	padding-right: 30px;
 	width: 100%; */
 
-  display: block;
+  display:            block;
 
-  width: 100%;
-  padding: 0.375rem 0.75rem;
+  width:              100%;
+  padding:            0.375rem 0.75rem;
 
-  transition: border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+  transition:         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
 
-  color: #212529;
-  border: 1px solid #ced4da;
-  border-radius: 0.25rem;
-  background-color: #fff;
-  background-clip: padding-box;
+  color:              #212529;
+  border:             1px solid #ced4da;
+  border-radius:      0.25rem;
+  background-color:   #fff;
+  background-clip:    padding-box;
 
-  font-size: 1rem;
-  font-weight: 400;
-  line-height: 1.5;
+  font-size:          1rem;
+  font-weight:        400;
+  line-height:        1.5;
   -webkit-appearance: none;
-  -moz-appearance: none;
-  appearance: none;
+  -moz-appearance:    none;
+  appearance:         none;
 }
 
 #coupon_input:focus {
-  color: #212529;
-  border-color: #86b7fe;
-  outline: 0;
+  color:            #212529;
+  border-color:     #86b7fe;
+  outline:          0;
   background-color: #fff;
-  box-shadow: 0 0 0 0.25rem rgba(13, 110, 253, .25);
+  box-shadow:       0 0 0 0.25rem rgba(13, 110, 253, .25);
 }
 
 #coupon_input_img {
   position: absolute;
-  right: 5px;
-  bottom: 6px;
+  right:    5px;
+  bottom:   6px;
 
-  width: 24px;
-  height: 24px;
+  width:    24px;
+  height:   24px;
 }
 
 /* PaymentPage styles --------- end ------------- */
@@ -392,61 +393,65 @@ label {
 /* profile start */
 
 .container-profile {
-  display: flex;
-  align-items: flex-start;
-  flex-direction: row;
+  display:         flex;
+  align-items:     flex-start;
+  flex-direction:  row;
   justify-content: flex-start;
 
-  width: 100%;
-  height: 100%;
+  width:           100%;
+  height:          100%;
 }
 
 .main-profile {
-  display: flex;
-  align-items: center;
-  align-self: stretch;
-  flex-direction: column;
+  display:         flex;
+  align-items:     center;
+  align-self:      stretch;
+  flex-direction:  column;
   justify-content: flex-start;
 
-  width: 100%;
+  width:           100%;
 
-  min-height: 100vh;
-  padding: 10px 20px;
+  min-height:      100vh;
+  padding:         10px 20px;
 }
+
 /* stylelint-disable */
 /* profile end */
 .leftmenu-navbar li {
-  display: flex;
-  align-items: center;
+  display:         flex;
+  align-items:     center;
   justify-content: center;
-  padding-left: 36px;
-  cursor: pointer;
+  padding-left:    36px;
+  cursor:          pointer;
 }
 
-.leftmenu-navbar li:hover {
-  color: #095c5c;
-  background: #fff;
+.leftmenu-navbar li {
+  &:hover {
+    background: #fff;
+    a {
+      color: #095c5c;
+    }
+  }
 }
 
 .leftmenu-navbar li a {
-  position: relative;
-  z-index: 1;
-  display: block;
-  width: 100%;
-  padding: 10px 0 10px 24%;
-  font-family: PT Sans;
-  font-size: 14px;
-  font-style: normal;
-  font-weight: normal;
-  font-stretch: normal;
-  line-height: normal;
-  letter-spacing: 1.05px;
-  text-align: left;
+  position:        relative;
+  z-index:         1;
+  display:         block;
+  width:           100%;
+  padding:         10px 0 10px 24%;
+  font-family:     PT Sans, sans-serif;
+  font-size:       14px;
+  font-style:      normal;
+  font-weight:     normal;
+  font-stretch:    normal;
+  line-height:     normal;
+  letter-spacing:  1.05px;
+  text-align:      left;
   text-decoration: none;
-  margin-left: -46px;
-  color: #fff;
-  /* margin-bottom: 23px; */
-  transition: all 0.3s linear;
+  margin-left:     -46px;
+  color:           #fff;
+  transition:      all 0.3s linear;
 }
 
 .leftMenu-imagination-div {
@@ -457,7 +462,7 @@ label {
   .leftMenu-imagination-div {
     display: none;
 
-    width: 0;
+    width:   0;
   }
 }
 
@@ -465,14 +470,14 @@ label {
 @import "../components/RegisterForm/RegisterForm.module.css";
 @import "../components/Header/Header.module.css";
 @import "../components/Spinner/spinner.module.css";
-//@import "../components/Profile/Profile.module.css";
+@import "../components/Profile/Profile.module.css";
 @import "../components/LeftMenu/OnHeader/Sidebar.module.css";
 @import "../components/Footer/Footer.module.css";
-//@import "../components/Search/Search.module.css";
-//@import "../components/Search/Map/Map.module.css";
-//@import "../components/Person/Person.module.css";
-//@import "../components/Galery/Galery.module.css";
-//@import "../components/Account/account.module.css";
+@import "../components/Search/Search.module";
+@import "../components/Search/Map/Map.module.css";
+@import "../components/Person/Person.module.css";
+@import "../components/Galery/Galery.module.css";
+@import "../components/Account/account.module.css";
 
 /*end of line*/
 @import "react-loading-skeleton/dist/skeleton.css";

@@ -6,7 +6,7 @@ interface IMeMarker {
 export const MeMarker: React.FC<IMeMarker> = () => {
   return (
     <div>
-      <img className="meMarkerImage" src="../images/meMarker.svg" alt="home" />
+      <img className="meMarkerImage" src={"../images/meMarker.svg"} alt="home" />
     </div>
   );
 };
