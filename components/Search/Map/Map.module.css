@@ -66,6 +66,7 @@
 
 .Google-react-map-wrapper {
   height: 85vh;
+  max-height: 750px;
   border: 0;
 }
 

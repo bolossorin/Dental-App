@@ -16,7 +16,7 @@ body {
   flex-direction: column;
 }
 
-.main {
+main {
   flex: 1 1 auto;
 }
 
@@ -38,10 +38,7 @@ body {
 ::-moz-placeholder {
   text-align:     left;
   letter-spacing: normal;
-
   color:          #707070;
-
-  /* Firefox 19+ */
   font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
@@ -53,10 +50,7 @@ body {
 :-moz-placeholder {
   text-align:     left;
   letter-spacing: normal;
-
   color:          #707070;
-
-  /* Firefox 4 - 18 */
   font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
@@ -68,10 +62,7 @@ body {
 :-ms-input-placeholder {
   text-align:     left;
   letter-spacing: normal;
-
   color:          #707070;
-
-  /* IE 10+ */
   font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
@@ -92,8 +83,6 @@ body {
   --red:           #fc836d;
   --green:         #007b48;
   --green-light:   #c8f8e4;
-
-  /* --font-family: 'Noto Sans KR', sans-serif; */
   --color-green:   #095c5c;
   --color-white:   #fff;
   --color-gray:    #787878;
@@ -158,36 +147,20 @@ fieldset.FormGroup {
   border: none;
 }
 
-@media (max-width: 1800px) {
-  .AppWrapper {
-    width: 25vw !important;
-  }
-}
-
-@media (max-width: 1280px) {
-  .AppWrapper {
-    width: 50vw !important;
-  }
-}
-
-@media (max-width: 768px) {
-  .AppWrapper {
-    width: 90vw !important;
-  }
-}
-
 .AppWrapper {
   margin:                      0;
-
   color:                       #212529;
-
   font-family:                 sans-serif, Verdana;
   font-size:                   1rem;
   font-weight:                 400;
   line-height:                 1.5;
-
   -webkit-text-size-adjust:    100%;
   -webkit-tap-highlight-color: transparent;
+}
+
+.biling {
+  max-width: 567px;
+  margin:    0 auto;
 }
 
 @media (min-width: 1200px) {
