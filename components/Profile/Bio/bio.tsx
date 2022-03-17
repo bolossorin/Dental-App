@@ -15,7 +15,7 @@ interface BioFormChilds {
   profileBio: string;
   website: string;
   phone: string;
-  accountType: "free" | "premium";
+  accountType:string;
 }
 interface IBioResponse {
   title: string;

@@ -42,7 +42,7 @@ export const Services: React.FC = () => {
     };
     try {
       const { data } = await axios.post<IAddServiceResponse>(
-        API.SET_DENTIST_SERVICES,
+        API.DENTIST_SERVICES,
         body
       );
       dispatch({
@@ -68,7 +68,7 @@ export const Services: React.FC = () => {
 
   const handleDeleteService = async (key: string) => {
     try {
-      await axios.delete(`${API.SET_DENTIST_SERVICES}?key=${key}`);
+      await axios.delete(`${API.DENTIST_SERVICES}?key=${key}`);
       dispatch({
         type: UserTypes.REMOVE_SERVICE,
         payload: { key },

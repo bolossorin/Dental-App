@@ -4,9 +4,7 @@ import {
   IDentistGallery,
   IDentistLocations,
   IDentistServices,
-  IDentist_SpecialState,
   Null_Or_,
-  UserServices,
 } from "./types";
 
 export enum DentistTypes {

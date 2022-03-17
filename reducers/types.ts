@@ -57,7 +57,7 @@ export type IDentistGallery = {
 };
 export type IDentist_SpecialState = {
   isLogged: boolean;
-  accountType: "free" | "premium";
+  accountType: string;
   avatar_url: Null_Or_<string>;
   cover_url: Null_Or_<string>;
   allowedServices: Null_Or_<UserServices[]>;

@@ -33,7 +33,7 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
 
   useEffect(() => {
     axios
-      .get<UserServices[]>(`${API.GET_ALL_SERVICES}`)
+      .get<UserServices[]>(`${API.DENTIST_SERVICES}`)
       .then(({data}) => {
         setAllServices(data);
       })
