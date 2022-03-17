@@ -21,7 +21,6 @@ const newPasswordSchema = Yup.object().shape({
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Old Password is required"),
   newPassword: Yup.string().oneOf([Yup.ref('oldPassword'), null], 'Both password needs to be the same').required("New Password is required"),
 });
-
 export const AccountInfoBlock: React.FC = () => {
   const {state} = useContext(AppContext);
   const {email, gdcNumber}: any = state.userState;
@@ -61,7 +60,6 @@ export const AccountInfoBlock: React.FC = () => {
         validationSchema={accountInfoSchema}
         initialValues={{email: email, gdcNumber: gdcNumber}}
         onSubmit={async (values) => {
-          console.log(111111)
           const body = {email: values.email, gdcNumber: values.gdcNumber};
           try {
             await axios.post(API.UPDATE_ACCOUNT, body);
@@ -107,7 +105,7 @@ export const AccountInfoBlock: React.FC = () => {
               {isEdit && <button type='submit' className="account-button-green">
                 Update Account
               </button>}
-              <button type='button' className="account-button-green" onClick={() => {
+              <button type='button' className="account-button-green-outline" onClick={() => {
                 resetForm();
                 setIsEdit(!isEdit);
               }}>

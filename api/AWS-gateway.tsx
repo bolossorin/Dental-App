@@ -20,7 +20,7 @@ export const API = {
 
   STRIPE_CHARGE: "/api/dentist/payment/charge",
   STRIPE_REFUND: "/api/dentist/payment/refund",
-  STRIPE_SUBSCRIPTION_CREATE: "/api/dentist/payment/subscription",
+  STRIPE_SUBSCRIPTION: "/api/dentist/payment/subscription",
   STRIPE_CHECK_COUPON: "/api/dentist/payment/activate-coupon",
   STRIPE_GET_PREMIUM_PRICE: "/api/dentist/payment/price",
 

@@ -127,7 +127,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
             paymentMethodId: payload.paymentMethod.id,
           };
 
-          const {data} = await axios.post(API.STRIPE_SUBSCRIPTION_CREATE, body);
+          const {data} = await axios.post(API.STRIPE_SUBSCRIPTION, body);
 
           if (data.subscription_id) {
             setNotification({
