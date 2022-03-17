@@ -1,9 +1,13 @@
+import React from "react";
+
 // libs
 import Link from "next/link";
 
 // components
 import {TUserReducerState} from "../../../reducers";
 import {routes} from "../../../utils/routes";
+import cn from "classnames";
+import {useRouter} from "next/router";
 
 interface ICollapsedSidebarProps {
   logout: () => Promise<void>;
@@ -12,8 +16,17 @@ interface ICollapsedSidebarProps {
   state: TUserReducerState;
 }
 
-export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({logout, setToggle, toggle, state}) => {
+export const OnHeader: React.FC<ICollapsedSidebarProps> = ({logout, setToggle, toggle, state}) => {
+  const router = useRouter();
+
   const {username, avatar_url, email} = state;
+
+  const links = [
+    {icon: '../../images/user.svg', title: 'Profile', url: routes.profile},
+    {icon: '../../images/gallery.svg', title: 'Gallery', url: routes.gallery},
+    {icon: '../../images/more_vert.svg', title: 'Account', url: routes.account},
+    {icon: '../../images/person_black_24dp.svg', title: 'View My Profile', url: `${routes.search}/${email}`},
+  ];
 
   return (
     <div id="myNav" className="overlay" style={{width: toggle ? "330px" : "0"}}>
@@ -24,7 +37,7 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({logout, setT
               className="form-login-input-close overlay_closebtn"
               src={"../../images/close.svg"}
               onClick={() => setToggle(false)} alt='' />
-            <div className="link-actve">
+            <div className="link-active">
               <Link href={routes.home}>
                 <img
                   src={"../../images/FYD4_beige-on-green@2x.png"}
@@ -45,30 +58,14 @@ export const CollapsedSidebar: React.FC<ICollapsedSidebarProps> = ({logout, setT
             </div>
           </div>
           <div className="leftmenu-navbar">
-            <Link href={routes.profile}>
-              <li className={`leftmenu-list active}`}>
-                <img className="leftmenu-link-image" src={"../../images/user.svg"} alt="link image" />
-                <a className="leftmenu-link">Profile</a>
-              </li>
-            </Link>
-            <Link href={routes.gallery}>
-              <li className={`leftmenu-list`}>
-                <img className="leftmenu-link-image" src={"../../images/gallery.svg"} alt="link image" />
-                <a className="leftmenu-link">Gallery</a>
-              </li>
-            </Link>
-            <Link href={routes.account}>
-              <li className={`leftmenu-list`}>
-                <img className="leftmenu-link-image" src={"../../images/more_vert.svg"} alt="link image" />
-                <a className="leftmenu-link">Account</a>
-              </li>
-            </Link>
-            <Link href={`${routes.search}${email}`}>
-              <li className={`leftmenu-list`}>
-                <img className="leftmenu-link-image" src={"../../images/person_black_24dp.svg"} alt="link image" />
-                <a className="leftmenu-link">View My Profile</a>
-              </li>
-            </Link>
+            {links.map(link => (
+              <Link href={link.url}>
+                <li className={cn('leftmenu-list', {'active': link.url === router.asPath})}>
+                  <img className="leftmenu-link-image" src={link.icon} alt="link image" />
+                  <a className="leftmenu-link">{link.title}</a>
+                </li>
+              </Link>
+            ))}
             <li className="leftmenu-list logout">
               <img className="leftmenu-link-image" src={"../../images/left-arrow.svg"} alt="link image" />
               <a className="leftmenu-link" href="#" onClick={async () => await logout()}>

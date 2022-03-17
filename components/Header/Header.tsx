@@ -7,7 +7,7 @@ import Router from "next/router";
 // components
 import {AppContext} from "../../context/app.context";
 import {useLogout} from "../../hooks/useLogout";
-import {CollapsedSidebar} from "../LeftMenu/OnHeader/Sidebar";
+import {OnHeader} from "../LeftMenu/OnHeader/OnHeader";
 import {routes} from "../../utils/routes";
 
 export const Header: React.FC = () => {
@@ -49,7 +49,7 @@ export const Header: React.FC = () => {
         </div>
         <div />
       </div>
-      <CollapsedSidebar logout={logOut} setToggle={setToggle} toggle={toggle} state={state.userState} />
+      <OnHeader logout={logOut} setToggle={setToggle} toggle={toggle} state={state.userState} />
     </div>
   );
 };
