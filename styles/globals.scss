@@ -159,8 +159,21 @@ fieldset.FormGroup {
 }
 
 .biling {
-  max-width: 567px;
-  margin:    0 auto;
+  background:      rgba(9, 92, 92, 0.15);
+  justify-content: center;
+  .profile-box-form {
+    max-width:       500px;
+    margin:          0 auto;
+    box-shadow:      none;
+    background:      transparent;
+    height:          100%;
+    display:         flex;
+    flex-direction:  column;
+    justify-content: center;
+  }
+  .box-to-box {
+    height: auto;
+  }
 }
 
 @media (min-width: 1200px) {
@@ -188,6 +201,10 @@ fieldset.FormGroup {
 .mx-auto {
   margin-right: auto !important;
   margin-left:  auto !important;
+}
+
+.mt-0 {
+  margin-top: 0 !important;
 }
 
 .mt-3 {
@@ -254,24 +271,20 @@ label {
 }
 
 .btn-success {
-  padding:          10px 20px;
-
-  color:            #fff;
-  border:           none;
-  border-color:     #198754;
-  border-radius:    5px;
-  outline:          none;
-  background-color: #198754;
-}
-
-.btn-success:hover {
-  color:            #fff;
-  border-color:     #146c43;
-  background-color: #157347;
-}
-
-.btn {
-  border: none;
+  padding:       10px 20px;
+  color:         #fff;
+  border:        1px solid #095c5c;
+  border-radius: 5px;
+  outline:       none;
+  background:    #095c5c;
+  cursor:        pointer;
+  transition:    all 0.3s linear;
+  &:hover {
+    color:      #095c5c;
+    border:     1px solid #095c5c;
+    background: #fff;
+    outline:    none;
+  }
 }
 
 .AppWrapper > button,
@@ -314,60 +327,71 @@ label {
   cursor: pointer;
 }
 
-#coupon_input_container {
-  /* direction: rtl; */
-  display:         flex;
-  align-items:     center;
-  justify-content: center;
+.form-login {
+  &.stripe-checkout {
+    .stripe-cart {
+      width: 100%;
+    }
+    .stripe-buttons {
+      width:           100%;
+      display:         flex;
+      align-items:     center;
+      justify-content: space-between;
+    }
+    #coupon_input_container {
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      max-width:       200px;
+      margin:          0 0 0 20px;
+      position:        relative;
+      #coupon_input {
+        display:            block;
+        width:              100%;
+        padding:            0.375rem 0.75rem;
+        transition:         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
+        color:              #212529;
+        border:             1px solid #ced4da;
+        border-radius:      0.25rem;
+        background-color:   #fff;
+        background-clip:    padding-box;
+        font-size:          1rem;
+        font-weight:        400;
+        line-height:        1.5;
+        -webkit-appearance: none;
+        -moz-appearance:    none;
+        appearance:         none;
+        &:focus {
+          color:            #212529;
+          border-color:     #86b7fe;
+          outline:          0;
+          background-color: #fff;
+          box-shadow:       0 0 0 0.25rem rgba(13, 110, 253, .25);
+        }
+      }
+      .coupon-wrapper-icon {
+        cursor:    pointer;
+        position:  absolute;
+        right:     5px;
+        top:       50%;
+        transform: translate(0, -50%);
+      }
+      .coupon-icon {
+        color:   inherit;
+        margin:  0 0 0 10px;
+        display: flex;
+        width:   15px;
+      }
+    }
+    #coupon_input_img {
+      position: absolute;
+      right:    5px;
+      bottom:   6px;
 
-  max-width:       200px;
-
-  /* position: relative; */
-  margin:          0 5px 0 20px;
-}
-
-#coupon_input {
-  /* height:100%;
-	margin:0;
-	padding-right: 30px;
-	width: 100%; */
-
-  display:            block;
-
-  width:              100%;
-  padding:            0.375rem 0.75rem;
-
-  transition:         border-color 0.15s ease-in-out, box-shadow 0.15s ease-in-out;
-
-  color:              #212529;
-  border:             1px solid #ced4da;
-  border-radius:      0.25rem;
-  background-color:   #fff;
-  background-clip:    padding-box;
-
-  font-size:          1rem;
-  font-weight:        400;
-  line-height:        1.5;
-  -webkit-appearance: none;
-  -moz-appearance:    none;
-  appearance:         none;
-}
-
-#coupon_input:focus {
-  color:            #212529;
-  border-color:     #86b7fe;
-  outline:          0;
-  background-color: #fff;
-  box-shadow:       0 0 0 0.25rem rgba(13, 110, 253, .25);
-}
-
-#coupon_input_img {
-  position: absolute;
-  right:    5px;
-  bottom:   6px;
-
-  width:    24px;
-  height:   24px;
+      width:    24px;
+      height:   24px;
+    }
+  }
 }
 
 /* PaymentPage styles --------- end ------------- */
@@ -390,9 +414,7 @@ label {
   align-self:      stretch;
   flex-direction:  column;
   justify-content: flex-start;
-
   width:           100%;
-
   min-height:      100vh;
   padding:         10px 20px;
 }
@@ -443,8 +465,28 @@ label {
 @media (max-width: 768px) {
   .leftMenu-imagination-div {
     display: none;
-
     width:   0;
+  }
+  .form-login {
+    &.stripe-checkout {
+      #coupon_input_container {
+        max-width: 100%;
+        margin:    0;
+        width:     100%;
+        input {
+          width:     auto;
+          min-width: inherit;
+          flex:      1 1 auto;
+        }
+      }
+      .stripe-buttons {
+        flex-direction: column;
+        button {
+          width:         100%;
+          margin-bottom: 16px;
+        }
+      }
+    }
   }
 }
 

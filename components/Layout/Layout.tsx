@@ -1,13 +1,15 @@
 import {Header} from "../Header/Header";
 import React from "react";
+import {Footer} from "../Footer/Footer";
 
-export const Layout = ({children}) => {
+export const Layout = ({footer, children}: any) => {
   return (
     <section className="container-vh">
       <Header />
       <div className="main bg-login main-height-full">
         {children}
       </div>
+      {footer && <Footer />}
     </section>
   )
 }

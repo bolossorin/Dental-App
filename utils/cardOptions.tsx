@@ -21,3 +21,11 @@ export const CARD_OPTIONS = {
     },
   },
 };
+
+export const ELEMENTS_OPTIONS = {
+  fonts: [
+    {
+      cssSrc: "https://fonts.googleapis.com/css?family=Roboto",
+    },
+  ],
+};
