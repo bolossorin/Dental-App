@@ -6,24 +6,20 @@
 
 .button-green-search {
   display:            -moz-box;
-
   min-width:          153px;
   padding:            13px 30px;
-
   cursor:             pointer;
   -moz-transition:    background 0.3s linear;
   transition:         background 0.3s linear;
   letter-spacing:     0.75px;
   text-transform:     uppercase;
-
   color:              var(--color-white);
   border:             solid 2px var(--color-green);
   border-radius:      20px;
   background-color:   var(--color-green);
   -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0, .08);
   box-shadow:         0 2px 48px 0 rgba(0, 0, 0, .08);
-
-  font-family:        PT Sans;
+  font-family:        PT Sans, sans-serif;
   font-size:          9px;
   font-weight:        bold;
   font-style:         normal;
@@ -306,12 +302,8 @@ img {
 .leftmenu-link {
   position:        relative;
   z-index:         1;
-
   display:         block;
-
   width:           333px;
-
-  /* margin-bottom: 23px; */
   margin-left:     -46px;
   padding:         10px 0 10px 33%;
 
@@ -319,10 +311,8 @@ img {
   text-align:      left;
   text-decoration: none;
   letter-spacing:  1.05px;
-
   color:           var(--color-white);
-
-  font-family:     PT Sans;
+  font-family:     PT Sans, sans-serif;
   font-size:       14px;
   font-weight:     normal;
   font-style:      normal;
@@ -612,47 +602,50 @@ img {
   cursor: pointer;
 }
 
+.services-selected {
+  border:     none;
+  background: white;
+  padding:    10px;
+  font-size:  14px;
+  color:      #707070;
+  box-shadow: none;
+}
+
+.services-additionally {
+  padding:    10px;
+  font-size:  14px;
+  color:      #707070;
+  width:      100%;
+  box-shadow: none;
+  border:     1px solid #707070;
+}
+
 .button-green-confirm {
-  display:            -moz-box;
-  display:            flex;
-  align-items:        center;
-  flex-wrap:          nowrap;
-
-  /* margin-left: 10px; */
-
-  /* width: 111px; */
-  height:             40px;
-
-  /* margin: 20px 20px 0 0; */
-  margin-right:       10px;
-  padding:            5px 34px;
-
-  cursor:             pointer;
-  -webkit-transition: background 0.3s linear;
-  -moz-transition:    background 0.3s linear;
-  transition:         background 0.3s linear;
-  letter-spacing:     0.75px;
-  text-transform:     uppercase;
-
-  color:              var(--color-white);
-  border:             solid 2px var(--color-green);
-
-  /* text-align: center; */
-  border-radius:      20px;
-  background-color:   var(--color-green);
-  -webkit-box-shadow: 0 2px 48px 0 rgba(0, 0, 0, .08);
-  box-shadow:         0 2px 48px 0 rgba(0, 0, 0, .08);
-
-  font-family:        PT Sans, sans-serif;
-  font-size:          9px;
-  font-weight:        bold;
-  font-style:         normal;
-  font-stretch:       normal;
-  line-height:        normal;
-  -moz-box-pack:      center;
-
-  /* justify-content: center; */
-  -moz-box-align:     center;
+  display:          -moz-box;
+  display:          flex;
+  align-items:      center;
+  flex-wrap:        nowrap;
+  height:           40px;
+  margin-right:     10px;
+  padding:          5px 34px;
+  cursor:           pointer;
+  transition:       background 0.3s linear;
+  letter-spacing:   0.75px;
+  text-transform:   uppercase;
+  color:            var(--color-white);
+  border:           solid 2px var(--color-green);
+  border-radius:    20px;
+  background-color: var(--color-green);
+  box-shadow:       0 2px 48px 0 rgba(0, 0, 0, .08);
+  font-family:      PT Sans, sans-serif;
+  font-size:        9px;
+  font-weight:      bold;
+  font-style:       normal;
+  font-stretch:     normal;
+  line-height:      normal;
+  &-mod {
+    margin-left: 80px;
+  }
 }
 
 .button-green-confirm:hover {
@@ -691,7 +684,7 @@ img {
   background-color: var(--color-white);
   box-shadow:       0 2px 48px 0 rgba(0, 0, 0, 0.08);
 
-  font-family:      PT Sans;
+  font-family:      PT Sans, sans-serif;
   font-size:        9px;
   font-weight:      bold;
   font-style:       normal;
@@ -734,7 +727,7 @@ img {
   outline:          none;
   background-color: var(--color-green);
 
-  font-family:      Arial;
+  font-family:      Arial, sans-serif;
   font-size:        12px;
   font-weight:      bold;
   font-style:       normal;
@@ -783,7 +776,7 @@ img {
   outline:        none;
   background:     rgba(9, 92, 92, 0.5);
 
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      12px;
   font-weight:    bold;
   font-style:     normal;
@@ -822,7 +815,7 @@ input {
 
   color:          var(--color-green);
 
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
   font-style:     normal;
@@ -849,7 +842,7 @@ input {
 
   color:          #707070;
 
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
   font-style:     normal;
@@ -936,7 +929,7 @@ input[type=file]::-webkit-file-upload-button {
 
 .double-blocks {
   display:               grid;
-  grid-template-columns: 1fr 3fr;
+  grid-template-columns: 2fr 3fr;
   grid-gap:              60px;
 }
 
@@ -966,14 +959,11 @@ input[type=file]::-webkit-file-upload-button {
 }
 
 .form-profile-label {
-  margin:         16px 0;
-
+  margin:         8px 0;
   text-align:     left;
   letter-spacing: normal;
-
   color:          var(--color-black);
-
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    bold;
   font-style:     normal;
@@ -983,12 +973,10 @@ input[type=file]::-webkit-file-upload-button {
 
 .form-profile-input {
   position:      relative;
-
   width:         100%;
   max-width:     100%;
   margin-bottom: 13px;
   padding:       9px 11.4px 10.7px 0;
-
   border-top:    none;
   border-right:  none;
   border-bottom: 1px solid rgba(31, 31, 31, 0.2);
@@ -1057,14 +1045,29 @@ select.arrows {
 .profile-block-box {
   align-self: stretch;
   flex-basis: 47%;
-
   margin-top: 20px;
-
-  /* flex-grow:1; */
-}
-
-.profile-block-box > div .form-login-input input {
-  width: 100%;
+  &.disabled {
+    pointer-events: none;
+    user-select:    none;
+    opacity:        .7;
+    .button-green-confirm {
+      cursor:     auto;
+      color:      #fff;
+      border:     2px solid #ddd;
+      background: #ddd;
+    }
+  }
+  > div .form-login-input input {
+    width: 100%;
+  }
+  &-noWrap {
+    .row-content {
+      flex-wrap: nowrap;
+    }
+    .error-text {
+      padding-left: 80px;
+    }
+  }
 }
 
 .px20 {
@@ -1212,7 +1215,7 @@ input:disabled:-ms-input-placeholder {
 
   color:          #707070;
 
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      12px;
   font-weight:    normal;
   font-style:     normal;
@@ -1228,7 +1231,7 @@ input:disabled:-ms-input-placeholder {
 
   color:          #707070;
 
-  font-family:    Arial;
+  font-family:    Arial, sans-serif;
   font-size:      14px;
   font-weight:    normal;
   font-style:     normal;
@@ -1529,6 +1532,28 @@ input:disabled:-ms-input-placeholder {
   .fill-mobile {
     display: block;
   }
+  .profile-block-box-noWrap {
+    .row-content {
+      flex-wrap: wrap;
+      .input-span {
+        color:       var(--color-black);
+        font-weight: bold;
+      }
+    }
+    .error-text {
+      padding-left: 0;
+    }
+    .account-form-login-buttons {
+      flex-wrap: wrap;
+    }
+  }
+  .button-green-confirm {
+    text-align:      center;
+    justify-content: center;
+    max-width:       100%;
+    width:           100%;
+    margin:          15px 0 0 0;
+  }
 }
 
 @media (max-width: 650px) {
@@ -1550,15 +1575,12 @@ input:disabled:-ms-input-placeholder {
   .double-blocks,
   .double-blocks-2 {
     grid-template-columns: 1fr;
-    grid-gap:              30px;
-  }
-
-  .double-blocks div:nth-child(1) {
-    width: 30%;
+    grid-gap:              0;
   }
 
   .form-profile-label {
     font-size: 14px;
+    margin:    4px 0;
   }
 
   .user-list-text {
@@ -1651,7 +1673,6 @@ input:disabled:-ms-input-placeholder {
   .double-blocks-3 {
     grid-template-columns: 1fr;
     grid-gap:              0;
-
     margin-bottom:         30px;
   }
 
@@ -1869,10 +1890,14 @@ input:disabled:-ms-input-placeholder {
   }
 }
 
+.form-input {
+  position: relative;
+}
+
 .error-text {
-  position:  relative;
-  top:       -10px;
-  font-size: 13px;
+  position:  absolute;
+  bottom:    -1px;
+  font-size: 11px;
   color:     red;
 }
 

@@ -113,7 +113,23 @@ export const UserInitialState: TUserReducerState = {
   locations: null,
   gallery: null,
   phone: null,
-  services: null,
+  services: [
+    {
+      key: '1',
+      service_name: 'Teeth Whitening',
+      service_id: 'Teeth Whitening',
+    },
+    {
+      key: '2',
+      service_name: 'Veneers',
+      service_id: 'Veneers',
+    },
+    {
+      key: '3',
+      service_name: 'Crowns',
+      service_id: 'Crowns',
+    },
+  ],
   website: null,
   allowedServices: null,
 };

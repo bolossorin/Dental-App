@@ -8,6 +8,7 @@ export const routes = {
   account: '/dentist/account',
   gallery: '/dentist/gallery',
   profile: '/dentist/profile',
+  purchase: '/purchase',
 
   // admin
   loginAdmin: '/admin/login',

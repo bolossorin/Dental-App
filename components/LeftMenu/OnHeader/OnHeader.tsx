@@ -25,7 +25,11 @@ export const OnHeader: React.FC<ICollapsedSidebarProps> = ({logout, setToggle, t
     {icon: '../../images/user.svg', title: 'Profile', url: routes.profile},
     {icon: '../../images/gallery.svg', title: 'Gallery', url: routes.gallery},
     {icon: '../../images/more_vert.svg', title: 'Account', url: routes.account},
-    {icon: '../../images/person_black_24dp.svg', title: 'View My Profile', url: `${routes.search}/${email ? email : 'exam@exam.exam'}`},
+    {
+      icon: '../../images/person_black_24dp.svg',
+      title: 'View My Profile',
+      url: `${routes.search}/${email ? email : 'exam@exam.exam'}`
+    },
   ];
 
   return (
@@ -59,7 +63,7 @@ export const OnHeader: React.FC<ICollapsedSidebarProps> = ({logout, setToggle, t
           </div>
           <div className="leftmenu-navbar">
             {links.map(link => (
-              <Link href={link.url}>
+              <Link key={link.title} href={link.url}>
                 <li className={cn('leftmenu-list', {'active': link.url === router.asPath})}>
                   <img className="leftmenu-link-image" src={link.icon} alt="link image" />
                   <a className="leftmenu-link">{link.title}</a>

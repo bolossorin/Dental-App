@@ -2,9 +2,9 @@ import React from "react";
 import type {NextPage} from "next";
 
 // components
-import {Bio} from "../../components/Profile/Bio/bio";
-import Locations from "../../components/Profile/Locations/locations";
-import {Photos} from "../../components/Profile/Photos/photos";
+import {Bio} from "../../components/Profile/Bio/Bio";
+import Locations from "../../components/Profile/Locations/Locations";
+import {Photos} from "../../components/Profile/Photos/Photos";
 import {Services} from "../../components/Profile/Services/services";
 import {LayoutDentist} from "../../components/Layout/LayoutDentist/LayoutDentist";
 

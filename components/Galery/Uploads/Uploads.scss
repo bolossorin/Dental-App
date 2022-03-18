@@ -86,10 +86,6 @@
   }
 }
 
-.form-info-block div:nth-child(1) {
-  flex-basis: 50%;
-}
-
 .form-login-title {
   margin-bottom:  16px;
 
@@ -146,6 +142,7 @@
   align-self: stretch;
   flex-basis: 47%;
   margin-top: 20px;
+  width:      100%;
 }
 
 .gallery-preview {
@@ -235,13 +232,6 @@
   cursor:   pointer;
 }
 
-.row-content {
-  position:       relative;
-  display:        flex;
-  flex-direction: row;
-  flex-wrap:      wrap;
-}
-
 .space-between {
   justify-content: space-between;
 }
@@ -276,22 +266,6 @@
 
 .profile-block-box > div .form-login-input input {
   width: 100%;
-}
-
-.form-profile-label {
-  margin:         16px 0;
-
-  text-align:     left;
-  letter-spacing: normal;
-
-  color:          var(--color-black);
-
-  font-family:    Arial, sans-serif;
-  font-size:      14px;
-  font-weight:    bold;
-  font-style:     normal;
-  font-stretch:   normal;
-  line-height:    normal;
 }
 
 .form-profile-input {
@@ -386,9 +360,6 @@
 }
 
 @media (max-width: 560px) {
-  .form-profile-label {
-    font-size: 14px;
-  }
   .profile-box-form {
     margin: 0 0 20px 0;
   }
