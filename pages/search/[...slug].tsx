@@ -9,7 +9,7 @@ import Skeleton from "react-loading-skeleton";
 import {API} from "../../api/AWS-gateway";
 import {Header, IDentistFullDataResponse} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
-import Person from "../../components/Person";
+import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
 import {dataInitial, personInitial} from "../../mock/search";
 

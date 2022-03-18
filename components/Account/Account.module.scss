@@ -8,6 +8,14 @@
   box-shadow:       0 3px 6px 0 rgba(31, 31, 31, 0.2);
 }
 
+.flex-end {
+  position:        relative;
+  display:         flex;
+  justify-content: flex-end;
+  min-width:       100%;
+  padding-right:   0;
+}
+
 .account-form-login-title {
   margin-bottom:  16px;
   text-align:     left;
@@ -267,7 +275,6 @@
 
 @media (max-width: 768px) {
   .account-profile-box-form {
-    width:   95vw;
     padding: 20px;
   }
 }

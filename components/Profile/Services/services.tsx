@@ -41,14 +41,8 @@ export const Services: React.FC = () => {
       services: [selectedServiceId],
     };
     try {
-      const { data } = await axios.post<IAddServiceResponse>(
-        API.DENTIST_SERVICES,
-        body
-      );
-      dispatch({
-        type: UserTypes.ADD_SERVICES,
-        payload: { services: data },
-      });
+      const { data } = await axios.post<IAddServiceResponse>(API.DENTIST_SERVICES, body);
+      dispatch({type: UserTypes.ADD_SERVICES, payload: { services: data }});
       setNotification({
         type: "success",
         message: `Successfully added new service!`,

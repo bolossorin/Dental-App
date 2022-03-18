@@ -211,6 +211,10 @@ fieldset.FormGroup {
   margin-top: 1rem !important;
 }
 
+.ai-fs {
+  align-items: flex-start !important;
+}
+
 label {
   display: inline-block;
 }
@@ -462,6 +466,12 @@ label {
   width: 333px;
 }
 
+.empty {
+  width:      100%;
+  text-align: center;
+  margin:     20px 0;
+}
+
 @media (max-width: 768px) {
   .leftMenu-imagination-div {
     display: none;
@@ -490,17 +500,17 @@ label {
   }
 }
 
-@import "../components/login/LoginForm/LoginForm.module.scss";
+@import "../components/login/LoginForm/LoginForm.module";
 @import "../components/RegisterForm/RegisterForm.module.css";
 @import "../components/Header/Header.module.css";
 @import "../components/Spinner/spinner.module.css";
-@import "../components/Profile/Profile.module.css";
+@import "../components/Profile/Profile.module";
 @import "../components/LeftMenu/OnHeader/OnHeader.module";
 @import "../components/Footer/Footer.module";
 @import "../components/Search/Search.module";
 @import "../components/Search/Map/Map.module.css";
 @import "../components/Person/Person.module";
-@import "../components/Galery/Galery.module.css";
+@import "../components/Galery/Galery.module";
 @import "../components/Account/Account.module";
 
 /*end of line*/

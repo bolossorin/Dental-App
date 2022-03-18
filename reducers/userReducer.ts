@@ -145,8 +145,7 @@ export const userReducer = (
         null;
       return {...state, locations: afterRemovingLocation};
     case UserTypes.REMOVE_SERVICE:
-      const afterRemovingService =
-        state.services?.filter((item) => item.key !== action.payload.key) ||
+      const afterRemovingService = state.services?.filter((item) => item.key !== action.payload.key) ||
         null;
       return {...state, services: afterRemovingService};
     case UserTypes.ADD_LOCATION:
@@ -154,9 +153,7 @@ export const userReducer = (
         state.locations?.concat(action.payload.location) || null;
       return {...state, locations: afterAddingLocation};
     case UserTypes.ADD_SERVICES:
-      const afterAddingServices =
-        state.services?.concat(action.payload.services) ||
-        action.payload.services;
+      const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};
     case UserTypes.SET_ALL_SERVICES:
       return {...state, allowedServices: action.payload.allowedServices};

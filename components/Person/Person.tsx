@@ -83,12 +83,8 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
                 alt="check"
               />)}
             </div>
-            <p className="person-form-login-subtitle">
-              Qualifications: {qualifications}
-            </p>
-            <p className="person-form-login-subtitle">
-              GDC No: {gdcNumber}
-            </p>
+            <p className="person-form-login-subtitle">Qualifications: {qualifications}</p>
+            <p className="person-form-login-subtitle">GDC No: {gdcNumber}</p>
           </div>
           <div className="person-index-leftmenu-text">
             <p>Bio: </p>
@@ -99,21 +95,15 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
                   {item.service_name}
                 </button>)}
             </div>
-            <p>Contact: </p>
+            <p>Contact:</p>
             <div>
-                  <span>
-                    <strong>Phone:</strong> {phone}
-                  </span>
+              <span><strong>Phone:</strong> {phone}</span>
               <br />
-              <span>
-                    <strong>Email:</strong> {email}
-                  </span>
+              <span><strong>Email:</strong> {email}</span>
               <br />
               <Link href={`https://${website}`}>
                 <a target="_blank">
-                    <span>
-                      <strong>Website:</strong> {website}
-                    </span>
+                  <span><strong>Website:</strong> {website}</span>
                 </a>
               </Link>
             </div>
@@ -121,10 +111,10 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
             <div>
               {locations?.map((item) =>
                 <div key={item.key}>
-                        <span>
-                          <strong>{item.location.split(":")[0]}:</strong>
-                          {item.location.split(":")[1]}
-                        </span>
+                  <span>
+                    <strong>{item.location.split(":")[0]}:</strong>
+                    {item.location.split(":")[1]}
+                  </span>
                   <br />
                 </div>)}
             </div>
@@ -168,7 +158,7 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
                       {original: item.imageBeforeUrl},
                     ]} />
                 </div>))}
-            </div> : <h2 className='empty'>Не найдено</h2>}
+            </div> : <h2 className='empty'>Not found</h2>}
         </div>
       </div>
     </main>

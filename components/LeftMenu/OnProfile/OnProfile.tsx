@@ -22,7 +22,7 @@ const OnProfile: React.FC = () => {
     {icon: '../../images/user.svg', title: 'Profile', url: routes.profile},
     {icon: '../../images/gallery.svg', title: 'Gallery', url: routes.gallery},
     {icon: '../../images/more_vert.svg', title: 'Account', url: routes.account},
-    {icon: '../../images/person_black_24dp.svg', title: 'View My Profile', url: `${routes.search}/${email}`},
+    {icon: '../../images/person_black_24dp.svg', title: 'View My Profile', url: `${routes.search}/${email ? email : 'exam@exam.exam'}`},
   ];
 
   return (

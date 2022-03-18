@@ -1,7 +1,7 @@
 import {useContext, useEffect, useState} from "react";
 
 // libs
-import Router, {useRouter} from "next/router";
+import Router from "next/router";
 import axios from "axios";
 
 // components
@@ -16,12 +16,14 @@ export const useLocalData = () => {
   const {state, dispatch} = useContext(AppContext);
   const {isLogged, services, email: userEmail} = state.userState;
   const [loading, setLoading] = useState(false);
-  const router = useRouter();
+  // const router = useRouter();
 
   useEffect(() => {
     const localState = JSON.parse(localStorage.getItem("previousState") as any);
     const email = localState && localState.bio.email;
-    if (!email && !isLogged) if (router.pathname !== "/") Router.push("/");
+
+    // TODO: need uncomment when connect to backend
+    // if (!email && !isLogged) if (router.pathname !== "/") Router.push("/");
 
     if (email && !isLogged) {
       setLoading(true);
