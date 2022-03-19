@@ -11,15 +11,11 @@ import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
+import {AccountResetPassword} from "../../common/AccountResetPassword/AccountResetPassword";
 
 const accountInfoSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   gdcNumber: Yup.string().matches(/[0-9]{5}/, 'Invalid gdc number').required("GDC number is required"),
-});
-const newPasswordSchema = Yup.object().shape({
-  oldPassword: Yup.string()
-    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Old Password is required"),
-  newPassword: Yup.string().oneOf([Yup.ref('oldPassword'), null], 'Both password needs to be the same').required("New Password is required"),
 });
 export const AccountInfoBlock: React.FC = () => {
   const {state} = useContext(AppContext);
@@ -28,12 +24,9 @@ export const AccountInfoBlock: React.FC = () => {
   const [canDelete, setCanDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
       notify({...notifyProps});
-    },
-    []
-  );
+    }, []);
 
   const handleDeleteAccount = async () => {
     if (canDelete) {
@@ -117,50 +110,7 @@ export const AccountInfoBlock: React.FC = () => {
             </div>
           </Form>}
       </Formik>
-      <Formik
-        validationSchema={newPasswordSchema}
-        initialValues={{oldPassword: '', newPassword: ''}}
-        onSubmit={async (values) => {
-          const body = {email, oldPassword: values.oldPassword, newPassword: values.newPassword};
-          try {
-            await axios.post(API.ACCOUNT_RESET_PASSWORD, body);
-            setNotification({
-              type: "success",
-              message: "Successfully changed password!",
-              position: "top-right",
-              autoClose: 2,
-            });
-          } catch (exp) {
-            setNotification({
-              type: "error",
-              message: "Error to reset password account, please try again!",
-            });
-          }
-        }}>
-        {({errors, touched}) =>
-          <Form className="account-profile-block-box">
-            <div className="account-form-profile-label">
-              <label className="account-form-profile-label">Reset Password</label>
-            </div>
-            <div className="account-row-content">
-              <span className="account-input-span">Current</span>
-              <Field className="account-form-profile-input" name='oldPassword' placeholder='Old Password' />
-              {errors.oldPassword && touched.oldPassword ?
-                <p className='account-error-text'>{errors.oldPassword}</p> : null}
-            </div>
-            <div className="account-row-content">
-              <span className="account-input-span">New</span>
-              <Field className="account-form-profile-input" name='newPassword' placeholder='New Password' />
-              {errors.newPassword && touched.newPassword ?
-                <p className='account-error-text'>{errors.newPassword}</p> : null}
-            </div>
-            <div className="account-row-content">
-              <button className="account-button-green" type="submit">
-                Reset Password
-              </button>
-            </div>
-          </Form>}
-      </Formik>
+      <AccountResetPassword />
     </ProfileBox>
   );
 };

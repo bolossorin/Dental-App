@@ -1,12 +1,12 @@
 export type ActionMap<M extends { [index: string]: any }> = {
   [Key in keyof M]: M[Key] extends undefined
     ? {
-        type: Key;
-      }
+      type: Key;
+    }
     : {
-        type: Key;
-        payload: M[Key];
-      };
+      type: Key;
+      payload: M[Key];
+    };
 };
 
 export type Null_Or_<T> = T | null;
@@ -21,7 +21,7 @@ export type IDentistBio = {
   phone: Null_Or_<string>;
 };
 export type IDentistServices = {
-  services: Null_Or_<UserServices[]>;
+  services: UserServices[];
 };
 export type UserLocation = {
   email: string;
@@ -62,3 +62,30 @@ export type IDentist_SpecialState = {
   cover_url: Null_Or_<string>;
   allowedServices: Null_Or_<UserServices[]>;
 };
+
+export interface ISubSettings {
+  freeHasPhoneNumber: boolean;
+  freeHasWebsite: boolean;
+  freeIsVerified: boolean;
+  freeMaxLocations: number;
+  freeMaxServices: number;
+  paidHasPhoneNumber: boolean;
+  paidHasWebsite: boolean;
+  paidIsVerified: boolean;
+  paidMaxLocations: number;
+  paidMaxServices: number;
+  setting_code: string;
+}
+
+export interface IAdminDetails {
+  username: string;
+  email: string;
+  avatar_url: string;
+}
+
+export interface IPremiumInformation {
+  terms: string;
+  setting_code: string | "premium_settings";
+  features: string[];
+  price: number;
+}

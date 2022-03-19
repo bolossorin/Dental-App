@@ -32,4 +32,6 @@ export const API = {
   LOGIN_ADMIN: "/api/admin/login",
   PASSWORD_RESET_ADMIN: "/api/admin/reset-password",
   PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
+  SETTINGS_CHANGE: "/api/admin/settings/subscriber",
+  CHANGE_SERVICES: "/api/admin/settings/services",
 };
