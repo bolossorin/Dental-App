@@ -5,7 +5,7 @@ import {Footer} from "../Footer/Footer";
 export const Layout = ({footer, children}: any) => {
   return (
     <section className="container-vh">
-      <Header />
+      <Header adminMenu={false} />
       <div className="main bg-login main-height-full">
         {children}
       </div>

@@ -269,6 +269,7 @@ img {
   min-height:      100vh;
   padding:         10px 20px;
   max-width:       calc(100vw - 333px);
+  margin-left:     auto;
 }
 
 .main-height-full {
@@ -1579,7 +1580,7 @@ input:disabled:-ms-input-placeholder {
 @media (max-width: 560px) {
   .double-blocks-5 {
     grid-template-columns: 1fr 1fr;
-    grid-gap: 15px;
+    grid-gap:              15px;
   }
 
   .double-blocks,

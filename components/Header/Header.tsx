@@ -1,4 +1,4 @@
-import {useState, useContext} from "react";
+import React, {useState, useContext} from "react";
 
 // libs
 import Link from "next/link";
@@ -7,10 +7,15 @@ import Router from "next/router";
 // components
 import {AppContext} from "../../context/app.context";
 import {useLogout} from "../../hooks/useLogout";
-import {OnHeader} from "../LeftMenu/OnHeader/OnHeader";
+import {LeftMenuOnMobile} from "../LeftMenu/LeftMenuOnMobile/LeftMenuOnMobile";
 import {routes} from "../../utils/routes";
+import {Null_Or_} from "../../reducers/types";
 
-export const Header: React.FC = () => {
+interface IMenu {
+  adminMenu: Null_Or_<boolean>;
+}
+
+export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
   const {state} = useContext(AppContext);
   const {isLogged} = state.userState;
   const [toggle, setToggle] = useState(false);
@@ -42,14 +47,14 @@ export const Header: React.FC = () => {
             alt='' />
         </Link>
         <div className="header_actions">
-          {isLogged ? (<>
+          {isLogged ? <>
             <button className="button-green-login" onClick={() => Router.push(routes.login)}>Login</button>
             <button className="button-green-register" onClick={() => Router.push(routes.register)}>Register</button>
-          </>) : (<button className="button-green-login" onClick={logOut}>Logout</button>)}
+          </> : <button className="button-green-login" onClick={logOut}>Logout</button>}
         </div>
         <div />
       </div>
-      <OnHeader logout={logOut} setToggle={setToggle} toggle={toggle} state={state.userState} />
+      <LeftMenuOnMobile adminMenu={adminMenu} setToggle={setToggle} toggle={toggle} />
     </div>
   );
 };

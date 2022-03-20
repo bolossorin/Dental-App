@@ -7,7 +7,7 @@ import {LayoutDentist} from "../../components/Layout/LayoutDentist/LayoutDentist
 
 const GalleryPage: NextPage = (): JSX.Element => {
   return (
-    <LayoutDentist>
+    <LayoutDentist adminMenu={false}>
       <Gallery />
     </LayoutDentist>
   );

@@ -13,5 +13,8 @@ export const routes = {
   // admin
   loginAdmin: '/admin/login',
   resetPasswordAdmin: '/admin/reset-password',
-  changePasswordAdmin: '/change-password',
+  changePasswordAdmin: '/admin/change-password',
+  dashboard: '/admin/dashboard',
+  users: '/admin/users',
+  settings: '/admin/settings',
 }

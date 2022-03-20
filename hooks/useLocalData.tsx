@@ -11,6 +11,7 @@ import {UserTypes} from "../reducers";
 import {AppContext} from "../context/app.context";
 import {IUserGallery, IService} from "../reducers/types";
 import {filterAllServices} from "../utils/filterServices";
+import {routes} from "../utils/routes";
 
 export const useLocalData = () => {
   const {state, dispatch} = useContext(AppContext);
@@ -50,7 +51,7 @@ export const useLocalData = () => {
         })
         .catch((exp) => {
           console.error(exp, 'error')
-          Router.push("/login");
+          Router.push(routes.login);
         });
     }
   }, []);

@@ -16,7 +16,7 @@ const AccountPage: NextPage = (): JSX.Element => {
 
 
   return (
-    <LayoutDentist>
+    <LayoutDentist adminMenu={false}>
       <AccountInfoBlock />
       {accountType === 'free' ? <Upgrade /> : <Subscription />}
     </LayoutDentist>

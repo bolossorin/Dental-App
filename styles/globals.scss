@@ -502,10 +502,6 @@ label {
   transition:      all 0.3s linear;
 }
 
-.leftMenu-imagination-div {
-  width: 333px;
-}
-
 .empty {
   width:      100%;
   text-align: center;
@@ -513,10 +509,6 @@ label {
 }
 
 @media (max-width: 768px) {
-  .leftMenu-imagination-div {
-    display: none;
-    width:   0;
-  }
   .form-login {
     &.stripe-checkout {
       #coupon_input_container {
@@ -551,7 +543,7 @@ label {
 @import "../components/Header/Header.module.css";
 @import "../components/Spinner/spinner.module.css";
 @import "../components/Profile/Profile.module";
-@import "../components/LeftMenu/OnHeader/OnHeader.module";
+@import "../components/LeftMenu/LeftMenuOnMobile/LeftMenuOnMobile.module";
 @import "../components/Footer/Footer.module";
 @import "../components/Search/Search.module";
 @import "../components/Search/Map/Map.module.css";
