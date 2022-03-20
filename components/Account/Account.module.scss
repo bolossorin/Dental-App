@@ -236,6 +236,7 @@
   grid-template-columns: 1fr 1fr;
   grid-gap:              5%;
   &-full {
+    width:                 100%;
     grid-template-columns: 1fr;
   }
 }

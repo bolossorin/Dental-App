@@ -4,15 +4,15 @@ import React from "react";
 import type {NextPage} from "next";
 
 // components
-import {AdminSettings} from "../../components/Settings/Settings";
+import {Users} from "../../components/Users/Users";
 import {LayoutDentist} from "../../components/Layout/LayoutDentist/LayoutDentist";
 
-const SettingsPage: NextPage = (): JSX.Element => {
+const UsersPage: NextPage = (): JSX.Element => {
   return (
     <LayoutDentist>
-      <AdminSettings />
+      <Users />
     </LayoutDentist>
   );
 };
 
-export default SettingsPage;
+export default UsersPage;

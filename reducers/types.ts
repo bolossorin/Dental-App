@@ -89,3 +89,22 @@ export interface IPremiumInformation {
   features: string[];
   price: number;
 }
+
+
+export interface IAdminUser {
+  website: string | null;
+  subscription_id: string | null;
+  gdc_number: string;
+  profileBio: string | null;
+  email: string;
+  post_code: string;
+  accountType: string;
+  qualifications: string | null;
+  username: string;
+  exp: string | null;
+  phone: string | null;
+  auth_time: string | null;
+  title: string | null;
+  created_at: Date;
+  isSuspended?: boolean;
+}

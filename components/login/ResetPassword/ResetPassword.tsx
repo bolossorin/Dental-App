@@ -24,9 +24,7 @@ export const ResetPassword = ({title, loginUrl, changePasswordUrl, api}) => {
   const setNotification = useCallback<ISetNotofication>(
     ({type, message, position, autoClose}) => {
       notify({type, message, position, autoClose});
-    },
-    []
-  );
+    }, []);
 
   useEffect(() => {
     const message = "Enter your email address, we will send a verification code";

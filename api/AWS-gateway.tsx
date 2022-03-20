@@ -34,4 +34,7 @@ export const API = {
   PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
   SETTINGS_CHANGE: "/api/admin/settings/subscriber",
   CHANGE_SERVICES: "/api/admin/settings/services",
+  GET_USERS: "/api/admin/users",
+  SUSPEND_USER: "/api/admin/users/suspend",
+  DELETE_USER: "/api/profile/account/deleteAccount",
 };

@@ -1,0 +1,4 @@
+.usersList {
+  display: flex;
+  flex-direction: column;
+}
