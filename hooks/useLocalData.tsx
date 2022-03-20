@@ -9,12 +9,12 @@ import {IDentistFullDataResponse} from "../components";
 import {API} from "../api/AWS-gateway";
 import {UserTypes} from "../reducers";
 import {AppContext} from "../context/app.context";
-import {IUserGallery, UserServices} from "../reducers/types";
+import {IUserGallery, IService} from "../reducers/types";
 import {filterAllServices} from "../utils/filterServices";
 
 export const useLocalData = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {isLogged, services, email: userEmail, subscriberSettings, adminDetails, premiumInformation} = state.userState;
+  const {isLogged, services, email: userEmail} = state.userState;
   const [loading, setLoading] = useState(false);
   // const router = useRouter();
 
@@ -36,9 +36,6 @@ export const useLocalData = () => {
             type: UserTypes.SET_FULL_DATA,
             payload: {
               ...bio,
-              premiumInformation,
-              adminDetails,
-              subscriberSettings,
               avatar_url,
               cover_url,
               locations,
@@ -60,7 +57,7 @@ export const useLocalData = () => {
 
   useEffect(() => {
     axios
-      .get<UserServices[]>(`${API.DENTIST_SERVICES}`)
+      .get<IService[]>(`${API.DENTIST_SERVICES}`)
       .then(({data}) => {
         const allServices = filterAllServices(data, services);
         dispatch({

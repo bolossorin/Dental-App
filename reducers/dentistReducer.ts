@@ -3,7 +3,7 @@ import {
   IDentistBio,
   IDentistGallery,
   IDentistLocations,
-  IDentistServices,
+  IServices,
   Null_Or_,
 } from "./types";
 
@@ -26,7 +26,7 @@ type DentistAccountInfo = {
 
 export type TDentistReducerStateOneItem = IDentistBio &
   IDentistLocations &
-  IDentistServices &
+  IServices &
   DentistAccountInfo &
   IDentistGallery;
 

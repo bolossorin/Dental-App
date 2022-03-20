@@ -8,7 +8,7 @@ import cn from "classnames";
 import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {UserTypes} from "../../../reducers";
-import {UserServices} from "../../../reducers/types";
+import {IService} from "../../../reducers/types";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
@@ -17,7 +17,7 @@ interface IAddServiceBody {
   email: string;
   services: string[];
 }
-type IAddServiceResponse = UserServices[];
+type IAddServiceResponse = IService[];
 
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);

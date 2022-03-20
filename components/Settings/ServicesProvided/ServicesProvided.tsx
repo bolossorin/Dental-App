@@ -8,11 +8,11 @@ import {useContext} from "react";
 // components
 import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
-import {UserTypes} from "../../../reducers";
-import {UserServices} from "../../../reducers/types";
+import {IService} from "../../../reducers/types";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
+import {AdminTypes} from "../../../reducers";
 
 export const ServicesProvided: React.FC = () => {
   const {dispatch, state} = useContext(AppContext);
@@ -20,7 +20,7 @@ export const ServicesProvided: React.FC = () => {
   const [serviceEditing, setServiceEditing] = useState<any>();
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingValue, setServiceEditingValue] = useState<any>();
-  const [services, setLocalServices] = useState<UserServices[]>([]);
+  const [services, setLocalServices] = useState<IService[]>([]);
   const [newService, setNewService] = useState("");
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -40,8 +40,8 @@ export const ServicesProvided: React.FC = () => {
 
   const onHandleAddService = async () => {
     try {
-      const {data} = await axios.post<UserServices>(API.CHANGE_SERVICES, {service_name: newService});
-      dispatch({type: UserTypes.GET_SERVICES, payload: [...services, {...data}]});
+      const {data} = await axios.post<IService>(API.CHANGE_SERVICES, {service_name: newService});
+      dispatch({type: AdminTypes.GET_SERVICES, payload: [...services, {...data}]});
       setNotification({
         type: "success",
         message: "Successfully added new service",
@@ -62,7 +62,7 @@ export const ServicesProvided: React.FC = () => {
   const onHandleDeleteService = async (id: string) => {
     try {
       await axios.delete(`${API.CHANGE_SERVICES}?service_id=${id}`);
-      dispatch({type: UserTypes.DELETE_SERVICE, payload: {id}});
+      dispatch({type: AdminTypes.DELETE_SERVICE, payload: {id}});
       setNotification({
         type: "success",
         message: "Successfully deleted service",
@@ -89,7 +89,7 @@ export const ServicesProvided: React.FC = () => {
     try {
       const res = await axios.put(API.CHANGE_SERVICES, body);
       console.log(res);
-      dispatch({type: UserTypes.GET_SERVICES, payload: services});
+      dispatch({type: AdminTypes.GET_SERVICES, payload: services});
       setNotification({
         type: "success",
         message: "Successfully edited service",

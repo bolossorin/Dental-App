@@ -12,7 +12,7 @@ import {API} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 import {UserTypes} from "../../../reducers";
-import {IDentistBio, IDentistLocations, IDentistServices, Null_Or_,} from "../../../reducers/types";
+import {IDentistBio, IDentistLocations, IServices, Null_Or_,} from "../../../reducers/types";
 import {Layout} from "../../Layout/Layout";
 import {ShowPassword} from "../../common/ShowPassword/ShowPassword";
 
@@ -31,7 +31,7 @@ export interface ILoginResponse {
 
 export interface IDentistFullDataResponse
   extends IDentistLocations,
-    IDentistServices {
+    IServices {
   bio: IDentistBio;
   avatar_url: Null_Or_<string>;
   cover_url: Null_Or_<string>;

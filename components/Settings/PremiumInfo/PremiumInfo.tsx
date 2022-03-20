@@ -18,7 +18,7 @@ const premiumSchema = Yup.object().shape({
 });
 export const PremiumInfo: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {features, price, terms} = state.userState.premiumInformation;
+  const {features, price, terms} = state.adminState.premiumInformation;
 
   return (
     <ProfileBox title='Premium Information' subTitle='Information for Free Users'>

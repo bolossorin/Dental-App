@@ -10,6 +10,7 @@ export type ActionMap<M extends { [index: string]: any }> = {
 };
 
 export type Null_Or_<T> = T | null;
+
 export type IDentistBio = {
   title: Null_Or_<string>;
   username: Null_Or_<string>;
@@ -20,9 +21,16 @@ export type IDentistBio = {
   website: Null_Or_<string>;
   phone: Null_Or_<string>;
 };
-export type IDentistServices = {
-  services: UserServices[];
+
+export type IServices = {
+  services: IService[];
 };
+
+export interface IGraphicData {
+  period: number;
+  count: number;
+}
+
 export type UserLocation = {
   email: string;
   key: string;
@@ -30,7 +38,7 @@ export type UserLocation = {
   lat: number;
   lng: number;
 };
-export type UserServices = {
+export type IService = {
   key: string;
   service_name: string;
   service_id: string;
@@ -60,7 +68,7 @@ export type IDentist_SpecialState = {
   accountType: string;
   avatar_url: Null_Or_<string>;
   cover_url: Null_Or_<string>;
-  allowedServices: Null_Or_<UserServices[]>;
+  allowedServices: Null_Or_<IService[]>;
 };
 
 export interface ISubSettings {
@@ -107,4 +115,22 @@ export interface IAdminUser {
   title: string | null;
   created_at: Date;
   isSuspended?: boolean;
+}
+
+export interface IAdminMonthStats {
+  amountOfNewAccounts: number;
+  amountOfSubscriptions: number;
+  amountOfClosedAccounts: number;
+  amountOfClosedSubscriptions: number;
+  amountOfImages: number;
+}
+
+export interface IAdminYearStats {
+  amountOfNewAccounts: number;
+  amountOfSubscriptions: number;
+  amountOfClosedAccounts: number;
+  amountOfClosedSubscriptions: number;
+  amountOfImages: number;
+  graphicOfFreeAccounts: IGraphicData[];
+  graphicOfSubscriptions: IGraphicData[];
 }

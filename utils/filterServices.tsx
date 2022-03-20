@@ -1,13 +1,13 @@
-import { UserServices } from "../reducers/types";
+import {IService} from "../reducers/types";
 
 export const filterAllServices = (
-  all: UserServices[],
-  choosen: UserServices[] | null
+  all: IService[],
+  choosen: IService[] | null
 ) => {
   const arr = choosen?.map((item) => {
     return item.service_id;
   });
-  const newAllServices: UserServices[] = [];
+  const newAllServices: IService[] = [];
   for (const el of all) {
     if (!arr?.includes(el.service_id)) {
       newAllServices.push(el);

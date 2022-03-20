@@ -15,7 +15,7 @@ const accountInfoSchema = Yup.object().shape({
 });
 export const AdminDetails: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email, username} = state.userState.adminDetails;
+  const {email, username} = state.adminState.adminDetails;
 
   return (
     <ProfileBox title='Admin Details' subTitle='Login Details'>

@@ -9,7 +9,7 @@ import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import {UserTypes} from "../../../reducers";
+import {AdminTypes} from "../../../reducers";
 import {ISubSettings} from "../../../reducers/types";
 import {Subscriber} from "./Subscriber/Subscriber";
 import * as Yup from "yup";
@@ -34,7 +34,7 @@ export const PaidSubscriber: React.FC = () => {
     paidHasPhoneNumber,
     paidHasWebsite,
     paidIsVerified,
-  } = state.userState.subscriberSettings;
+  } = state.adminState.subscriberSettings;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -75,7 +75,7 @@ export const PaidSubscriber: React.FC = () => {
         };
         try {
           const {data} = await axios.post<ISubSettings>(API.SETTINGS_CHANGE, body);
-          dispatch({type: UserTypes.GET_SUBSCRIBER_SETTINGS, payload: {...data}});
+          dispatch({type: AdminTypes.GET_SUBSCRIBER_SETTINGS, payload: {...data}});
           setNotification({
             type: "success",
             message: "Successfully changed settings",

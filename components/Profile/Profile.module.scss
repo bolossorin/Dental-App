@@ -958,6 +958,7 @@ input[type=file]::-webkit-file-upload-button {
   display:               grid;
   grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
   grid-column-gap:       50px;
+  width:                 100%;
 }
 
 .double-blocks-5 div {
@@ -1276,12 +1277,6 @@ input:disabled:-ms-input-placeholder {
 }
 
 /* BREAKPOINTS */
-@media (max-width: 1400px) {
-  .double-blocks-5 {
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
-  }
-}
-
 @media (max-width: 1320px) {
   .cut-block,
   .cut-block-2 {
@@ -1584,6 +1579,7 @@ input:disabled:-ms-input-placeholder {
 @media (max-width: 560px) {
   .double-blocks-5 {
     grid-template-columns: 1fr 1fr;
+    grid-gap: 15px;
   }
 
   .double-blocks,
@@ -1708,10 +1704,6 @@ input:disabled:-ms-input-placeholder {
 }
 
 @media (max-width: 350px) {
-  .double-blocks-5 {
-    grid-template-columns: 1fr;
-  }
-
   .double-blocks div:nth-child(1) {
     width: 50%;
   }

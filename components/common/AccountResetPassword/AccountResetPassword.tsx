@@ -17,7 +17,7 @@ const newPasswordSchema = Yup.object().shape({
 });
 export const AccountResetPassword = () => {
   const {state} = useContext(AppContext);
-  const {email} = state.userState.adminDetails;
+  const {email} = state.adminState.adminDetails;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
