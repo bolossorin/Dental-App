@@ -1,1 +1,1 @@
-export const Spinner = () => <div className="loader"></div>;
+export const Spinner = () => <div className="loader"/>;

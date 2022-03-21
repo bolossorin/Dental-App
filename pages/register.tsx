@@ -1,8 +1,8 @@
 import type {NextPage} from "next";
-import { RegisterForm} from "../components";
+import { Content} from "../components";
 
 const Register: NextPage = (): JSX.Element => {
-  return (<RegisterForm />);
+  return (<Content />);
 };
 
 export default Register;
