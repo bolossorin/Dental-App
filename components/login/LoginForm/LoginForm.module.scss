@@ -120,23 +120,24 @@
 .form-login-input-edit,
 .form-login-input-close,
 .form-login-input-eye {
-  position:   relative;
-  right:      30px;
+  position:   absolute;
+  right:      10px;
+  top:        50%;
+  transform:  translate(0, -50%);
   cursor:     pointer;
   transition: 0.3s linear;
 }
 
 .form-login-input-close {
-  right: 52px;
   &:hover {
-    transform: rotate(90deg);
+    transform: translate(0, -50%) rotate(90deg);
   }
 }
 
 .form-login-input-edit {
-  right: 52px;
+  right: 40px;
   &:hover {
-    transform: scale(1.15);
+    transform: translate(0, -50%) scale(1.15);
   }
 }
 
