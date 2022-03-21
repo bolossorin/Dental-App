@@ -6,7 +6,7 @@ export const Layout = ({footer, children}: any) => {
   return (
     <section className="container-vh">
       <Header adminMenu={false} />
-      <div className="main bg-login main-height-full">
+      <div className="main bg-login">
         {children}
       </div>
       {footer && <Footer />}

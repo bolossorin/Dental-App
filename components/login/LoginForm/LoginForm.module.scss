@@ -1,26 +1,3 @@
-.container-vh {
-  display:         flex;
-  align-items:     flex-start;
-  flex-direction:  column;
-  justify-content: flex-start;
-  width:           100%;
-  height:          100vh;
-}
-
-.main {
-  display:         flex;
-  align-items:     center;
-  align-self:      stretch;
-  flex-direction:  column;
-  justify-content: center;
-  width:           100%;
-  height:          100vh;
-}
-
-.main-height-full {
-  height: 100vh;
-}
-
 .form-login {
   width:     450px;
   max-width: 100%;

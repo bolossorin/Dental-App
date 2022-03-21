@@ -1,0 +1,106 @@
+.pricingWrapper {
+  padding: 40px 0;
+  .title {
+    h1 {
+      text-align:    center;
+      margin-bottom: 24px;
+      font-size:     40px;
+    }
+    .headerButtons {
+      display:         flex;
+      align-items:     center;
+      justify-content: center;
+      margin-bottom:   60px;
+      p {
+        margin: 0 5px;
+      }
+    }
+  }
+}
+
+.pricing {
+  display:         flex;
+  justify-content: space-between;
+  width:           100%;
+  :global {
+    .account-profile-box-form {
+      margin: 0;
+      width:  30%;
+      &:nth-child(2) {
+        border:    2px solid #095c5c;
+        transform: scale(1.15);
+      }
+    }
+    .account-form-login-subtitle {
+      line-height:    1.4;
+      font-size:      14px;
+      border-bottom:  1px solid rgba(31, 31, 31, 0.2);
+      margin-bottom:  16px;
+      padding-bottom: 16px;
+    }
+  }
+  .inner {
+    width: 100%;
+    ul {
+      list-style-type: none;
+      padding:         0;
+      line-height:     1.4;
+      width:           100%;
+      li {
+        font-family:     Arial, sans-serif;
+        font-size:       16px;
+        line-height:     1.4;
+        margin-bottom:   12px;
+        color:           var(--color-black);
+        font-weight:     bold;
+        display:         flex;
+        justify-content: space-between;
+        align-items:     center;
+        width:           100%;
+      }
+    }
+  }
+  .buttons {
+    display:         flex;
+    align-items:     center;
+    justify-content: space-between;
+    margin-top:      32px;
+    span {
+      font-weight: 700;
+      font-size:   14px;
+      color:       var(--color-green);
+    }
+    button {
+      margin-right: 0;
+    }
+  }
+}
+
+
+@media screen and (max-width: 992px) {
+  .pricingWrapper {
+    .title {
+      h1 {
+        margin-bottom: 20px;
+        font-size:     24px;
+      }
+      .headerButtons {
+        margin-bottom: 30px;
+      }
+    }
+  }
+  .pricing {
+    flex-direction: column;
+    :global {
+      .account-profile-box-form {
+        max-width:     400px;
+        width:         100%;
+        margin-bottom: 16px;
+        &:nth-child(2) {
+          border:    2px solid #095c5c;
+          transform: scale(1);
+        }
+      }
+    }
+  }
+}
