@@ -86,7 +86,7 @@ export const LoginForm: FC<ILoginForm> = (
               fullData = {
                 bio: {
                   title: 'Title 1',
-                  username: 'Mykola Melnyk',
+                  username: 'John Doe',
                   email: values.email,
                   gdcNumber: 12345,
                   qualifications: 'Medical',
@@ -130,7 +130,7 @@ export const LoginForm: FC<ILoginForm> = (
               fullData = {
                 bio: {
                   title: 'Title 1',
-                  username: 'Mykola Melnyk',
+                  username: 'John Doe',
                   email: values.email,
                   gdcNumber: 12345,
                   qualifications: 'Medical',
@@ -174,7 +174,7 @@ export const LoginForm: FC<ILoginForm> = (
 
             if (title === 'Current FYD admins') {
               fullDataAdmin = {
-                adminDetails: {username: 'Mykola Melnyk', email: values.email, avatar_url: '../images/doctor1.png'},
+                adminDetails: {username: 'John Doe', email: values.email, avatar_url: '../images/doctor1.png'},
                 services: [
                   {
                     key: '1',
