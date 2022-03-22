@@ -3,7 +3,7 @@ import React, {useCallback, useContext, useState} from "react";
 // libs
 import Skeleton from "react-loading-skeleton";
 import axios from "axios";
-import {Form, Formik, useField} from "formik";
+import {Form, Formik} from "formik";
 import * as Yup from "yup";
 
 // components
@@ -216,8 +216,6 @@ export const Gallery: React.FC = () => {
   };
 
   const onSubmitEdit = async (data) => {
-    console.log(data, 'data')
-
     const {email} = state.userState;
     if (!photoService) {
       setNotification({type: "warning", message: "Please choose service!"});

@@ -21,6 +21,7 @@ export const AdminDetails: React.FC = () => {
     <ProfileBox title='Admin Details' subTitle='Login Details'>
       <Formik
         validationSchema={accountInfoSchema}
+        enableReinitialize
         initialValues={{email: email, name: username}}
         onSubmit={async (values) => {
           console.log(values, values)

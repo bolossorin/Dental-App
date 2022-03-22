@@ -2,19 +2,20 @@ import React, {DetailedHTMLProps, FC, HTMLAttributes, useCallback, useContext, u
 
 // libs
 import Router from "next/router";
-import axios from "axios";
+// import axios from "axios";
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
 import {Spinner} from "../../index";
-import {API} from "../../../api/AWS-gateway";
+// import {API} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
-import {UserTypes} from "../../../reducers";
+import {AdminTypes, UserTypes} from "../../../reducers";
 import {IDentistBio, IDentistLocations, IServices, Null_Or_,} from "../../../reducers/types";
 import {Layout} from "../../Layout/Layout";
 import {ShowPassword} from "../../common/ShowPassword/ShowPassword";
+import {routes} from "../../../utils/routes";
 
 export interface ILoginForm
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -22,12 +23,12 @@ export interface ILoginForm
   resetPasswordUrl: string,
 }
 
-export interface ILoginResponse {
-  token: string;
-  userId: string;
-  email: string;
-  uid: string;
-}
+// export interface ILoginResponse {
+//   token: string;
+//   userId: string;
+//   email: string;
+//   uid: string;
+// }
 
 export interface IDentistFullDataResponse
   extends IDentistLocations,
@@ -44,7 +45,13 @@ const loginSchema = Yup.object().shape({
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });
 
-export const LoginForm: FC<ILoginForm> = ({title, api, resetPasswordUrl}) => {
+export const LoginForm: FC<ILoginForm> = (
+  {
+    title,
+    // api,
+    resetPasswordUrl
+  }
+) => {
   const {dispatch} = useContext(AppContext);
 
   const [isPassHidden, setIsPassHidden] = useState<boolean>(true);
@@ -60,27 +67,220 @@ export const LoginForm: FC<ILoginForm> = ({title, api, resetPasswordUrl}) => {
         initialValues={{email: '', password: ''}}
         onSubmit={async (values) => {
           try {
-            const {data} = await axios.post<ILoginResponse>(api, values);
+            // const {data} = await axios.post<ILoginResponse>(api, values);
+            // if (data.token) {
+            if (title === 'Current FYD admins') {
+              localStorage.setItem("admin", JSON.stringify(values));
+              localStorage.removeItem("dentist");
+            } else {
+              localStorage.setItem("dentist", JSON.stringify(values));
+              localStorage.removeItem("admin");
+              // const fullData = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${values.email}`);
+              dispatch({type: UserTypes.LOGIN, payload: {email: values.email}});
+            }
 
-            if (data.token) {
-              localStorage.setItem("user", JSON.stringify(data));
-              const fullData = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${values.email}`);
 
-              dispatch({type: UserTypes.LOGIN, payload: fullData.data});
+            let fullData;
+            let fullDataAdmin;
+            if (values.email === 'premium@premium.com') {
+              fullData = {
+                bio: {
+                  title: 'Title 1',
+                  username: 'Mykola Melnyk',
+                  email: values.email,
+                  gdcNumber: 12345,
+                  qualifications: 'Medical',
+                  profileBio: 'Profile Bio',
+                  website: 'www.test.com',
+                  phone: '0506596840',
+                },
+                avatar_url: '../images/doctor1.png',
+                locations: [
+                  {
+                    key: '1',
+                    location: 'Kyiv: Hlyshkova 43',
+                    email: '',
+                    lat: 51.2042666,
+                    lng: 0.1149085
+                  },
+                  {
+                    key: '2',
+                    location: 'Rivne: Zkybovskogo 9',
+                    email: '',
+                    lat: 51.2042666,
+                    lng: 0.1149085
+                  }
+                ],
+                services: [
+                  {
+                    key: '1',
+                    service_name: 'Teeth Whitening',
+                    service_id: 'Teeth Whitening',
+                  },
+                  {
+                    key: '2',
+                    service_name: 'Veneers',
+                    service_id: 'Veneers',
+                  },
+                ],
+                cover_url: '',
+                accountType: "premium"
+              }
+            } else {
+              fullData = {
+                bio: {
+                  title: 'Title 1',
+                  username: 'Mykola Melnyk',
+                  email: values.email,
+                  gdcNumber: 12345,
+                  qualifications: 'Medical',
+                  profileBio: 'Profile Bio',
+                  website: 'www.test.com',
+                  phone: '0506596840',
+                },
+                avatar_url: '../images/doctor1.png',
+                locations: [
+                  {
+                    key: '1',
+                    location: 'Kyiv: Hlyshkova 43',
+                    email: '',
+                    lat: 51.2042666,
+                    lng: 0.1149085
+                  },
+                  {
+                    key: '2',
+                    location: 'Rivne: Zkybovskogo 9',
+                    email: '',
+                    lat: 51.2042666,
+                    lng: 0.1149085
+                  }
+                ],
+                services: [
+                  {
+                    key: '1',
+                    service_name: 'Teeth Whitening',
+                    service_id: 'Teeth Whitening',
+                  },
+                  {
+                    key: '2',
+                    service_name: 'Veneers',
+                    service_id: 'Veneers',
+                  },
+                ],
+                cover_url: '',
+                accountType: "free"
+              }
+            }
 
-              setTimeout(() => {
-                Router.push("/");
-              }, 800);
-
-              setNotification({
-                type: "success",
-                message: "Success! Please wait...",
-                position: "top-right",
+            if (title === 'Current FYD admins') {
+              fullDataAdmin = {
+                adminDetails: {username: 'Mykola Melnyk', email: values.email, avatar_url: '../images/doctor1.png'},
+                services: [
+                  {
+                    key: '1',
+                    service_name: 'Teeth Whitening',
+                    service_id: 'Teeth Whitening',
+                  },
+                  {
+                    key: '2',
+                    service_name: 'Veneers',
+                    service_id: 'Veneers',
+                  },
+                ],
+                premiumInformation: {
+                  features: ['Verification Checkmark'],
+                  price: 0,
+                  setting_code: "",
+                  terms: ""
+                },
+                subscriberSettings: {
+                  freeHasPhoneNumber: false,
+                  freeHasWebsite: false,
+                  freeIsVerified: false,
+                  freeMaxLocations: 1,
+                  freeMaxServices: 1,
+                  paidHasPhoneNumber: false,
+                  paidHasWebsite: false,
+                  paidIsVerified: false,
+                  paidMaxLocations: 1,
+                  paidMaxServices: 1,
+                  setting_code: "",
+                },
+                monthlyStats: {
+                  amountOfNewAccounts: 0,
+                  amountOfSubscriptions: 0,
+                  amountOfClosedAccounts: 0,
+                  amountOfClosedSubscriptions: 0,
+                  amountOfImages: 0,
+                },
+                yearStats: {
+                  amountOfNewAccounts: 0,
+                  amountOfSubscriptions: 0,
+                  amountOfClosedAccounts: 0,
+                  amountOfClosedSubscriptions: 0,
+                  amountOfImages: 0,
+                  graphicOfFreeAccounts: [],
+                  graphicOfSubscriptions: [],
+                },
+              };
+              const {
+                adminDetails,
+                services,
+                premiumInformation,
+                subscriberSettings,
+                monthlyStats,
+                yearStats
+              } = fullDataAdmin;
+              localStorage.setItem("admin", JSON.stringify(fullDataAdmin));
+              dispatch({
+                type: AdminTypes.ADMIN_LOGIN,
+                payload: {
+                  adminDetails,
+                  services,
+                  premiumInformation,
+                  subscriberSettings,
+                  monthlyStats,
+                  yearStats,
+                  isOpenLeftMenu: true,
+                  isLoggedAdmin: true,
+                },
               });
 
+              setTimeout(() => {
+                Router.push(routes.dashboard);
+              }, 800);
             } else {
-              setNotification({type: "error", message: "Server Internal Error"});
+              const {bio, avatar_url, locations, services, cover_url, accountType} = fullData;
+              localStorage.setItem("dentist", JSON.stringify(fullData));
+              dispatch({
+                type: UserTypes.SET_FULL_DATA,
+                payload: {
+                  ...bio,
+                  avatar_url,
+                  cover_url,
+                  locations,
+                  services,
+                  accountType,
+                  isLogged: true,
+                  allowedServices: null,
+                  gallery: null,
+                },
+              });
+
+              setTimeout(() => {
+                Router.push(routes.profile);
+              }, 800);
             }
+
+            setNotification({
+              type: "success",
+              message: "Success! Please wait...",
+              position: "top-right",
+            });
+
+            // } else {
+            //   setNotification({type: "error", message: "Server Internal Error"});
+            // }
           } catch (e: any) {
             setNotification({type: "error", message: 'Incorrect email or password'});
           }

@@ -37,4 +37,6 @@ export const API = {
   GET_USERS: "/api/admin/users",
   SUSPEND_USER: "/api/admin/users/suspend",
   DELETE_USER: "/api/profile/account/deleteAccount",
+  SETTINGS_FULL_INFO: "/api/admin/settings",
+  STAT_CUR_MONTHS: "/api/admin/dashboard",
 };

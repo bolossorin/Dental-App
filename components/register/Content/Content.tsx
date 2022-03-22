@@ -16,7 +16,7 @@ export interface IRegisterFormChildren {
 }
 
 export const Content: React.FC = () => {
-  const [nextStep, setNextStep] = useState<"cardCheck" | "pricingCheck" | "emailCheck" | "register">("emailCheck");
+  const [nextStep, setNextStep] = useState<"cardCheck" | "pricingCheck" | "emailCheck" | "register">("register");
   const [registerValues, setRegisterValues] = useState<IRegisterFormChildren>();
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {

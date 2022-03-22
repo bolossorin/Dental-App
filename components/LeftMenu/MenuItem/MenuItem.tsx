@@ -17,12 +17,14 @@ interface ILinks {
   url: string;
 }
 
-export const MenuItem = ({adminMenu}) => {
+export const MenuItem = () => {
   const router = useRouter();
   const [links, setLinks] = useState<ILinks[]>([]);
+  const [loginUrl, setLoginUrl] = useState(routes.login);
 
   const {state} = useContext(AppContext);
   const {isLogged, email} = state.userState;
+  const {isLoggedAdmin} = state.adminState;
 
   const [logOut] = useLogout();
 
@@ -44,14 +46,15 @@ export const MenuItem = ({adminMenu}) => {
       {icon: '../../images/more_vert.svg', title: 'Settings', url: routes.settings},
     ];
 
-
-    if (adminMenu) {
-      setLinks(adminLinks)
-    } else {
+    if (isLogged) {
       setLinks(dentistLinks)
+      setLoginUrl(routes.login)
+    } else if (isLoggedAdmin) {
+      setLinks(adminLinks)
+      setLoginUrl(routes.loginAdmin)
     }
 
-  }, [adminMenu, email])
+  }, [isLogged, isLoggedAdmin, email])
 
   return (
     <div className="leftmenu-navbar">
@@ -62,9 +65,9 @@ export const MenuItem = ({adminMenu}) => {
             <a className="leftmenu-link">{link.title}</a>
           </li>
         </Link>))}
-      {isLogged && <li className="leftmenu-list logout">
+      {(isLogged || isLoggedAdmin) && <li className="leftmenu-list logout">
         <img className="leftmenu-link-image" src={"../../images/left-arrow.svg"} alt="link image" />
-        <a className="leftmenu-link" href={routes.login} onClick={logOut}>
+        <a className="leftmenu-link" href={loginUrl} onClick={logOut}>
           Logout
         </a>
       </li>}

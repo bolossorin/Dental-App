@@ -18,6 +18,7 @@ interface IMenu {
 export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
   const {state} = useContext(AppContext);
   const {isLogged} = state.userState;
+  const {isLoggedAdmin} = state.adminState;
   const [toggle, setToggle] = useState(false);
 
   const [logOut] = useLogout(() => setToggle(false));
@@ -27,7 +28,7 @@ export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
       <div className="header_shadow" />
       <div className="header bg-green">
         <div className="menu" id="mobile_menu">
-          {!isLogged ? (<svg
+          {(isLogged || isLoggedAdmin) ? (<svg
             className="menu-logo"
             xmlns="http://www.w3.org/2000/svg"
             height="28px"
@@ -47,7 +48,7 @@ export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
             alt='' />
         </Link>
         <div className="header_actions">
-          {isLogged ? <>
+          {(!isLogged && !isLoggedAdmin) ? <>
             <button className="button-green-login" onClick={() => Router.push(routes.login)}>Login</button>
             <button className="button-green-register" onClick={() => Router.push(routes.register)}>Register</button>
           </> : <button className="button-green-login" onClick={logOut}>Logout</button>}

@@ -8,19 +8,29 @@ import {
 } from "./types";
 
 export enum AdminTypes {
+  ADMIN_LOGIN = "ADMIN_LOGIN",
+  ADMIN_LOGOUT = "ADMIN_LOGOUT",
   GET_SUBSCRIBER_SETTINGS = "GET_SUBSCRIBER_SETTINGS",
+  GET_MONTHLY_STATS = "GET_MONTHLY_STATS",
   GET_SERVICES = "GET_SERVICES",
   DELETE_SERVICE = "DELETE_SERVICE",
+  GET_YEAR_STATS = "GET_YEAR_STATS",
 }
 
 // ADMIN_DATA_LAKE
 type AdminPayload = {
+  [AdminTypes.ADMIN_LOGIN]: TAdminReducerState;
+  [AdminTypes.ADMIN_LOGOUT]: undefined;
   [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [AdminTypes.GET_MONTHLY_STATS]: IAdminMonthStats;
+  [AdminTypes.GET_YEAR_STATS]: IAdminYearStats;
   [AdminTypes.GET_SERVICES]: IService[];
   [AdminTypes.DELETE_SERVICE]: { id: string; };
 };
 
 export type TAdminReducerState =
+  { isLoggedAdmin: boolean } &
+  { isOpenLeftMenu: boolean } &
   { services: IService[] } &
   { adminDetails: IAdminDetails } &
   { premiumInformation: IPremiumInformation } &
@@ -33,8 +43,8 @@ export type AdminActions =
 
 export const AdminInitialState: TAdminReducerState = {
   adminDetails: {
-    username: 'John Doe',
-    email: 'test@test.test',
+    username: '',
+    email: '',
     avatar_url: '',
   },
   services: [
@@ -55,7 +65,7 @@ export const AdminInitialState: TAdminReducerState = {
     },
   ],
   premiumInformation: {
-    features: ['Verification Checkmark'],
+    features: [],
     price: 0,
     setting_code: "",
     terms: "",
@@ -89,12 +99,22 @@ export const AdminInitialState: TAdminReducerState = {
     graphicOfFreeAccounts: [],
     graphicOfSubscriptions: [],
   },
+  isOpenLeftMenu: true,
+  isLoggedAdmin: false,
 };
 
 export const adminReducer = (state: TAdminReducerState, action: AdminActions): TAdminReducerState => {
   switch (action.type) {
+    case AdminTypes.ADMIN_LOGIN:
+      return {...state, ...action.payload};
+    case AdminTypes.ADMIN_LOGOUT:
+      return {...AdminInitialState};
     case AdminTypes.GET_SUBSCRIBER_SETTINGS:
       return {...state, subscriberSettings: {...action.payload}};
+    case AdminTypes.GET_MONTHLY_STATS:
+      return {...state, monthlyStats: {...action.payload}};
+    case AdminTypes.GET_YEAR_STATS:
+      return {...state, yearStats: {...action.payload}};
     case AdminTypes.GET_SERVICES:
       return {...state, services: action.payload};
     case AdminTypes.DELETE_SERVICE:

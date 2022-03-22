@@ -45,6 +45,7 @@ export const Bio: React.FC = () => {
     <ProfileLayout title='Bio and Contact Information' subTitle='Information For Patients'>
       <Formik
         validationSchema={bioSchema}
+        enableReinitialize
         initialValues={{
           title: title || '',
           name: username || '',

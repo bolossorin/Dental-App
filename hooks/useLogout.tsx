@@ -1,19 +1,22 @@
-import { useContext } from "react";
+import {useContext} from "react";
+
+// libs
 import Router from "next/router";
-import { AppContext } from "../context/app.context";
-import { UserTypes } from "../reducers";
+
+// components
+import {AppContext} from "../context/app.context";
+import {AdminTypes, UserTypes} from "../reducers";
+import {routes} from "../utils/routes";
 
 export const useLogout = (callback?: Function, path?: string) => {
-  const { dispatch } = useContext(AppContext);
-
+  const {dispatch} = useContext(AppContext);
   const logOut = async () => {
-    sessionStorage.removeItem("userInfo");
-    localStorage.removeItem("previousState");
-    dispatch({
-      type: UserTypes.LOGOUT,
-    });
+    localStorage.removeItem("dentist");
+    localStorage.removeItem("admin");
+    dispatch({type: UserTypes.LOGOUT});
+    dispatch({type: AdminTypes.ADMIN_LOGOUT});
     if (callback) callback();
-    Router.push(path || "/");
+    Router.push(path || routes.home);
   };
 
   return [logOut];

@@ -22,13 +22,13 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
     <div className="main-index index-main-box left-size">
       <div className="index-gallery-box">
         {nearlyDentists.map((item, idx) => (
-          <a href={`/search/${item.email}`} target={"_blank"}>
+          <a key={idx} href={`/search/${item.email}`} target={"_blank"}>
             <div
               className={cn("index-gallery-image-box", {'active': selectedTarget === item})}
               onClick={() => {
                 setMyLocation(item.location)
                 setSelectedDentist(item);
-              }} key={idx}>
+              }}>
               <img
                 className="index-gallery-image"
                 src={item.avatar_url || "../images/empty_avatar.png"}

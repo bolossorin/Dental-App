@@ -69,7 +69,8 @@ export type userPayload = {
   [UserTypes.SET_FULL_DATA]: TUserReducerState;
 };
 
-export type TUserReducerState = IDentistBio &
+export type TUserReducerState =
+  IDentistBio &
   IDentistLocations &
   IServices &
   IDentist_SpecialState &
@@ -80,8 +81,8 @@ export type UserActions = ActionMap<userPayload>[keyof ActionMap<userPayload>];
 export const UserInitialState: TUserReducerState = {
   gdcNumber: 0,
   isLogged: false,
-  title: "Dr",
-  username: "John Doe",
+  title: "",
+  username: "",
   email: "",
   qualifications: "",
   profileBio: "",

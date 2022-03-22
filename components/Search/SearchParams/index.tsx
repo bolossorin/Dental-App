@@ -93,8 +93,9 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
               className="index-select arrows"
               name="services"
               id="services"
+              defaultValue=""
               onChange={(e) => setService(e.target.value)}>
-              <option value="" selected>Select Service</option>
+              <option value="">Select Service</option>
               {allServices &&
               allServices.map((item) =>
                 <option value={item.service_id} key={item.service_id}>
@@ -107,8 +108,9 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
               className="index-select arrows"
               name="services"
               id="services"
+              defaultValue=""
               onChange={(e) => SetMiles(e.target.value as any)}>
-              <option value={""} selected>Select Mile</option>
+              <option value="">Select Mile</option>
               <option value={MILES.ONE}>Within: {MILES.ONE} Mile</option>
               <option value={MILES.FIVE}>Within: {MILES.FIVE} Mile</option>
               <option value={MILES.TEN}>Within: {MILES.TEN} Miles</option>

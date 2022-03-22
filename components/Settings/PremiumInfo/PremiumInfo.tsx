@@ -28,11 +28,11 @@ export const PremiumInfo: React.FC = () => {
             <p className="form-profile-label">
               <label className="form-profile-label">Premium Features</label>
             </p>
-            {features.map((item) => (<p>
-              <input className="form-profile-input" type="text" name="" value={item} placeholder="Feature 2" />
+            {features.map((item) => (<p key={item}>
+              <input className="form-profile-input" type="text" name="" defaultValue={item} placeholder="Feature 2" disabled />
             </p>))}
             <p className="add-plus">
-              <input className="form-profile-input " type="text" name="" value="" placeholder="" />
+              <input className="form-profile-input " type="text" name="" placeholder="" />
               <img className="plus" id="plus" src={"../images/plus.svg"} alt="" />
             </p>
           </div>
