@@ -5,13 +5,19 @@ import {ProfileBox} from "../common/ProfileBox/ProfileBox";
 
 // assets
 import styles from "./Pricing.module.scss";
+import Router from "next/router";
+import {routes} from "../../utils/routes";
 
 export const Pricing = ({setNextStep}) => {
   const [showMap, setShowMap] = useState(false);
   const handleSwitch = () => setShowMap(!showMap);
 
   const handleSubmit = () => {
-    if (setNextStep) setNextStep('cardCheck')
+    if (setNextStep) {
+      setNextStep('cardCheck')
+    } else {
+      Router.push(routes.purchase)
+    }
   }
   return (
     <div className='container'>

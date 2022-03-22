@@ -84,7 +84,7 @@ export const Register = ({setRegisterValues, setNextStep}) => {
             {errors.password && touched.password ? <p className='errorMessage'>{errors.password}</p> : null}
           </div>
           <div className="form-login-buttons">
-            <button className="button-nextStep" onClick={() => resetForm()}>
+            <button type='submit' className="button-nextStep">
               Next Step
             </button>
           </div>

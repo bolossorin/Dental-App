@@ -49,9 +49,9 @@ export const ValidateEmail: React.FC<IValidateEmailForm> = ({setNotification, re
             }, 5000);
           }
         } catch (exp: any) {
-          setNotification({type: "error", message: "Incorrect code"});
-        } finally {
+          // setNotification({type: "error", message: "Incorrect code"});
         }
+        Router.push(routes.login)
       }}>
       {({resetForm, errors, touched, isSubmitting}) =>
         <Form className="form-login">

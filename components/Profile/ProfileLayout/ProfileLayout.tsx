@@ -15,7 +15,7 @@ export const ProfileLayout = ({children, title, subTitle}: any) => {
           <p className="form-bio-subtitle gray px12 mb-6px">{subTitle}</p>
         </div>
         {accountType === "free" && (<div className="upgrade-button-bio">
-          <Link href={routes.purchase}>
+          <Link href={routes.pricing}>
             <button className="button-green-outline">Upgrade</button>
           </Link>
         </div>)}

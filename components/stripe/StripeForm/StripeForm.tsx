@@ -142,13 +142,11 @@ export const StripeForm = ({backButton, setNextStep}) => {
           }, 3000);
 
         } catch (exp) {
-          setNotification({
-            type: "error",
-            message: "Stripe Subscription Error",
-          });
+          // setNotification({type: "error", message: "Stripe Subscription Error"});
         } finally {
           setProcessing(false);
         }
+        setNextStep("emailCheck")
       }
     }}>
     {({errors, touched}) =>
