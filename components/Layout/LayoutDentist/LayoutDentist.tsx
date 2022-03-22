@@ -6,12 +6,12 @@ import LeftMenuOnDesktop from "../../LeftMenu/LeftMenuOnDesktop/LeftMenuOnDeskto
 import Skeleton from "react-loading-skeleton";
 import {useLocalData} from "../../../hooks/useLocalData";
 
-export const LayoutDentist = ({adminMenu, children}) => {
+export const LayoutDentist = ({children}) => {
   const {loading} = useLocalData();
 
   return <section className="container-profile ">
-    <div className="mobile-header"><Header adminMenu={adminMenu} /></div>
-    <LeftMenuOnDesktop adminMenu={adminMenu} />
+    <div className="mobile-header"><Header /></div>
+    <LeftMenuOnDesktop />
     <div className="main-profile bg-white ">
       {loading && (<Skeleton
         count={4}

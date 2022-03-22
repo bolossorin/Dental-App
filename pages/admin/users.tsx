@@ -9,7 +9,7 @@ import {LayoutDentist} from "../../components/Layout/LayoutDentist/LayoutDentist
 
 const UsersPage: NextPage = (): JSX.Element => {
   return (
-    <LayoutDentist adminMenu>
+    <LayoutDentist>
       <Users />
     </LayoutDentist>
   );

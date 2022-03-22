@@ -11,7 +11,7 @@ import {LayoutDentist} from "../../components/Layout/LayoutDentist/LayoutDentist
 const ProfilePage: NextPage = (): JSX.Element => {
   return (
     <>
-      <LayoutDentist adminMenu={false}>
+      <LayoutDentist>
         <Bio />
         <Locations />
         <Services />

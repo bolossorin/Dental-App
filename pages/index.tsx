@@ -14,7 +14,7 @@ const Home = (): JSX.Element => {
 
   return (
     <>
-      {!loading && <Header adminMenu={false} />}
+      {!loading && <Header />}
       {loading && <Skeleton width={"100vw"} height={"70px"} />}
       <Search />
       <Footer />

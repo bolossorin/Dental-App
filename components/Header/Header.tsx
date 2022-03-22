@@ -9,13 +9,8 @@ import {AppContext} from "../../context/app.context";
 import {useLogout} from "../../hooks/useLogout";
 import {LeftMenuOnMobile} from "../LeftMenu/LeftMenuOnMobile/LeftMenuOnMobile";
 import {routes} from "../../utils/routes";
-import {Null_Or_} from "../../reducers/types";
 
-interface IMenu {
-  adminMenu: Null_Or_<boolean>;
-}
-
-export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
+export const Header: React.FC = () => {
   const {state} = useContext(AppContext);
   const {isLogged} = state.userState;
   const {isLoggedAdmin} = state.adminState;
@@ -55,7 +50,7 @@ export const Header: React.FC<IMenu> = ({adminMenu = null}) => {
         </div>
         <div />
       </div>
-      <LeftMenuOnMobile adminMenu={adminMenu} setToggle={setToggle} toggle={toggle} />
+      <LeftMenuOnMobile setToggle={setToggle} toggle={toggle} />
     </div>
   );
 };

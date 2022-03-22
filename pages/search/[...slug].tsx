@@ -40,7 +40,7 @@ const PersonPage = () => {
   }, [email]);
   return (
     <>
-      <Header adminMenu={false} />
+      <Header />
       {!(data && galleryData) && <Skeleton width="100wh" height="90vh" />}
       {!!(data && galleryData) && (<Person dentist={data} galleryData={galleryData} />)}
       <Footer />
