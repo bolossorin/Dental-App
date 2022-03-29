@@ -98,14 +98,14 @@ export const LoginForm: FC<ILoginForm> = (
                 locations: [
                   {
                     key: '1',
-                    location: 'Kyiv: Hlyshkova 43',
+                    location: 'London: Test 43',
                     email: '',
                     lat: 51.2042666,
                     lng: 0.1149085
                   },
                   {
                     key: '2',
-                    location: 'Rivne: Zkybovskogo 9',
+                    location: 'Manchester: Test 9',
                     email: '',
                     lat: 51.2042666,
                     lng: 0.1149085
@@ -142,14 +142,14 @@ export const LoginForm: FC<ILoginForm> = (
                 locations: [
                   {
                     key: '1',
-                    location: 'Kyiv: Hlyshkova 43',
+                    location: 'London: Test 43',
                     email: '',
                     lat: 51.2042666,
                     lng: 0.1149085
                   },
                   {
                     key: '2',
-                    location: 'Rivne: Zkybovskogo 9',
+                    location: 'Manchester: Test 9',
                     email: '',
                     lat: 51.2042666,
                     lng: 0.1149085
