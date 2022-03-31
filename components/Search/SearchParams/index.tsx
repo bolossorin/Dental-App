@@ -48,7 +48,7 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
   useEffect(
     () => {
       if (!!debouncedSearchTerm) {
-        fetch(`https://maps.google.com/maps/api/geocode/json?sensor=false&address=${debouncedSearchTerm}&key=${process.env.GOOGLE_KEY}`)
+        fetch(`https://maps.google.com/maps/api/geocode/json?sensor=false&address=${debouncedSearchTerm}&key=${process.env.NEXT_PUBLIC_GOOGLE_KEY}`)
           .then((res) => res.json())
           .then((res) => {
             setMyLocation(res.results[0].geometry.location)

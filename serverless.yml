@@ -3,8 +3,8 @@ dental-app-admin:
   inputs:
     build:
       env:
-        STRIPE_PK_KEY: "pk_test_51ISNerEE2uETn4H3tqYplaINZlDwEa8CM7ohtp7YbxF7KJnUysRK8rjssQxSbruzaL6uJz4951GhHoZcHM3qWcLN00drEQTQ5M"
-        GOOGLE_KEY: "AIzaSyBbfv-_DpOYnSn3EewiTToy8T7DKB-dS7Y"
+        NEXT_PUBLIC_STRIPE_PK_KEY: "pk_test_51ISNerEE2uETn4H3tqYplaINZlDwEa8CM7ohtp7YbxF7KJnUysRK8rjssQxSbruzaL6uJz4951GhHoZcHM3qWcLN00drEQTQ5M"
+        NEXT_PUBLIC_GOOGLE_KEY: "AIzaSyBbfv-_DpOYnSn3EewiTToy8T7DKB-dS7Y"
     cloudfront:
       originAccessIdentityId: E22X5WX2U4EHCV
       distributionId: E3B7KZH7ZGZ849

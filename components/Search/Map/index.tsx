@@ -79,7 +79,7 @@ export const GoogleMap: React.FC<IMapProps> = (
           <div className="Google-react-map-wrapper">
             <GoogleMapReact
               center={myLocation}
-              bootstrapURLKeys={{key: `${process.env.GOOGLE_KEY}`}}
+              bootstrapURLKeys={{key: `${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}}
               defaultCenter={Locations.cambridge}
               defaultZoom={13}>
               <MeMarker {...myLocation} />

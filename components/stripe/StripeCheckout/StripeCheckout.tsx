@@ -8,7 +8,7 @@ import {ELEMENTS_OPTIONS} from "../../../utils/cardOptions";
 
 // Make sure to call `loadStripe` outside of a component’s render to avoid
 // recreating the `Stripe` object on every render.
-const stripePromise = loadStripe(`${process.env.STRIPE_PK_KEY}`);
+const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PK_KEY}`);
 
 export const StripeCheckout = ({backButton, setNextStep}: any) => {
   return (

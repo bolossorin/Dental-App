@@ -1,7 +1,7 @@
 module.exports = {
   env: {
-    STRIPE_PK_KEY: process.env.STRIPE_PK_KEY,
-    GOOGLE_KEY: process.env.GOOGLE_KEY,
+    STRIPE_PK_KEY: process.env.NEXT_PUBLIC_STRIPE_PK_KEY,
+    GOOGLE_KEY: process.env.NEXT_PUBLIC_GOOGLE_KEY,
   },
   images: {
     domains: [],
