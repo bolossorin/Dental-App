@@ -1,6 +1,12 @@
+// libs
+import axios from "axios";
+
+export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`, body);
+
+export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
+
+
 export const API = {
-  LOGIN: "/api/dentist/account/login",
-  REGISTER: "/api/dentist/account/register",
   LOGOUT: "/api/dentist/account/logout",
   VERIFY_REGISTER: "/api/dentist/account/register_verify",
   PASSWORD_RESET: "/api/dentist/account/reset-password",

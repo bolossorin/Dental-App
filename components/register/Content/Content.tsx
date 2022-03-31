@@ -9,7 +9,7 @@ import {Pricing} from "../../Pricing/Pricing";
 import {Register} from "../Register/Register";
 
 export interface IRegisterFormChildren {
-  name: string;
+  dentist_name: string;
   email: string;
   gdc: number | "";
   password: string;

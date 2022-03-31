@@ -19,6 +19,15 @@ export const Pricing = ({setNextStep}) => {
       Router.push(routes.purchase)
     }
   }
+
+  const handleFreeSubmit = () => {
+    if (setNextStep) {
+      setNextStep('emailCheck')
+    } else {
+      Router.push(routes.purchase)
+    }
+  }
+
   return (
     <div className='container'>
       <div className={styles.pricingWrapper}>
@@ -52,7 +61,7 @@ export const Pricing = ({setNextStep}) => {
               </ul>
               <div className={styles.buttons}>
                 <span>$0.00/month</span>
-                <button type='button' className='button-green' onClick={() => handleSubmit()}>LET’S TRY</button>
+                <button type='button' className='button-green' onClick={() => handleFreeSubmit()}>Free</button>
               </div>
             </div>
           </ProfileBox>

@@ -2,13 +2,11 @@ import React, {DetailedHTMLProps, FC, HTMLAttributes, useCallback, useContext, u
 
 // libs
 import Router from "next/router";
-// import axios from "axios";
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
 import {Spinner} from "../../index";
-// import {API} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 import {AdminTypes, UserTypes} from "../../../reducers";
@@ -19,16 +17,9 @@ import {routes} from "../../../utils/routes";
 
 export interface ILoginForm
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
-  api: string,
+  loginApi: any,
   resetPasswordUrl: string,
 }
-
-// export interface ILoginResponse {
-//   token: string;
-//   userId: string;
-//   email: string;
-//   uid: string;
-// }
 
 export interface IDentistFullDataResponse
   extends IDentistLocations,
@@ -45,13 +36,7 @@ const loginSchema = Yup.object().shape({
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });
 
-export const LoginForm: FC<ILoginForm> = (
-  {
-    title,
-    // api,
-    resetPasswordUrl
-  }
-) => {
+export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) => {
   const {dispatch} = useContext(AppContext);
 
   const [isPassHidden, setIsPassHidden] = useState<boolean>(true);
@@ -67,8 +52,7 @@ export const LoginForm: FC<ILoginForm> = (
         initialValues={{email: '', password: ''}}
         onSubmit={async (values) => {
           try {
-            // const {data} = await axios.post<ILoginResponse>(api, values);
-            // if (data.token) {
+            const {data} = await loginApi(values);
             if (title === 'Current FYD admins') {
               localStorage.setItem("admin", JSON.stringify(values));
               localStorage.removeItem("dentist");
@@ -79,97 +63,38 @@ export const LoginForm: FC<ILoginForm> = (
               dispatch({type: UserTypes.LOGIN, payload: {email: values.email}});
             }
 
-
-            let fullData;
             let fullDataAdmin;
-            if (values.email === 'premium@premium.com') {
-              fullData = {
-                bio: {
-                  title: 'Title 1',
-                  username: 'John Doe',
-                  email: values.email,
-                  gdcNumber: 12345,
-                  qualifications: 'Medical',
-                  profileBio: 'Profile Bio',
-                  website: 'www.test.com',
-                  phone: '0506596840',
+            let fullData = {
+              access_token: data.access_token,
+              bio: {
+                title: '',
+                username: data.dentist_name,
+                email: data.email,
+                gdcNumber: 12345,
+                qualifications: '',
+                profileBio: '',
+                website: '',
+                phone: '',
+              },
+              avatar_url: '',
+              locations: [
+                {
+                  key: '',
+                  location: '',
+                  email: '',
+                  lat: 51.2042666,
+                  lng: 0.1149085
                 },
-                avatar_url: '../images/doctor1.png',
-                locations: [
-                  {
-                    key: '1',
-                    location: 'London: Test 43',
-                    email: '',
-                    lat: 51.2042666,
-                    lng: 0.1149085
-                  },
-                  {
-                    key: '2',
-                    location: 'Manchester: Test 9',
-                    email: '',
-                    lat: 51.2042666,
-                    lng: 0.1149085
-                  }
-                ],
-                services: [
-                  {
-                    key: '1',
-                    service_name: 'Teeth Whitening',
-                    service_id: 'Teeth Whitening',
-                  },
-                  {
-                    key: '2',
-                    service_name: 'Veneers',
-                    service_id: 'Veneers',
-                  },
-                ],
-                cover_url: '',
-                accountType: "premium"
-              }
-            } else {
-              fullData = {
-                bio: {
-                  title: 'Title 1',
-                  username: 'John Doe',
-                  email: values.email,
-                  gdcNumber: 12345,
-                  qualifications: 'Medical',
-                  profileBio: 'Profile Bio',
-                  website: 'www.test.com',
-                  phone: '0506596840',
+              ],
+              services: [
+                {
+                  key: '1',
+                  service_name: '',
+                  service_id: '',
                 },
-                avatar_url: '../images/doctor1.png',
-                locations: [
-                  {
-                    key: '1',
-                    location: 'London: Test 43',
-                    email: '',
-                    lat: 51.2042666,
-                    lng: 0.1149085
-                  },
-                  {
-                    key: '2',
-                    location: 'Manchester: Test 9',
-                    email: '',
-                    lat: 51.2042666,
-                    lng: 0.1149085
-                  }
-                ],
-                services: [
-                  {
-                    key: '1',
-                    service_name: 'Teeth Whitening',
-                    service_id: 'Teeth Whitening',
-                  },
-                  {
-                    key: '2',
-                    service_name: 'Veneers',
-                    service_id: 'Veneers',
-                  },
-                ],
-                cover_url: '',
-                accountType: "free"
-              }
+              ],
+              cover_url: '',
+              accountType: "free"
             }
 
             if (title === 'Current FYD admins') {
@@ -271,18 +196,13 @@ export const LoginForm: FC<ILoginForm> = (
                 Router.push(routes.profile);
               }, 800);
             }
-
             setNotification({
               type: "success",
               message: "Success! Please wait...",
               position: "top-right",
             });
-
-            // } else {
-            //   setNotification({type: "error", message: "Server Internal Error"});
-            // }
-          } catch (e: any) {
-            setNotification({type: "error", message: 'Incorrect email or password'});
+          } catch (error: any) {
+            setNotification({type: "error", message: error.response.data.message});
           }
         }}>
         {({resetForm, values, isSubmitting, errors, touched}) =>
