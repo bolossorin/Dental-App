@@ -13,7 +13,7 @@ const LoginAdminPage: NextPage = (): JSX.Element => {
   const api = API.LOGIN_ADMIN;
   const resetPasswordUrl = routes.resetPasswordAdmin;
 
-  return <LoginForm title='Current FYD admins' api={api}  resetPasswordUrl={resetPasswordUrl}/>;
+  return <LoginForm title='Current FYD admins' loginApi={api}  resetPasswordUrl={resetPasswordUrl}/>;
 };
 
 export default LoginAdminPage;
