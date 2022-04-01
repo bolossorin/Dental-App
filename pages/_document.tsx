@@ -16,6 +16,9 @@ class MyDocument extends Document {
                 href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" />
           <meta name="description"
                 content="An example of a meta description. These show up in search engine results." />
+          <script async
+                  src="https://maps.googleapis.com/maps/api/js?key=AIzaSyBbfv-_DpOYnSn3EewiTToy8T7DKB-dS7Y&libraries=places&callback=initMap">
+          </script>
         </Head>
         <body>
         <Main />
