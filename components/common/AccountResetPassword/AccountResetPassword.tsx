@@ -2,22 +2,23 @@ import React, {useCallback, useContext} from "react";
 
 // libs
 import {Field, Form, Formik} from "formik";
-import axios from "axios";
 import * as Yup from "yup";
 
 // components
-import {API} from "../../../api/AWS-gateway";
+import {passwordResetDentistApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 
 const newPasswordSchema = Yup.object().shape({
-  oldPassword: Yup.string()
+  currentPassword: Yup.string()
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Old Password is required"),
-  newPassword: Yup.string().oneOf([Yup.ref('oldPassword'), null], 'Both password needs to be the same').required("New Password is required"),
+  newPassword: Yup.string()
+    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Old Password is required"),
+  confirmPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Both password needs to be the same').required("New Password is required"),
 });
 export const AccountResetPassword = () => {
   const {state} = useContext(AppContext);
-  const {email} = state.adminState.adminDetails;
+  const {access_token} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -26,21 +27,19 @@ export const AccountResetPassword = () => {
   return (
     <Formik
       validationSchema={newPasswordSchema}
-      initialValues={{oldPassword: '', newPassword: ''}}
+      initialValues={{currentPassword: '', newPassword: '', confirmPassword: ''}}
       onSubmit={async (values) => {
-        const body = {email, oldPassword: values.oldPassword, newPassword: values.newPassword};
         try {
-          await axios.post(API.ACCOUNT_RESET_PASSWORD, body);
-          setNotification({
-            type: "success",
-            message: "Successfully changed password!",
-            position: "top-right",
-            autoClose: 2,
-          });
-        } catch (exp) {
+          const config = {headers: {Authorization: `Bearer ${access_token}`}};
+          await passwordResetDentistApi({
+            currentPassword: values.currentPassword,
+            newPassword: values.newPassword
+          }, config);
+          setNotification({type: "success", message: "Successfully changed password!", position: "top-right"});
+        } catch (error: any) {
           setNotification({
             type: "error",
-            message: "Error to reset password account, please try again!",
+            message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message
           });
         }
       }}>
@@ -51,15 +50,21 @@ export const AccountResetPassword = () => {
           </div>
           <div className="account-row-content">
             <span className="account-input-span">Current</span>
-            <Field className="account-form-profile-input" name='oldPassword' placeholder='Old Password' />
-            {errors.oldPassword && touched.oldPassword ?
-              <p className='account-error-text'>{errors.oldPassword}</p> : null}
+            <Field className="account-form-profile-input" name='currentPassword' placeholder='Old Password' />
+            {errors.currentPassword && touched.currentPassword ?
+              <p className='account-error-text'>{errors.currentPassword}</p> : null}
           </div>
           <div className="account-row-content">
             <span className="account-input-span">New</span>
             <Field className="account-form-profile-input" name='newPassword' placeholder='New Password' />
             {errors.newPassword && touched.newPassword ?
               <p className='account-error-text'>{errors.newPassword}</p> : null}
+          </div>
+          <div className="account-row-content">
+            <span className="account-input-span">Confirm</span>
+            <Field className="account-form-profile-input" name='confirmPassword' placeholder='Confirm Password' />
+            {errors.confirmPassword && touched.confirmPassword ?
+              <p className='account-error-text'>{errors.confirmPassword}</p> : null}
           </div>
           <div className="account-row-content">
             <button className="account-button-green" type="submit">

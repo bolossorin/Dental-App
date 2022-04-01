@@ -22,7 +22,7 @@ export const Pricing = ({setNextStep}) => {
 
   const handleFreeSubmit = () => {
     if (setNextStep) {
-      setNextStep('emailCheck')
+        Router.push(routes.login);
     } else {
       Router.push(routes.purchase)
     }

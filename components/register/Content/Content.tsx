@@ -1,8 +1,6 @@
-import React, {useState, useCallback} from "react";
+import React, {useState} from "react";
 
 // components
-import {ValidateEmail} from "../ValidateEmail/ValidateEmail";
-import notify, {ISetNotofication} from "../../Toast";
 import {Layout} from "../../Layout/Layout";
 import {StripeCheckout} from "../../stripe/StripeCheckout/StripeCheckout";
 import {Pricing} from "../../Pricing/Pricing";
@@ -16,19 +14,13 @@ export interface IRegisterFormChildren {
 }
 
 export const Content: React.FC = () => {
-  const [nextStep, setNextStep] = useState<"cardCheck" | "pricingCheck" | "emailCheck" | "register">("register");
-  const [registerValues, setRegisterValues] = useState<IRegisterFormChildren>();
-
-  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
-    notify({...notifyProps});
-  }, []);
+  const [nextStep, setNextStep] = useState<"cardCheck" | "pricingCheck" | "register">("register");
 
   return (
     <Layout>
-      {nextStep === "register" && (<Register setRegisterValues={setRegisterValues} setNextStep={setNextStep} />)}
+      {nextStep === "register" && (<Register setNextStep={setNextStep} />)}
       {nextStep === "pricingCheck" && <Pricing setNextStep={setNextStep} />}
       {nextStep === "cardCheck" && <StripeCheckout backButton setNextStep={setNextStep} />}
-      {nextStep === "emailCheck" && <ValidateEmail registerValues={registerValues} setNotification={setNotification} />}
     </Layout>
   );
 };

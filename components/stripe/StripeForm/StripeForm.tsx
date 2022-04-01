@@ -14,6 +14,7 @@ import notify from "../../Toast";
 import {CARD_OPTIONS} from "../../../utils/cardOptions";
 import * as Yup from "yup";
 import cn from "classnames";
+import {routes} from "../../../utils/routes";
 
 const getCurrency = (price: number, oldPrice: number) => {
   return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
@@ -146,7 +147,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
         } finally {
           setProcessing(false);
         }
-        setNextStep("emailCheck")
+        Router.push(routes.login);
       }
     }}>
     {({errors, touched}) =>
