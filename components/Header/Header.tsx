@@ -12,7 +12,7 @@ import {routes} from "../../utils/routes";
 
 export const Header: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {isLogged} = state.userState;
+  const {isLogged} = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
   const [toggle, setToggle] = useState(false);
 

@@ -15,8 +15,9 @@ export interface ILocationsAddResponse {
 
 const Locations: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {accountType} = state.userState;
+  const {accountType} = state.dentistState;
 
+  console.log(state,'state')
   return (
     <ProfileLayout title='Locations' subTitle='Information For Patients'>
       <div className="box-2-box">

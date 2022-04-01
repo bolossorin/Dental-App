@@ -5,9 +5,10 @@ export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_B
 
 export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
 
+export const getDentistLocations = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, config);
+
 
 export const API = {
-  LOGOUT: "/api/dentist/account/logout",
   VERIFY_REGISTER: "/api/dentist/account/register_verify",
   PASSWORD_RESET: "/api/dentist/account/reset-password",
 

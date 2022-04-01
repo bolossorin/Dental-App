@@ -26,7 +26,7 @@ const SetServices: React.FC<GallerySetServiceProps> = (
 
   // todo: need backend
   // const {state} = useContext(AppContext);
-  // const {services} = state.userState;
+  // const {services} = state.dentistState;
   return (
     <div className="row-gallery">
       <div className="profile-box-form cut-block">

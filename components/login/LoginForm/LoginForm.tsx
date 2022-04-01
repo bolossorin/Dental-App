@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import {Spinner} from "../../index";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
-import {AdminTypes, UserTypes} from "../../../reducers";
+import {AdminTypes, DentistTypes} from "../../../reducers";
 import {IDentistBio, IDentistLocations, IServices, Null_Or_,} from "../../../reducers/types";
 import {Layout} from "../../Layout/Layout";
 import {ShowPassword} from "../../common/ShowPassword/ShowPassword";
@@ -60,7 +60,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               localStorage.setItem("dentist", JSON.stringify(values));
               localStorage.removeItem("admin");
               // const fullData = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${values.email}`);
-              dispatch({type: UserTypes.LOGIN, payload: {email: values.email}});
+              dispatch({type: DentistTypes.LOGIN, payload: {email: values.email}});
             }
 
             let fullDataAdmin;
@@ -178,7 +178,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               const {bio, avatar_url, locations, services, cover_url, accountType} = fullData;
               localStorage.setItem("dentist", JSON.stringify(fullData));
               dispatch({
-                type: UserTypes.SET_FULL_DATA,
+                type: DentistTypes.SET_FULL_DATA,
                 payload: {
                   ...bio,
                   avatar_url,

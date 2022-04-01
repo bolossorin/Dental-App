@@ -9,7 +9,7 @@ import * as Yup from "yup";
 import {API} from "../../../../api/AWS-gateway";
 import {ILocationsAddResponse} from "../Locations";
 import {UserLocation} from "../../../../reducers/types";
-import {UserTypes} from "../../../../reducers";
+import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
 import cn from "classnames";
@@ -21,19 +21,19 @@ const LocationSchema = Yup.object().shape({
 });
 export const LocationForm = ({title, primary, locations}: any) => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, accountType} = state.userState;
+  const {email, accountType} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(
     ({...notifyProps}) => {
       notify({...notifyProps});
     }, []);
 
-  const handleAddLocation = (location: UserLocation) => dispatch({type: UserTypes.ADD_LOCATION, payload: {location}});
+  const handleAddLocation = (location: UserLocation) => dispatch({type: DentistTypes.ADD_LOCATION, payload: {location}});
 
   const handleRemoveLocation = async (key: string) => {
     try {
       await axios.delete(`${API.SET_DENTIST_LOCATION}?key=${key}`);
-      dispatch({type: UserTypes.REMOVE_LOCATION, payload: {id: key}});
+      dispatch({type: DentistTypes.REMOVE_LOCATION, payload: {id: key}});
       setNotification({
         type: "success",
         message: "successfully deleted location",

@@ -12,7 +12,7 @@ import {Billing} from "../Billing/Billing";
 
 export const Subscription: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email}: any = state.userState;
+  const {email}: any = state.dentistState;
 
   const [showBilling, setShowBilling] = useState(false);
 

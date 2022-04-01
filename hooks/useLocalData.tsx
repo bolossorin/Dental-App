@@ -10,7 +10,7 @@ import {API} from "../api/AWS-gateway";
 import {
   AdminTypes,
   // TAdminReducerState,
-  UserTypes
+  DentistTypes
 } from "../reducers";
 import {AppContext} from "../context/app.context";
 import {
@@ -27,7 +27,7 @@ import {routes} from "../utils/routes";
 
 export const useLocalData = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {isLogged, services, email: userEmail} = state.userState;
+  const {isLogged, services, email: userEmail} = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -63,7 +63,7 @@ export const useLocalData = () => {
         localStorage.setItem("dentist", JSON.stringify(localState));
         localStorage.removeItem("admin");
         dispatch({
-          type: UserTypes.SET_FULL_DATA,
+          type: DentistTypes.SET_FULL_DATA,
           payload: {
             ...bio,
             avatar_url,
@@ -123,7 +123,7 @@ export const useLocalData = () => {
       .then(({data}) => {
         const allServices = filterAllServices(data, services);
         dispatch({
-          type: UserTypes.SET_ALL_SERVICES,
+          type: DentistTypes.SET_ALL_SERVICES,
           payload: {
             allowedServices: allServices,
           },
@@ -140,7 +140,7 @@ export const useLocalData = () => {
         .get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${userEmail}`)
         .then(({data}) => {
           dispatch({
-            type: UserTypes.SET_GALLERY,
+            type: DentistTypes.SET_GALLERY,
             payload: {
               gallery: data,
             },

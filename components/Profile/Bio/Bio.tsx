@@ -8,7 +8,7 @@ import * as Yup from "yup";
 // components
 import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
-import {UserTypes} from "../../../reducers";
+import {DentistTypes} from "../../../reducers";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
@@ -34,7 +34,7 @@ const bioSchema = Yup.object().shape({
 });
 export const Bio: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, username, title, accountType, profileBio, qualifications, website, phone} = state.userState;
+  const {email, username, title, accountType, profileBio, qualifications, website, phone} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(
     ({...notifyProps}) => {
@@ -71,7 +71,7 @@ export const Bio: React.FC = () => {
           try {
             const {data} = await axios.post<IBioResponse>(API.SET_DENTIST_INFORMATION, body);
             dispatch({
-              type: UserTypes.SET_INFO,
+              type: DentistTypes.SET_INFO,
               payload: {
                 email: values.email,
                 profileBio: data.profileBio,

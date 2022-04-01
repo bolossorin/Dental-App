@@ -23,7 +23,7 @@ export const MenuItem = () => {
   const [loginUrl, setLoginUrl] = useState(routes.login);
 
   const {state} = useContext(AppContext);
-  const {isLogged, email} = state.userState;
+  const {isLogged, email} = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
 
   const [logOut] = useLogout();

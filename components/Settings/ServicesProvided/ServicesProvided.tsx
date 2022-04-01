@@ -16,7 +16,7 @@ import {AdminTypes} from "../../../reducers";
 
 export const ServicesProvided: React.FC = () => {
   const {dispatch, state} = useContext(AppContext);
-  const defaultServices = state.userState.services;
+  const defaultServices = state.dentistState.services;
   const [serviceEditing, setServiceEditing] = useState<any>();
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingValue, setServiceEditingValue] = useState<any>();

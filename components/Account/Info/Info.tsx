@@ -19,7 +19,7 @@ const accountInfoSchema = Yup.object().shape({
 });
 export const AccountInfoBlock: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email, gdcNumber}: any = state.userState;
+  const {email, gdcNumber}: any = state.dentistState;
 
   const [canDelete, setCanDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);

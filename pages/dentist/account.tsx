@@ -12,7 +12,7 @@ import {AppContext} from "../../context/app.context";
 
 const AccountPage: NextPage = (): JSX.Element => {
   const {state} = useContext(AppContext);
-  const {accountType}: any = state.userState;
+  const {accountType}: any = state.dentistState;
 
 
   return (

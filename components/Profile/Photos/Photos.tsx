@@ -8,13 +8,13 @@ import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
-import {UserTypes} from "../../../reducers";
+import {DentistTypes} from "../../../reducers";
 import {resizeFile} from "../../../utils/resizer";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, avatar_url, cover_url, accountType} = state.userState;
+  const {email, avatar_url, cover_url, accountType} = state.dentistState;
   const [avatarSrc, setAvatarSrc] = useState<any>("");
   const [coverSrc, setCoverSrc] = useState<any>("");
 
@@ -47,7 +47,7 @@ export const Photos: React.FC = () => {
           await axios.post(url[what], body);
           if (what === "avatar") {
             setAvatarSrc(stringFormat);
-            dispatch({type: UserTypes.SET_AVATAR_URL, payload: {avatar_ul: stringFormat as string}});
+            dispatch({type: DentistTypes.SET_AVATAR_URL, payload: {avatar_ul: stringFormat as string}});
             setNotification({
               type: "success",
               message: "Successfully changed avatar image",
@@ -58,7 +58,7 @@ export const Photos: React.FC = () => {
           }
           if (what === "cover") {
             setCoverSrc(stringFormat);
-            dispatch({type: UserTypes.SET_COVER_URL, payload: {cover_ul: stringFormat as string}});
+            dispatch({type: DentistTypes.SET_COVER_URL, payload: {cover_ul: stringFormat as string}});
             setNotification({
               type: "success",
               message: "Successfully cover image",

@@ -5,7 +5,7 @@ import {AppContext} from "../../../context/app.context";
 
 export const TopSection =()=>{
   const {state} = useContext(AppContext);
-  const {avatar_url, username} = state.userState;
+  const {avatar_url, username} = state.dentistState;
 
   return(
     <>

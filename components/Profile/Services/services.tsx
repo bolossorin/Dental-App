@@ -7,7 +7,7 @@ import cn from "classnames";
 // components
 import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
-import {UserTypes} from "../../../reducers";
+import {DentistTypes} from "../../../reducers";
 import {IService} from "../../../reducers/types";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
@@ -21,7 +21,7 @@ type IAddServiceResponse = IService[];
 
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {services, accountType, allowedServices, email} = state.userState;
+  const {services, accountType, allowedServices, email} = state.dentistState;
   const [selectedServiceId, selectService] = useState<string>("");
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -38,7 +38,7 @@ export const Services: React.FC = () => {
     const body: IAddServiceBody = {email: email || "", services: [selectedServiceId]};
     try {
       const {data} = await axios.post<IAddServiceResponse>(API.DENTIST_SERVICES, body);
-      dispatch({type: UserTypes.ADD_SERVICES, payload: {services: data}});
+      dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
       setNotification({
         type: "success",
         message: `Successfully added new service!`,
@@ -59,7 +59,7 @@ export const Services: React.FC = () => {
   const handleDeleteService = async (key: string) => {
     try {
       await axios.delete(`${API.DENTIST_SERVICES}?key=${key}`);
-      dispatch({type: UserTypes.REMOVE_SERVICE, payload: {key}});
+      dispatch({type: DentistTypes.REMOVE_SERVICE, payload: {key}});
       setNotification({
         type: "success",
         message: `Successfully deleted service!`,

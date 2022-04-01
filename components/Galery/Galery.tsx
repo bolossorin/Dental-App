@@ -19,7 +19,7 @@ import {API} from "../../api/AWS-gateway";
 import {AppContext} from "../../context/app.context";
 import {resizeFile} from "../../utils/resizer";
 import {IUserGallery} from "../../reducers/types";
-import {UserTypes} from "../../reducers";
+import {DentistTypes} from "../../reducers";
 
 const gallerySchema = Yup.object().shape({
   before_title: Yup.string().required(),
@@ -93,7 +93,7 @@ export const Gallery: React.FC = () => {
       return;
     }
     try {
-      const {email} = state.userState;
+      const {email} = state.dentistState;
       const {after_altTags, after_title, before_altTags, before_title} = data;
       const body = {
         email,
@@ -126,7 +126,7 @@ export const Gallery: React.FC = () => {
 
       const res = await axios.post<IUserGallery>(API.SET_DENTIST_GALLERY, body);
       dispatch({
-        type: UserTypes.ADD_TO_GALLERY,
+        type: DentistTypes.ADD_TO_GALLERY,
         payload: {
           item: res.data,
         },
@@ -216,7 +216,7 @@ export const Gallery: React.FC = () => {
   };
 
   const onSubmitEdit = async (data) => {
-    const {email} = state.userState;
+    const {email} = state.dentistState;
     if (!photoService) {
       setNotification({type: "warning", message: "Please choose service!"});
       return;
@@ -249,7 +249,7 @@ export const Gallery: React.FC = () => {
         body
       );
       dispatch({
-        type: UserTypes.UPDATE_ITEM_GALLERY,
+        type: DentistTypes.UPDATE_ITEM_GALLERY,
         payload: {
           item: {...res.data, key},
         },

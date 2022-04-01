@@ -5,7 +5,7 @@ import {AppContext} from "../../../context/app.context";
 
 export const ProfileLayout = ({children, title, subTitle}: any) => {
   const {state} = useContext(AppContext);
-  const {accountType} = state.userState;
+  const {accountType} = state.dentistState;
 
   return (
     <div className="profile-box-form">
