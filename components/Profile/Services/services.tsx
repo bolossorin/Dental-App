@@ -1,27 +1,29 @@
 import React, {useCallback, useContext, useState} from "react";
 
 // libs
-import axios from "axios";
+// import axios from "axios";
 import cn from "classnames";
 
 // components
-import {API} from "../../../api/AWS-gateway";
+// import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
-import {IService} from "../../../reducers/types";
+// import {IService} from "../../../reducers/types";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 
-interface IAddServiceBody {
-  email: string;
-  services: string[];
-}
-type IAddServiceResponse = IService[];
+// interface IAddServiceBody {
+//   email: string;
+//   services: string[];
+// }
+// type IAddServiceResponse = IService[];
 
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {services, accountType, allowedServices, email} = state.dentistState;
+  const {services, accountType, allowedServices,
+    // email
+  } = state.dentistState;
   const [selectedServiceId, selectService] = useState<string>("");
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -35,10 +37,10 @@ export const Services: React.FC = () => {
       setNotification({type: "info", message: "Your cannot add more than 2 services"});
       return;
     }
-    const body: IAddServiceBody = {email: email || "", services: [selectedServiceId]};
+    // const body: IAddServiceBody = {email: email || "", services: [selectedServiceId]};
     try {
-      const {data} = await axios.post<IAddServiceResponse>(API.DENTIST_SERVICES, body);
-      dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
+      // const {data} = await axios.post<IAddServiceResponse>(API.DENTIST_SERVICES, body);
+      // dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
       setNotification({
         type: "success",
         message: `Successfully added new service!`,
@@ -58,7 +60,7 @@ export const Services: React.FC = () => {
 
   const handleDeleteService = async (key: string) => {
     try {
-      await axios.delete(`${API.DENTIST_SERVICES}?key=${key}`);
+      // await axios.delete(`${API.DENTIST_SERVICES}?key=${key}`);
       dispatch({type: DentistTypes.REMOVE_SERVICE, payload: {key}});
       setNotification({
         type: "success",

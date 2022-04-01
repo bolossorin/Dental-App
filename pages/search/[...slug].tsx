@@ -16,7 +16,9 @@ import {dataInitial, personInitial} from "../../mock/search";
 
 const PersonPage = () => {
   const [data, setData] = useState<IDentistFullDataResponse>(dataInitial);
-  const [galleryData, setGalleryData] = useState<IUserGallery[]>(personInitial);
+  const [galleryData,
+    // setGalleryData
+  ] = useState<IUserGallery[]>(personInitial);
 
   const router = useRouter();
   const email = router.asPath.split("/")[2];
@@ -31,8 +33,8 @@ const PersonPage = () => {
       }
 
       try {
-        const gallery = await axios.get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${email}`);
-        setGalleryData(gallery.data);
+        // const gallery = await axios.get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${email}`);
+        // setGalleryData(gallery.data);
       } catch (exp) {
         console.log(exp);
       }

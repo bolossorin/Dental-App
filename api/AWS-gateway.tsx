@@ -7,6 +7,10 @@ export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLI
 
 export const getDentistLocations = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, config);
 
+export const setDentistLocation = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, body, config);
+
+export const updateDentistLocation = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations/${id}`, body, config);
+
 
 export const API = {
   VERIFY_REGISTER: "/api/dentist/account/register_verify",
@@ -20,7 +24,6 @@ export const API = {
   SET_DENTIST_INFORMATION: "/api/dentist/profile/information",
   GET_DENTIST_FULL_DATA: "/api/dentist/profile/dentist-profile",
   SET_DENTIST_LOCATION: "/api/dentist/profile/location",
-  GET_DENTIST_LOCATION: "/api/dentist/profile/location",
   DENTIST_SERVICES: "/api/dentist/profile/services",
   UPLOAD_DENTIST_AVATAR: "/api/dentist/profile/avatar",
   UPLOAD_DENTIST_COVER: "/api/dentist/profile/cover",

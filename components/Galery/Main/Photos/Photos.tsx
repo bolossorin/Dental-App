@@ -1,12 +1,12 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
-import axios from "axios";
+// import axios from "axios";
 
 // components
-import {API} from "../../../../api/AWS-gateway";
+// import {API} from "../../../../api/AWS-gateway";
 import {AppContext} from "../../../../context/app.context";
-import {DentistTypes} from "../../../../reducers";
+// import {DentistTypes} from "../../../../reducers";
 import {IUserGallery} from "../../../../reducers/types";
 import {ISetNotofication} from "../../../Toast";
 import {GallerySearch} from "../Search/Search";
@@ -20,7 +20,9 @@ interface GalleryPhotosProps {
 }
 
 export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) => {
-  const {state, dispatch} = useContext(AppContext);
+  const {state,
+    // dispatch
+  } = useContext(AppContext);
   const {gallery, services} = state.dentistState;
 
   const [galleryPhotos, setGalleryPhotos] = useState<IUserGallery[] | null>(personInitial);
@@ -59,13 +61,15 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
     setGalleryPhotos(results);
   };
 
-  const handleDelete = async (key: string) => {
+  const handleDelete = async (
+    // key: string
+  ) => {
     try {
-      await axios.delete(`${API.SET_DENTIST_GALLERY}?key=${key}`);
-      dispatch({
-        type: DentistTypes.REMOVE_FROM_GALLERY,
-        payload: {key},
-      });
+      // await axios.delete(`${API.SET_DENTIST_GALLERY}?key=${key}`);
+      // dispatch({
+      //   type: DentistTypes.REMOVE_FROM_GALLERY,
+      //   payload: {key},
+      // });
       setNotification({
         type: "success",
         message: "Successfully delete gallery photo!",

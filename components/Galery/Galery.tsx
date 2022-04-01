@@ -1,8 +1,10 @@
-import React, {useCallback, useContext, useState} from "react";
+import React, {useCallback,
+  // useContext,
+  useState} from "react";
 
 // libs
 import Skeleton from "react-loading-skeleton";
-import axios from "axios";
+// import axios from "axios";
 import {Form, Formik} from "formik";
 import * as Yup from "yup";
 
@@ -15,11 +17,11 @@ import {Watermark} from "./Uploads/Watermark/Watermark";
 import watermark from "../../utils/watermark/builded";
 import {ISetNotofication} from "../Toast";
 import notify from "../Toast";
-import {API} from "../../api/AWS-gateway";
-import {AppContext} from "../../context/app.context";
+// import {API} from "../../api/AWS-gateway";
+// import {AppContext} from "../../context/app.context";
 import {resizeFile} from "../../utils/resizer";
 import {IUserGallery} from "../../reducers/types";
-import {DentistTypes} from "../../reducers";
+// import {DentistTypes} from "../../reducers";
 
 const gallerySchema = Yup.object().shape({
   before_title: Yup.string().required(),
@@ -31,10 +33,10 @@ const gallerySchema = Yup.object().shape({
 export const Gallery: React.FC = () => {
   const {loading} = useLocalData();
 
-  const {state, dispatch} = useContext(AppContext);
+  // const {state, dispatch} = useContext(AppContext);
 
   const [step, setStep] = useState<"gallery" | "uploads" | "edit">("gallery");
-  const [keyOfEditingPhoto, setItemKey] = useState("");
+  // const [keyOfEditingPhoto, setItemKey] = useState("");
 
   const [watermarkedAfter, setWatermarkedAfter] = useState("");
   const [watermarkedBefore, setWatermarkedBefore] = useState("");
@@ -70,7 +72,9 @@ export const Gallery: React.FC = () => {
   const onBeforeSaveCrop = (src) => setBeforeCroppedImg(src);
   const onAfterSaveCrop = (src) => setAfterCroppedImg(src);
 
-  const onSubmitForm = async (data) => {
+  const onSubmitForm = async (
+    // data
+  ) => {
     if (!watermarkedAfter || !watermarkedBefore) {
       setNotification({
         type: "warning",
@@ -93,44 +97,44 @@ export const Gallery: React.FC = () => {
       return;
     }
     try {
-      const {email} = state.dentistState;
-      const {after_altTags, after_title, before_altTags, before_title} = data;
-      const body = {
-        email,
-        images: {
-          before: {
-            title: before_title,
-            altTags: before_altTags,
-            files: {
-              extension: watermarkedBefore
-                .split(",")[0]!
-                .split("/")[1]
-                .split(";")[0],
-              value: watermarkedBefore.split(",")[1],
-            },
-          },
-          after: {
-            title: after_title,
-            altTags: after_altTags,
-            files: {
-              extension: watermarkedAfter
-                .split(",")[0]!
-                .split("/")[1]
-                .split(";")[0],
-              value: watermarkedAfter.split(",")[1],
-            },
-          },
-        },
-        service_id: photoService,
-      };
+      // const {email} = state.dentistState;
+      // const {after_altTags, after_title, before_altTags, before_title} = data;
+      // const body = {
+      //   email,
+      //   images: {
+      //     before: {
+      //       title: before_title,
+      //       altTags: before_altTags,
+      //       files: {
+      //         extension: watermarkedBefore
+      //           .split(",")[0]!
+      //           .split("/")[1]
+      //           .split(";")[0],
+      //         value: watermarkedBefore.split(",")[1],
+      //       },
+      //     },
+      //     after: {
+      //       title: after_title,
+      //       altTags: after_altTags,
+      //       files: {
+      //         extension: watermarkedAfter
+      //           .split(",")[0]!
+      //           .split("/")[1]
+      //           .split(";")[0],
+      //         value: watermarkedAfter.split(",")[1],
+      //       },
+      //     },
+      //   },
+      //   service_id: photoService,
+      // };
 
-      const res = await axios.post<IUserGallery>(API.SET_DENTIST_GALLERY, body);
-      dispatch({
-        type: DentistTypes.ADD_TO_GALLERY,
-        payload: {
-          item: res.data,
-        },
-      });
+      // const res = await axios.post<IUserGallery>(API.SET_DENTIST_GALLERY, body);
+      // dispatch({
+      //   type: DentistTypes.ADD_TO_GALLERY,
+      //   payload: {
+      //     item: res.data,
+      //   },
+      // });
       setNotification({
         type: "success",
         message: "Successfully added new image to Gallery!",
@@ -206,7 +210,7 @@ export const Gallery: React.FC = () => {
     setBeforeImg(target.imageBeforeUrl as string);
     setEditingService({id: target.service_id, name: target.service_name});
     setServiceId(target.service_id);
-    setItemKey(target.key);
+    // setItemKey(target.key);
     setStep("edit");
 
     window.scrollTo({
@@ -215,8 +219,10 @@ export const Gallery: React.FC = () => {
     });
   };
 
-  const onSubmitEdit = async (data) => {
-    const {email} = state.dentistState;
+  const onSubmitEdit = async (
+    // data
+  ) => {
+    // const {email} = state.dentistState;
     if (!photoService) {
       setNotification({type: "warning", message: "Please choose service!"});
       return;
@@ -226,34 +232,34 @@ export const Gallery: React.FC = () => {
       return;
     }
     try {
-      const {after_altTags, after_title, before_altTags, before_title} = data;
-      const body = {
-        email,
-        images: {
-          before: {
-            title: before_title,
-            altTags: before_altTags || null,
-            files: null,
-          },
-          after: {
-            title: after_title,
-            altTags: after_altTags || null,
-            files: null,
-          },
-        },
-        service_id: photoService,
-      };
-      const key = keyOfEditingPhoto;
-      const res = await axios.put<IUserGallery>(
-        `${API.SET_DENTIST_GALLERY}?key=${key}`,
-        body
-      );
-      dispatch({
-        type: DentistTypes.UPDATE_ITEM_GALLERY,
-        payload: {
-          item: {...res.data, key},
-        },
-      });
+      // const {after_altTags, after_title, before_altTags, before_title} = data;
+      // const body = {
+      //   email,
+      //   images: {
+      //     before: {
+      //       title: before_title,
+      //       altTags: before_altTags || null,
+      //       files: null,
+      //     },
+      //     after: {
+      //       title: after_title,
+      //       altTags: after_altTags || null,
+      //       files: null,
+      //     },
+      //   },
+      //   service_id: photoService,
+      // };
+      // const key = keyOfEditingPhoto;
+      // const res = await axios.put<IUserGallery>(
+      //   `${API.SET_DENTIST_GALLERY}?key=${key}`,
+      //   body
+      // );
+      // dispatch({
+      //   type: DentistTypes.UPDATE_ITEM_GALLERY,
+      //   payload: {
+      //     item: {...res.data, key},
+      //   },
+      // });
       setNotification({
         type: "success",
         message: "Successfully added new image to Gallery!",

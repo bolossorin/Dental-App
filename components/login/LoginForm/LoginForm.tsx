@@ -77,15 +77,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
                 phone: '',
               },
               avatar_url: '',
-              locations: [
-                {
-                  key: '',
-                  location: '',
-                  email: '',
-                  lat: 51.2042666,
-                  lng: 0.1149085
-                },
-              ],
+              locations: [],
               services: [
                 {
                   key: '1',
@@ -174,12 +166,14 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               setTimeout(() => {
                 Router.push(routes.dashboard);
               }, 800);
-            } else {
-              const {bio, avatar_url, locations, services, cover_url, accountType} = fullData;
+            }
+            else {
+              const {bio, avatar_url, locations, services, cover_url, accountType, access_token} = fullData;
               localStorage.setItem("dentist", JSON.stringify(fullData));
               dispatch({
                 type: DentistTypes.SET_FULL_DATA,
                 payload: {
+                  access_token,
                   ...bio,
                   avatar_url,
                   cover_url,

@@ -2,24 +2,24 @@ import React, {useContext, useEffect, useState} from "react";
 
 // libs
 import Router, {useRouter} from "next/router";
-import axios from "axios";
+// import axios from "axios";
 
 // components
 // import {IDentistFullDataResponse} from "../components";
-import {API} from "../api/AWS-gateway";
+// import {API} from "../api/AWS-gateway";
 import {
   AdminTypes,
   // TAdminReducerState,
   DentistTypes
 } from "../reducers";
 import {AppContext} from "../context/app.context";
-import {
-  IUserGallery,
-  IService,
+// import {
+//   IUserGallery,
+//   IService,
   // IAdminMonthStats,
   // IAdminYearStats
-} from "../reducers/types";
-import {filterAllServices} from "../utils/filterServices";
+// } from "../reducers/types";
+// import {filterAllServices} from "../utils/filterServices";
 import {routes} from "../utils/routes";
 
 // export interface IAdminFullDataResponse extends TAdminReducerState {
@@ -27,7 +27,9 @@ import {routes} from "../utils/routes";
 
 export const useLocalData = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {isLogged, services, email: userEmail} = state.dentistState;
+  const {isLogged, services,
+    // email: userEmail
+  } = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
   const [loading, setLoading] = useState(false);
   const router = useRouter();
@@ -58,13 +60,14 @@ export const useLocalData = () => {
         // axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${email}`)
         // .then((res) => {
         //   const {bio, avatar_url, locations, services, cover_url, accountType} = res.data;
-        const {bio, avatar_url, locations, services, cover_url, accountType} = localState;
+        const {bio, avatar_url, locations, services, cover_url, accountType, access_token} = localState;
         // localStorage.setItem("dentist", JSON.stringify(res.data));
         localStorage.setItem("dentist", JSON.stringify(localState));
         localStorage.removeItem("admin");
         dispatch({
           type: DentistTypes.SET_FULL_DATA,
           payload: {
+            access_token,
             ...bio,
             avatar_url,
             cover_url,
@@ -118,37 +121,37 @@ export const useLocalData = () => {
   }, []);
 
   useEffect(() => {
-    axios
-      .get<IService[]>(`${API.DENTIST_SERVICES}`)
-      .then(({data}) => {
-        const allServices = filterAllServices(data, services);
-        dispatch({
-          type: DentistTypes.SET_ALL_SERVICES,
-          payload: {
-            allowedServices: allServices,
-          },
-        });
-      })
-      .catch((error) => {
-        console.error(error, 'error');
-      });
+    // axios
+    // .get<IService[]>(`${API.DENTIST_SERVICES}`)
+    // .then(({data}) => {
+    //   const allServices = filterAllServices(data, services);
+    //   dispatch({
+    //     type: DentistTypes.SET_ALL_SERVICES,
+    //     payload: {
+    //       allowedServices: allServices,
+    //     },
+    //   });
+    // })
+    // .catch((error) => {
+    //   console.error(error, 'error');
+    // });
   }, [services]);
 
   useEffect(() => {
     if (isLogged) {
-      axios
-        .get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${userEmail}`)
-        .then(({data}) => {
-          dispatch({
-            type: DentistTypes.SET_GALLERY,
-            payload: {
-              gallery: data,
-            },
-          });
-        })
-        .catch((e) => {
-          console.log(e);
-        });
+      // axios
+      // .get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${userEmail}`)
+      // .then(({data}) => {
+      //   dispatch({
+      //     type: DentistTypes.SET_GALLERY,
+      //     payload: {
+      //       gallery: data,
+      //     },
+      //   });
+      // })
+      // .catch((e) => {
+      //   console.log(e);
+      // });
     }
   }, [isLogged]);
 

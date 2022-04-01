@@ -3,85 +3,73 @@ import React, {useCallback, useContext} from "react";
 // libs
 import axios from "axios";
 import {Field, Form, Formik} from "formik";
+import {get} from "lodash";
 import * as Yup from "yup";
 
 // components
-import {API} from "../../../../api/AWS-gateway";
-import {ILocationsAddResponse} from "../Locations";
-import {UserLocation} from "../../../../reducers/types";
+import {API, getDentistLocations, setDentistLocation, updateDentistLocation} from "../../../../api/AWS-gateway";
+// import {UserLocation} from "../../../../reducers/types";
 import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
 import cn from "classnames";
 
 const LocationSchema = Yup.object().shape({
-  town: Yup.string().required("Town is required"),
+  location_name: Yup.string().required("Town is required"),
   address: Yup.string().required("Address is required"),
-  post_code: Yup.number().required("Post Code is required"),
+  post_code: Yup.number().typeError('Only numbers').required("Post Code is required"),
 });
-export const LocationForm = ({title, primary, locations}: any) => {
+export const LocationForm = ({title, primary, locations, location}: any) => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, accountType} = state.dentistState;
+  const {
+    // email,
+    accountType, access_token} = state.dentistState;
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
-
-  const handleAddLocation = (location: UserLocation) => dispatch({type: DentistTypes.ADD_LOCATION, payload: {location}});
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
+    notify({...notifyProps});
+  }, []);
 
   const handleRemoveLocation = async (key: string) => {
     try {
       await axios.delete(`${API.SET_DENTIST_LOCATION}?key=${key}`);
       dispatch({type: DentistTypes.REMOVE_LOCATION, payload: {id: key}});
-      setNotification({
-        type: "success",
-        message: "successfully deleted location",
-        autoClose: 2,
-        position: "top-right",
-      });
+      setNotification({type: "success", message: "successfully deleted location", position: "top-right"});
     } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Please try again!",
-        autoClose: 2,
-        position: "top-right",
-      });
+      setNotification({type: "error", message: "Please try again!", position: "top-right"});
     }
   };
 
   return <Formik
     validationSchema={LocationSchema}
+    enableReinitialize
     initialValues={{
-      town: locations?.town || '',
-      address: locations?.address || '',
-      post_code: locations?.post_code || ''
+      location_name: get(location, 'location_name', ''),
+      address: get(location, 'address', ''),
+      post_code: get(location, 'post_code', ''),
     }}
     onSubmit={async (values) => {
-      const locationsList = locations?.map((item) => item.location);
-      const location = `${values.town}: ${values.address}, ${values.post_code}`;
-      const body = {email, location};
-
-      //check to unique
-      if (locationsList?.includes(location)) {
-        setNotification({type: "warning", message: "Location already exist!"});
-        return;
-      }
       try {
-        const response = await axios.post<ILocationsAddResponse>(API.SET_DENTIST_LOCATION, body);
-        const {data: {lat, lng, location, key}} = response;
-        handleAddLocation({email: email || "", lat, lng, location, key});
-        setNotification({
-          type: "success",
-          message: "successfully added location",
-          autoClose: 2,
-          position: "top-right",
-        });
-      } catch (exp) {
+        const config = {headers: {Authorization: `Bearer ${access_token}`}};
+        if (locations.length > 0) {
+          //check to unique
+          if (location.location_name === values.location_name &&
+            location.address === values.address &&
+            location.post_code === values.post_code) {
+            setNotification({type: "warning", message: "Location already exist!"});
+            return;
+          }
+          await updateDentistLocation(location.id, values, config);
+        } else {
+          await setDentistLocation(values, config);
+        }
+        setNotification({type: "success", message: "Successfully", position: "top-right"});
+        getDentistLocations(config)
+          .then(({data}) => dispatch({type: DentistTypes.SET_LOCATIONS, payload: {locations: data}}))
+          .catch(error => setNotification({type: "error", message: error.response.data.message}));
+      } catch (error: any) {
         setNotification({
           type: "error",
-          message: "Please try again!",
-          autoClose: 2,
+          message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message,
           position: "top-right",
         });
       }
@@ -94,8 +82,9 @@ export const LocationForm = ({title, primary, locations}: any) => {
         </div>
         <div className="row-content">
           <span className="input-span">Town/City</span>
-          <Field className="form-profile-input" name="town" placeholder="Town/City" />
-          {errors.town && touched.town ? (<div className='error-text'>{errors.town}</div>) : null}
+          <Field className="form-profile-input" name="location_name" placeholder="Town/City" />
+          {errors.location_name && touched.location_name ? (
+            <div className='error-text'>{errors.location_name}</div>) : null}
         </div>
         <div className="row-content">
           <span className="input-span">Address</span>
@@ -109,7 +98,7 @@ export const LocationForm = ({title, primary, locations}: any) => {
             <div className='error-text'>{errors.post_code}</div>) : null}
         </div>
         <div className="account-form-login-buttons">
-          {!primary && locations?.town && <button
+          {!primary && location?.location_name && <button
             className="button-green-confirm button-green-confirm-mod"
             type="button"
             onClick={() => handleRemoveLocation(values.post_code)}>

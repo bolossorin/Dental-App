@@ -17,7 +17,6 @@ export enum DentistTypes {
   SET_INFO = "DENTIST_SET_INFO",
   SET_FULL_DATA = "SET_FULL_DATA",
   REMOVE_LOCATION = "REMOVE_LOCATION",
-  ADD_LOCATION = "ADD_LOCATION",
   SET_LOCATIONS = "SET_LOCATIONS",
   SET_ALL_SERVICES = "SET_ALL_SERVICES",
   ADD_SERVICES = "ADD_SERVICES",
@@ -45,7 +44,6 @@ export type dentistPayload = {
     phone?: string;
   };
   [DentistTypes.REMOVE_LOCATION]: { id: string; };
-  [DentistTypes.ADD_LOCATION]: { location: UserLocation; };
   [DentistTypes.SET_LOCATIONS]: { locations: UserLocation[]; };
   [DentistTypes.REMOVE_FROM_GALLERY]: { key: string; };
   [DentistTypes.ADD_TO_GALLERY]: { item: IUserGallery; };
@@ -70,6 +68,7 @@ export type dentistPayload = {
 };
 
 export type TdentistReducerState =
+  { access_token: string } &
   IDentistBio &
   IDentistLocations &
   IServices &
@@ -79,6 +78,7 @@ export type TdentistReducerState =
 export type DentistActions = ActionMap<dentistPayload>[keyof ActionMap<dentistPayload>];
 
 export const DentistInitialState: TdentistReducerState = {
+  access_token: '',
   gdcNumber: 0,
   isLogged: false,
   title: "",
@@ -135,18 +135,12 @@ export const dentistReducer = (
     case DentistTypes.SET_LOCATIONS:
       return {...state, locations: action.payload.locations};
     case DentistTypes.REMOVE_LOCATION:
-      const afterRemovingLocation =
-        state.locations?.filter((item) => item.key !== action.payload.id) ||
-        null;
+      const afterRemovingLocation = state.locations?.filter((item) => item.key !== action.payload.id) || null;
       return {...state, locations: afterRemovingLocation};
     case DentistTypes.REMOVE_SERVICE:
       const afterRemovingService = state.services?.filter((item) => item.key !== action.payload.key) ||
         null;
       return {...state, services: afterRemovingService};
-    case DentistTypes.ADD_LOCATION:
-      const afterAddingLocation =
-        state.locations?.concat(action.payload.location) || null;
-      return {...state, locations: afterAddingLocation};
     case DentistTypes.ADD_SERVICES:
       const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};

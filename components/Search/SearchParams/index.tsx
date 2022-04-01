@@ -1,10 +1,10 @@
 // libs
-import axios from "axios";
+// import axios from "axios";
 import {useEffect, useState} from "react";
 
 // components
 import {ILocation, MILES, searchFunc} from "..";
-import {API} from "../../../api/AWS-gateway";
+// import {API} from "../../../api/AWS-gateway";
 import {useDebounce} from "../../../hooks/useDebounce";
 import {IService} from "../../../reducers/types";
 
@@ -24,7 +24,9 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
   }) => {
   const [postCode, setPostCode] = useState("");
   const [service, setService] = useState("");
-  const [allServices, setAllServices] = useState<IService[]>([]);
+  const [allServices,
+    // setAllServices
+  ] = useState<IService[]>([]);
   const [miles, SetMiles] = useState<MILES>();
 
   const handleSwitch = () => setShowMap(!showMap);
@@ -32,14 +34,14 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
   const handleSearch = async () => await findDentist(service, miles);
 
   useEffect(() => {
-    axios
-      .get<IService[]>(`${API.DENTIST_SERVICES}`)
-      .then(({data}) => {
-        setAllServices(data);
-      })
-      .catch((e) => {
-        console.log(e);
-      });
+    // axios
+    //   .get<IService[]>(`${API.DENTIST_SERVICES}`)
+    //   .then(({data}) => {
+    //     setAllServices(data);
+    //   })
+    //   .catch((e) => {
+    //     console.log(e);
+    //   });
   }, []);
 
   const debouncedSearchTerm = useDebounce(postCode, 300);
