@@ -1,22 +1,21 @@
 import React, {useCallback, useContext, useState} from "react";
 
-// libs
-import axios from "axios";
-
 // components
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import {API} from "../../../api/AWS-gateway";
+import {uploadDentistAvatarAPI} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import {resizeFile} from "../../../utils/resizer";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
+import {Spinner} from "../../Spinner/Spinner";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, avatar_url, cover_url, accountType} = state.dentistState;
+  const {avatar_url, cover_url, accountType, access_token} = state.dentistState;
   const [avatarSrc, setAvatarSrc] = useState<any>("");
   const [coverSrc, setCoverSrc] = useState<any>("");
+  const [isSubmitting, setIsSubmitting] = useState<any>(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -24,58 +23,36 @@ export const Photos: React.FC = () => {
 
   const freeAccountLimit = accountType === "free";
 
-  const onProfileImageChange = async (e: React.ChangeEvent<HTMLInputElement>, what: "avatar" | "cover") => {
+  const onProfileImageChange = async (e: any, what: "avatar" | "cover") => {
+    setIsSubmitting(true);
     const file = e.target.files && e.target.files[0];
     const fileSize = file!.size / (1024 * 1024);
-    const fileFormat = file!.type.split("/")[1];
     try {
-      if (file) {
-        if (fileSize > 2) {
-          setNotification({type: "error", message: "Please change size of image"});
-          return;
-        } else {
-          const image = await resizeFile(file, 300, 300, 90);
-          const stringFormat = image as string;
-          const body = {
-            email,
-            file: {
-              extension: fileFormat,
-              value: stringFormat.split(",")[1],
-            },
-          };
-          const url = {avatar: API.UPLOAD_DENTIST_AVATAR, cover: API.UPLOAD_DENTIST_COVER};
-          await axios.post(url[what], body);
-          if (what === "avatar") {
-            setAvatarSrc(stringFormat);
-            dispatch({type: DentistTypes.SET_AVATAR_URL, payload: {avatar_ul: stringFormat as string}});
-            setNotification({
-              type: "success",
-              message: "Successfully changed avatar image",
-              autoClose: 3,
-              position: "top-right",
-            });
-            return;
-          }
-          if (what === "cover") {
-            setCoverSrc(stringFormat);
-            dispatch({type: DentistTypes.SET_COVER_URL, payload: {cover_ul: stringFormat as string}});
-            setNotification({
-              type: "success",
-              message: "Successfully cover image",
-              autoClose: 3,
-              position: "top-right",
-            });
-            return;
-          }
+      if (fileSize > 2) {
+        setNotification({type: "error", message: "Please change size of image"});
+        return;
+      } else {
+        const image: any = await resizeFile(file, 300, 300, 90, 'blob');
+        let formData = new FormData();
+        formData.append('file', image);
+        const config = {headers: {Authorization: `Bearer ${access_token}`}};
+        if (what === "avatar") {
+          const {data} = await uploadDentistAvatarAPI(formData, config);
+          const avatarUrl = data['Attributes']['avatarUrl'];
+          setAvatarSrc(avatarUrl);
+          dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
+          setNotification({type: "success", message: "Successfully changed avatar image", position: "top-right"});
+        }
+        if (what === "cover") {
+          setCoverSrc("");
+          dispatch({type: DentistTypes.SET_COVER_URL, payload: {cover_ul: file}});
+          setNotification({type: "success", message: "Successfully cover image", position: "top-right"});
         }
       }
-    } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Error to upload image",
-        autoClose: 5,
-      });
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message})
     }
+    setIsSubmitting(false);
   };
   return (
     <ProfileLayout title='Display Photos' subTitle='Information For Patients'>
@@ -90,7 +67,9 @@ export const Photos: React.FC = () => {
             </p>
           </div>
           <p className="row-content">
-            <label className="button-green-file">Upload</label>
+            <label htmlFor='profile_picture' className="button-green-file">
+              {isSubmitting ? <Spinner /> : "Upload"}
+            </label>
             <input
               onChange={(e) => onProfileImageChange(e, "avatar")}
               type="file"

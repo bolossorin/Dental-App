@@ -62,7 +62,7 @@ export type dentistPayload = {
   [DentistTypes.SET_ALL_SERVICES]: { allowedServices: IService[]; };
   [DentistTypes.REMOVE_SERVICE]: { key: string; };
   [DentistTypes.ADD_SERVICES]: { services: IService[]; };
-  [DentistTypes.SET_AVATAR_URL]: { avatar_ul: string; };
+  [DentistTypes.SET_AVATAR_URL]:  string;
   [DentistTypes.SET_COVER_URL]: { cover_ul: string; };
   [DentistTypes.SET_FULL_DATA]: TdentistReducerState;
 };
@@ -127,7 +127,7 @@ export const dentistReducer = (
     case DentistTypes.SET_INFO:
       return {...state, ...action.payload};
     case DentistTypes.SET_AVATAR_URL:
-      return {...state, avatar_url: action.payload.avatar_ul};
+      return {...state, avatar_url: action.payload};
     case DentistTypes.SET_COVER_URL:
       return {...state, cover_url: action.payload.cover_ul};
     case DentistTypes.SET_FULL_DATA:
