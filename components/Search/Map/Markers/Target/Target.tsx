@@ -15,13 +15,13 @@ interface ICard {
   currentDentist: any;
 }
 
-export const DentistMarker: React.FC<ICard> = ({setSelectedDentist, selectedDentist, currentDentist, location}) => {
-  const selected = selectedDentist && selectedDentist.id === location.id;
+export const DentistMarker: React.FC<ICard> = ({setSelectedDentist, selectedDentist, currentDentist}) => {
 
   return (
-    <div onClick={() => {setSelectedDentist(currentDentist);}} className="dentist_target">
-      <img className={cn("targetImage", {'active': selected})} src={"../images/dentistMarker.svg"} alt="dentist" />
-      {selected && (<>
+    <div onClick={() => setSelectedDentist(currentDentist)} className="dentist_target">
+      <img className={cn("targetImage", {'active': selectedDentist === currentDentist})}
+           src={"../images/dentistMarker.svg"} alt="dentist" />
+      {selectedDentist === currentDentist && (<>
         <div className="dentist_target_card_box" />
         <div className="dentist_target_card_circle">
           <img src={selectedDentist.avatarUrl} className="dentist_target_card_circle_img" alt="no image" />
