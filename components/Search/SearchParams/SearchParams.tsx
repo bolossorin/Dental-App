@@ -1,26 +1,37 @@
+import React, {useEffect, useState} from "react";
+
 // libs
-// import axios from "axios";
-import {useEffect, useState} from "react";
+import axios from "axios";
 
 // components
-import {ILocation, MILES, searchFunc} from "..";
-// import {API} from "../../../api/AWS-gateway";
+import {ILocation, MILES, SearchDentistResult, searchFunc} from "../Search";
 import {useDebounce} from "../../../hooks/useDebounce";
 import {IService} from "../../../reducers/types";
 
 interface ISearchParamsProps {
   showMap: boolean;
+  myLocation: any;
   setShowMap: (status: boolean) => void;
   setMyLocation: (loc: ILocation) => void;
-  findDentist: searchFunc;
+  setAllDentists: any;
 }
+
+const findRequest = (obj: { lat: number; lng: number; service: string | undefined; miles: MILES | undefined; }) => {
+  return new Promise<SearchDentistResult[]>(async (resolve) => {
+    const body = {lat: obj.lat, lng: obj.lng, serviceId: obj.service || null, miles: obj.miles || null};
+
+    const res = await axios.post<SearchDentistResult[]>("/api/dentist/search/map", body);
+    resolve(res.data);
+  });
+};
 
 export const SearchParams: React.FC<ISearchParamsProps> = (
   {
     showMap,
     setShowMap,
-    findDentist,
     setMyLocation,
+    myLocation,
+    setAllDentists
   }) => {
   const [postCode, setPostCode] = useState("");
   const [service, setService] = useState("");
@@ -70,6 +81,13 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
     if (searchValue[0] === " ") return;
 
     setPostCode(searchValue);
+  };
+
+  const findDentist: searchFunc = async (service, miles) => {
+    if (myLocation) {
+      const dentists = await findRequest({lat: myLocation?.lat, lng: myLocation?.lng, service, miles});
+      setAllDentists(dentists);
+    }
   };
 
   return (

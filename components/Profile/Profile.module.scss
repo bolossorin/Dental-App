@@ -219,11 +219,6 @@ img {
   padding:        20px;
 }
 
-.left-size {
-  width:  100%;
-  height: 100vh;
-}
-
 .right-size {
   width:      100%;
   min-height: 100vh;
@@ -300,13 +295,13 @@ img {
 }
 
 .active {
-  color:      var(--color-green);
-  background: var(--color-white);
+  //color:      var(--color-green);
+  //background: var(--color-white);
 }
 
 .active .leftmenu-link {
-  color:      var(--color-green);
-  background: var(--color-white);
+  //color:      var(--color-green);
+  //background: var(--color-white);
 }
 
 .leftmenu-link-image {
@@ -317,7 +312,7 @@ img {
 }
 
 .active .leftmenu-link-image {
-  filter: invert(0%);
+  //filter: invert(0%);
 }
 
 .leftmenu-list:hover .leftmenu-link-image {

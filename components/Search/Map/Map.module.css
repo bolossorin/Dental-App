@@ -11,15 +11,23 @@
   height: 32px;
 }
 
-.targerImage {
+.targetImage {
   position: relative;
-
-  width: 30px;
-  height: 30px;
+  width: 34px;
+  height: 34px;
+  background: transparent;
+  border-radius: 4px;
+  padding: 3px;
+  border: 1px solid transparent;
+  transition: .3s linear;
 }
 
 .dentist_target:hover .targetImage {
-  background: darkcyan;
+  border: 1px solid darkcyan;
+}
+
+.dentist_target .targetImage.active {
+  border: 1px solid white;
 }
 
 /* new */

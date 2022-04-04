@@ -18,6 +18,9 @@ export const uploadDentistAvatarAPI = (body, config) => axios.post(`${process.en
 
 export const getDentistInfoAPI = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/authenticated`, config);
 
+// Patient
+export const getAllDentistAPI = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
+
 export const API = {
   VERIFY_REGISTER: "/api/dentist/account/register_verify",
   PASSWORD_RESET: "/api/dentist/account/reset-password",

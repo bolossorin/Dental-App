@@ -49,7 +49,7 @@ export const useLocalData = () => {
 
       setLoading(false);
     } else {
-      Router.push(routes.login);
+      if (router.pathname.includes("dentist")) Router.push(routes.login);
     }
   }, []);
 
