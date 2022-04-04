@@ -16,6 +16,8 @@ export const updateDentistLocation = (id, body, config) => axios.put(`${process.
 
 export const uploadDentistAvatarAPI = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/avatar`, body, config);
 
+export const getDentistInfoAPI = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/authenticated`, config);
+
 export const API = {
   VERIFY_REGISTER: "/api/dentist/account/register_verify",
   PASSWORD_RESET: "/api/dentist/account/reset-password",
@@ -25,7 +27,6 @@ export const API = {
   PASSWORD_RESET_VERIFY: "/api/dentist/verify_password_reset",
 
   SET_DENTIST_INFORMATION: "/api/dentist/profile/information",
-  GET_DENTIST_FULL_DATA: "/api/dentist/profile/dentist-profile",
   SET_DENTIST_LOCATION: "/api/dentist/profile/location",
   DENTIST_SERVICES: "/api/dentist/profile/services",
   UPLOAD_DENTIST_COVER: "/api/dentist/profile/cover",

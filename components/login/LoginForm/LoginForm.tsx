@@ -59,7 +59,6 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
             } else {
               localStorage.setItem("dentist", JSON.stringify(values));
               localStorage.removeItem("admin");
-              // const fullData = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${values.email}`);
               dispatch({type: DentistTypes.LOGIN, payload: {email: values.email}});
             }
 

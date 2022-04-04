@@ -38,7 +38,7 @@ export const Photos: React.FC = () => {
         const config = {headers: {Authorization: `Bearer ${access_token}`}};
         if (what === "avatar") {
           const {data} = await uploadDentistAvatarAPI(formData, config);
-          const avatarUrl = data['Attributes']['avatarUrl'];
+          const avatarUrl = data['avatarUrl'];
           setAvatarSrc(avatarUrl);
           dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
           setNotification({type: "success", message: "Successfully changed avatar image", position: "top-right"});

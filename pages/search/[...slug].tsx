@@ -1,12 +1,10 @@
 import React, {useEffect, useState} from "react";
 
 // libs
-import axios from "axios";
 import {useRouter} from "next/router";
 import Skeleton from "react-loading-skeleton";
 
 // components
-import {API} from "../../api/AWS-gateway";
 import {Header, IDentistFullDataResponse} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
@@ -16,9 +14,7 @@ import {dataInitial, personInitial} from "../../mock/search";
 
 const PersonPage = () => {
   const [data, setData] = useState<IDentistFullDataResponse>(dataInitial);
-  const [galleryData,
-    // setGalleryData
-  ] = useState<IUserGallery[]>(personInitial);
+  const [galleryData, setGalleryData] = useState<IUserGallery[]>(personInitial);
 
   const router = useRouter();
   const email = router.asPath.split("/")[2];
@@ -26,8 +22,9 @@ const PersonPage = () => {
   useEffect(() => {
     (async () => {
       try {
-        const info = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${email}`);
-        setData(info.data);
+        // const info = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${email}`);
+        // setData(info.data);
+        setData(dataInitial);
       } catch (exp: any) {
         console.log(exp);
       }
@@ -35,6 +32,7 @@ const PersonPage = () => {
       try {
         // const gallery = await axios.get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${email}`);
         // setGalleryData(gallery.data);
+        setGalleryData(personInitial);
       } catch (exp) {
         console.log(exp);
       }
