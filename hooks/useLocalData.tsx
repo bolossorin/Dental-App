@@ -33,10 +33,10 @@ export const useLocalData = () => {
           type: DentistTypes.SET_FULL_DATA,
           payload: {
             ...localDentistState,
-            username: dentist_name,
+            dentist_name: dentist_name,
             email: email,
-            gdcNumber: gdc,
-            avatar_url: avatarUrl,
+            gdc: gdc,
+            avatarUrl: avatarUrl,
             isLogged: true,
             allowedServices: null,
             gallery: null,
@@ -46,11 +46,10 @@ export const useLocalData = () => {
         console.error(error, 'error');
         Router.push(routes.login);
       });
-
-      setLoading(false);
     } else {
       if (router.pathname.includes("dentist")) Router.push(routes.login);
     }
+    setLoading(false);
   }, []);
 
   useEffect(() => {

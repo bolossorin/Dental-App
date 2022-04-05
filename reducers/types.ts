@@ -13,11 +13,11 @@ export type Null_Or_<T> = T | null;
 
 export type IDentistBio = {
   title: Null_Or_<string>;
-  username: Null_Or_<string>;
+  dentist_name: Null_Or_<string>;
   email: Null_Or_<string>;
-  gdcNumber: Null_Or_<number>;
+  gdc: Null_Or_<number>;
   qualifications: Null_Or_<string>;
-  profileBio: Null_Or_<string>;
+  bio: Null_Or_<string>;
   website: Null_Or_<string>;
   phone: Null_Or_<string>;
 };
@@ -66,7 +66,7 @@ export type IDentistGallery = {
 export type IDentist_SpecialState = {
   isLogged: boolean;
   accountType: string;
-  avatar_url: Null_Or_<string>;
+  avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
   allowedServices: Null_Or_<IService[]>;
 };
@@ -88,7 +88,7 @@ export interface ISubSettings {
 export interface IAdminDetails {
   username: string;
   email: string;
-  avatar_url: string;
+  avatarUrl: string;
 }
 
 export interface IPremiumInformation {
@@ -103,7 +103,7 @@ export interface IAdminUser {
   website: string | null;
   subscription_id: string | null;
   gdc_number: string;
-  profileBio: string | null;
+  bio: string | null;
   email: string;
   post_code: string;
   accountType: string;

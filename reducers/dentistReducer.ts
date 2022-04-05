@@ -36,9 +36,9 @@ export type dentistPayload = {
   [DentistTypes.LOGIN]: {};
   [DentistTypes.SET_INFO]: {
     title: string;
-    username: string;
+    dentist_name: string;
     qualifications: string;
-    profileBio: string;
+    bio: string;
     email: string;
     website?: string;
     phone?: string;
@@ -79,15 +79,15 @@ export type DentistActions = ActionMap<dentistPayload>[keyof ActionMap<dentistPa
 
 export const DentistInitialState: TdentistReducerState = {
   access_token: '',
-  gdcNumber: 0,
+  gdc: 0,
   isLogged: false,
   title: "",
-  username: "",
+  dentist_name: "",
   email: "",
   qualifications: "",
-  profileBio: "",
+  bio: "",
   accountType: "free",
-  avatar_url: "",
+  avatarUrl: "",
   cover_url: "",
   locations: null,
   gallery: null,
@@ -127,7 +127,7 @@ export const dentistReducer = (
     case DentistTypes.SET_INFO:
       return {...state, ...action.payload};
     case DentistTypes.SET_AVATAR_URL:
-      return {...state, avatar_url: action.payload};
+      return {...state, avatarUrl: action.payload};
     case DentistTypes.SET_COVER_URL:
       return {...state, cover_url: action.payload.cover_ul};
     case DentistTypes.SET_FULL_DATA:

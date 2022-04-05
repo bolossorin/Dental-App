@@ -9,40 +9,28 @@ import {Header, IDentistFullDataResponse} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
-import {dataInitial, personInitial} from "../../mock/search";
+import {personInitial} from "../../mock/search";
+import {getDentistByEmailAPI, getDentistGalleryByEmailAPI} from "../../api/AWS-gateway";
 
 
 const PersonPage = () => {
-  const [data, setData] = useState<IDentistFullDataResponse>(dataInitial);
-  const [galleryData, setGalleryData] = useState<IUserGallery[]>(personInitial);
+  const router = useRouter()
+  const {slug} = router.query
 
-  const router = useRouter();
-  const email = router.asPath.split("/")[2];
+  const [dentist, setDentist] = useState<IDentistFullDataResponse | null>(null);
+  const [gallery, setGallery] = useState<IUserGallery[]>(personInitial);
 
   useEffect(() => {
-    (async () => {
-      try {
-        // const info = await axios.get<IDentistFullDataResponse>(`${API.GET_DENTIST_FULL_DATA}?email=${email}`);
-        // setData(info.data);
-        setData(dataInitial);
-      } catch (exp: any) {
-        console.log(exp);
-      }
-
-      try {
-        // const gallery = await axios.get<IUserGallery[]>(`${API.SET_DENTIST_GALLERY}?email=${email}`);
-        // setGalleryData(gallery.data);
-        setGalleryData(personInitial);
-      } catch (exp) {
-        console.log(exp);
-      }
-    })();
-  }, [email]);
+    if (slug) {
+      getDentistByEmailAPI(slug[0]).then(({data}) => setDentist(data)).catch((error) => console.error(error, 'error'));
+      getDentistGalleryByEmailAPI(slug[0]).then(({data}) => setGallery(data)).catch((error) => console.error(error, 'error'));
+    }
+  }, [slug]);
   return (
     <>
       <Header />
-      {!(data && galleryData) && <Skeleton width="100wh" height="90vh" />}
-      {!!(data && galleryData) && (<Person dentist={data} galleryData={galleryData} />)}
+      {!(dentist && gallery) && <Skeleton width="100wh" height="90vh" />}
+      {!!(dentist && gallery) && (<Person dentist={dentist} gallery={gallery} />)}
       <Footer />
     </>
   );

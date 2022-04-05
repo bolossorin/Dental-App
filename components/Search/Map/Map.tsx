@@ -58,7 +58,7 @@ export const GoogleMap: React.FC<IMapProps> = (
             center={myLocation}
             bootstrapURLKeys={{key: `${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}}
             defaultCenter={Locations.cambridge}
-            defaultZoom={11}>
+            defaultZoom={13}>
             <MeMarker {...myLocation} />
             {allDentists.map((locations, index) =>
               locations.locations && locations.locations.map(location =>

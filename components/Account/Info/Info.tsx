@@ -15,11 +15,11 @@ import {AccountResetPassword} from "../../common/AccountResetPassword/AccountRes
 
 const accountInfoSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  gdcNumber: Yup.string().matches(/[0-9]{5}/, 'Invalid gdc number').required("GDC number is required"),
+  gdc: Yup.string().matches(/[0-9]{5}/, 'Invalid gdc number').required("GDC number is required"),
 });
 export const AccountInfoBlock: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email, gdcNumber}: any = state.dentistState;
+  const {email, gdc}: any = state.dentistState;
 
   const [canDelete, setCanDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -51,9 +51,9 @@ export const AccountInfoBlock: React.FC = () => {
     <ProfileBox title='Account Information' subTitle='Login Details'>
       <Formik
         validationSchema={accountInfoSchema}
-        initialValues={{email: email, gdcNumber: gdcNumber}}
+        initialValues={{email: email, gdc: gdc}}
         onSubmit={async (values) => {
-          const body = {email: values.email, gdcNumber: values.gdcNumber};
+          const body = {email: values.email, gdc: values.gdc};
           try {
             await axios.post(API.UPDATE_ACCOUNT, body);
             setNotification({
@@ -79,9 +79,9 @@ export const AccountInfoBlock: React.FC = () => {
             </div>
             <div className="account-form-profile-label">
               <label className="account-form-profile-label">GDC Number</label>
-              <Field className="account-form-profile-input" name='gdcNumber' placeholder='GDC Number'
+              <Field className="account-form-profile-input" name='gdc' placeholder='GDC Number'
                      disabled={!isEdit} />
-              {errors.gdcNumber && touched.gdcNumber ? <p className='account-error-text'>{errors.gdcNumber}</p> : null}
+              {errors.gdc && touched.gdc ? <p className='account-error-text'>{errors.gdc}</p> : null}
             </div>
             {!isEdit && <>
               <div className="account-form-profile-label ">

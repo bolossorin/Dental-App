@@ -123,7 +123,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
         try {
           const body = {
             email: values.email,
-            username: values.name,
+            dentist_name: values.name,
             coupon: couponId || null,
             paymentMethodId: payload.paymentMethod.id,
           };

@@ -23,9 +23,8 @@ export interface ILoginForm
 
 export interface IDentistFullDataResponse
   extends IDentistLocations,
-    IServices {
-  bio: IDentistBio;
-  avatar_url: Null_Or_<string>;
+    IServices, IDentistBio {
+  avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
   accountType: string;
 }
@@ -67,15 +66,15 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               access_token: data.access_token,
               bio: {
                 title: '',
-                username: data.dentist_name,
+                dentist_name: data.dentist_name,
                 email: data.email,
-                gdcNumber: 12345,
+                gdc: 12345,
                 qualifications: '',
-                profileBio: '',
+                bio: '',
                 website: '',
                 phone: '',
               },
-              avatar_url: '',
+              avatarUrl: '',
               locations: [],
               services: [
                 {
@@ -90,7 +89,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
 
             if (title === 'Current FYD admins') {
               fullDataAdmin = {
-                adminDetails: {username: 'John Doe', email: values.email, avatar_url: '../images/doctor1.png'},
+                adminDetails: {username: 'John Doe', email: values.email, avatarUrl: '../images/doctor1.png'},
                 services: [
                   {
                     key: '1',
@@ -165,16 +164,15 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               setTimeout(() => {
                 Router.push(routes.dashboard);
               }, 800);
-            }
-            else {
-              const {bio, avatar_url, locations, services, cover_url, accountType, access_token} = fullData;
+            } else {
+              const {bio, avatarUrl, locations, services, cover_url, accountType, access_token} = fullData;
               localStorage.setItem("dentist", JSON.stringify(fullData));
               dispatch({
                 type: DentistTypes.SET_FULL_DATA,
                 payload: {
                   access_token,
                   ...bio,
-                  avatar_url,
+                  avatarUrl,
                   cover_url,
                   locations,
                   services,

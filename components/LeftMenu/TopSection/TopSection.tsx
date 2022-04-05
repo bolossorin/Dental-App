@@ -5,7 +5,7 @@ import {AppContext} from "../../../context/app.context";
 
 export const TopSection =()=>{
   const {state} = useContext(AppContext);
-  const {avatar_url, username} = state.dentistState;
+  const {avatarUrl, dentist_name} = state.dentistState;
 
   return(
     <>
@@ -19,10 +19,10 @@ export const TopSection =()=>{
         </Link>
       </div>
       <div className="leftmenu-user-information">
-        <img className="user-image" src={avatar_url || "../../images/empty_avatar.png"} alt="profile image" />
+        <img className="user-image" src={avatarUrl || "../../images/empty_avatar.png"} alt="profile image" />
         <div className="user-description white">
-          <span>{username?.split(" ")[0] || ""}</span>
-          <span>{username?.split(" ")[1] || ""}</span>
+          <span>{dentist_name?.split(" ")[0] || ""}</span>
+          <span>{dentist_name?.split(" ")[1] || ""}</span>
         </div>
       </div>
     </>

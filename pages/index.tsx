@@ -14,8 +14,7 @@ const Home = (): JSX.Element => {
 
   return (
     <>
-      {!loading && <Header />}
-      {loading && <Skeleton width={"100vw"} height={"70px"} />}
+      {loading ? <Skeleton width={"100vw"} height={"70px"} /> : <Header />}
       <Search />
       <Footer />
     </>

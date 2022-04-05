@@ -1,4 +1,4 @@
-import {useEffect, useState} from "react";
+import React, {useEffect, useState} from "react";
 
 //libs
 import QRCode from "qrcode";
@@ -8,30 +8,13 @@ import Link from "next/link";
 // components
 import {IUserGallery} from "../../reducers/types";
 import {IDentistFullDataResponse} from "..";
-import {useGetDentist} from "../../hooks/useGetDentist";
 
 interface IPersonProps {
   dentist: IDentistFullDataResponse;
-  galleryData: IUserGallery[];
+  gallery: IUserGallery[];
 }
 
-const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
-  const {
-    accountType,
-    avatar_url,
-    cover_url,
-    email,
-    gallery,
-    gdcNumber,
-    locations,
-    phone,
-    profileBio,
-    qualifications,
-    services,
-    title,
-    username,
-    website,
-  } = useGetDentist(dentist, galleryData);
+const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
 
   const [photos, setPhotos] = useState<IUserGallery[] | null | undefined>(gallery || null);
 
@@ -65,51 +48,47 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
     <main className="person-flex-menu">
       <div className="person-index-leftmenu">
         <img
-          className="person-leftmenu-index-cover-image"
-          src={accountType === "free" ? "../images/empty.png" : cover_url || ""}
+          className="cover-image"
+          src={dentist.accountType !== "premium" ? "../images/empty.png" : dentist.cover_url || ""}
           alt="cover image" />
         <div className="person-index-leftmenu-profile-information">
-          <img
-            className="person-index-leftmenu-profile-photo"
-            src={avatar_url || "../images/empty_avatar.png"}
-            alt="/" />
+          <img className="profile-photo" src={dentist.avatarUrl || "../images/empty_avatar.png"} alt="/" />
           <div>
             <div className="person-form-login-title">
-              {title} <br />
-              {username}
-              {accountType !== "free" && (<img
+              {dentist.title} <br />
+              {dentist.dentist_name}
+              {dentist.accountType === "premium" && (<img
                 className="person-index-gallery-image-watermark-img person-relative-img"
                 src={"../images/check_circle.svg"}
-                alt="check"
-              />)}
+                alt="check" />)}
             </div>
-            <p className="person-form-login-subtitle">Qualifications: {qualifications}</p>
-            <p className="person-form-login-subtitle">GDC No: {gdcNumber}</p>
+            <p className="person-form-login-subtitle">Qualifications: {dentist.qualifications}</p>
+            <p className="person-form-login-subtitle">GDC No: {dentist.gdc}</p>
           </div>
           <div className="person-index-leftmenu-text">
             <p>Bio: </p>
-            <p>{profileBio}</p>
+            <p>{dentist.bio}</p>
             <div className="person-button-list">
-              {services?.map((item) =>
+              {dentist.services?.map((item) =>
                 <button className="person-index-green-button" key={item.service_id}>
                   {item.service_name}
                 </button>)}
             </div>
             <p>Contact:</p>
             <div>
-              <span><strong>Phone:</strong> {phone}</span>
+              <span><strong>Phone:</strong> {dentist.phone}</span>
               <br />
-              <span><strong>Email:</strong> {email}</span>
+              <span><strong>Email:</strong> {dentist.email}</span>
               <br />
-              <Link href={`https://${website}`}>
+              <Link href={`https://${dentist.website}`}>
                 <a target="_blank">
-                  <span><strong>Website:</strong> {website}</span>
+                  <span><strong>Website:</strong> {dentist.website}</span>
                 </a>
               </Link>
             </div>
             <p>Locations:</p>
             <div>
-              {locations?.map((item) =>
+              {dentist.locations?.map((item) =>
                 <div key={item.key}>
                   <span>
                     <strong>{item.location.split(":")[0]}:</strong>
@@ -136,8 +115,8 @@ const Person: React.FC<IPersonProps> = ({dentist, galleryData}) => {
               defaultValue='service'
               onChange={handleChangeOption}>
               <option value="">Service</option>
-              {services &&
-              services.map((service) => (
+              {dentist.services &&
+              dentist.services.map((service) => (
                 <option value={service.service_id} key={service.key}>
                   {service.service_name}
                 </option>

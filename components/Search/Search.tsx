@@ -1,8 +1,5 @@
 import React, {useEffect, useState} from "react";
 
-//libs
-import Skeleton from "react-loading-skeleton";
-
 // components
 import {DentistCards} from "./Card/Card";
 import {GoogleMap} from "./Map/Map";
@@ -28,13 +25,13 @@ export type searchFunc = (service: string | undefined, miles: MILES | undefined)
 
 export interface SearchDentistResult {
   accountType: string;
-  avatar_url: string;
+  avatarUrl: string;
   email: string;
   key: string;
   lat: number;
   lng: number;
   location: object;
-  username: string;
+  dentist_name: string;
   qualifications: string;
 }
 
@@ -56,7 +53,7 @@ const Search: React.FC = () => {
         myLocation={myLocation}
         setMyLocation={setMyLocation}
         setAllDentists={setAllDentists} />
-      {allDentists.length > 0 ? <div className="index-box-to-box">
+      <div className="index-box-to-box">
         {showMap && (<GoogleMap
           allDentists={allDentists}
           setSelectedDentist={setSelectedDentist}
@@ -68,8 +65,7 @@ const Search: React.FC = () => {
           selectedDentist={selectedDentist}
           allDentists={allDentists}
           setMyLocation={setMyLocation} />
-      </div> : <Skeleton count={3} width="100wh" height="23vh" />}
-
+      </div>
     </main>
   );
 };

@@ -45,7 +45,7 @@ export const AdminInitialState: TAdminReducerState = {
   adminDetails: {
     username: '',
     email: '',
-    avatar_url: '',
+    avatarUrl: '',
   },
   services: [
     {

@@ -12,7 +12,7 @@ import {Spinner} from "../../Spinner/Spinner";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {avatar_url, cover_url, accountType, access_token} = state.dentistState;
+  const {avatarUrl, cover_url, accountType, access_token} = state.dentistState;
   const [avatarSrc, setAvatarSrc] = useState<any>("");
   const [coverSrc, setCoverSrc] = useState<any>("");
   const [isSubmitting, setIsSubmitting] = useState<any>(false);
@@ -63,7 +63,7 @@ export const Photos: React.FC = () => {
               <label className="form-profile-label">Profile Picture</label>
             </p>
             <p className="load-avatar__block">
-              <img src={avatarSrc || avatar_url || "../../../images/empty_avatar.png"} alt="profile image" />
+              <img src={avatarSrc || avatarUrl || "../../../images/empty_avatar.png"} alt="profile image" />
             </p>
           </div>
           <p className="row-content">

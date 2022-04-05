@@ -15,9 +15,9 @@ import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 
 interface IBioResponse {
   title: string;
-  username: string;
+  dentist_name: string;
   qualifications: string;
-  profileBio: string;
+  bio: string;
   email?: string;
   website?: string | null;
   phone?: string | null;
@@ -28,13 +28,13 @@ const bioSchema = Yup.object().shape({
   name: Yup.string().matches(/(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})/, 'Invalid Name').required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   qualifications: Yup.string(),
-  profileBio: Yup.string(),
+  bio: Yup.string(),
   website: Yup.string().matches(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/, 'Invalid Website'),
   phone: Yup.string().matches(/^(0|[1-9]\d*)$/, 'Invalid Phone'),
 });
 export const Bio: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, username, title, accountType, profileBio, qualifications, website, phone} = state.dentistState;
+  const {email, dentist_name, title, accountType, bio, qualifications, website, phone} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(
     ({...notifyProps}) => {
@@ -48,10 +48,10 @@ export const Bio: React.FC = () => {
         enableReinitialize
         initialValues={{
           title: title || '',
-          name: username || '',
+          name: dentist_name || '',
           email: email || '',
           qualifications: qualifications || '',
-          profileBio: profileBio || '',
+          bio: bio || '',
           password: '',
           phone: phone || '',
           website: website || ''
@@ -62,8 +62,8 @@ export const Bio: React.FC = () => {
           const body: IBioResponse = {
             title: values.title || "Dr",
             email: values.email,
-            username: values.name,
-            profileBio: values.profileBio,
+            dentist_name: values.name,
+            bio: values.bio,
             qualifications: values.qualifications,
             phone,
             website,
@@ -74,10 +74,10 @@ export const Bio: React.FC = () => {
               type: DentistTypes.SET_INFO,
               payload: {
                 email: values.email,
-                profileBio: data.profileBio,
+                bio: data.bio,
                 qualifications: data.qualifications,
                 title: data.title,
-                username: data.username,
+                dentist_name: data.dentist_name,
                 phone: data.phone || undefined,
                 website: data.website || undefined,
               },
@@ -154,9 +154,9 @@ export const Bio: React.FC = () => {
                   </label>
                 </div>
                 <div className='form-input'>
-                  <Field as='textarea' className="form-profile-input" name="profileBio" placeholder="Profile Bio..." />
-                  {errors.profileBio && touched.profileBio ?
-                    <div className='error-text'>{errors.profileBio}</div> : null}
+                  <Field as='textarea' className="form-profile-input" name="bio" placeholder="Profile Bio..." />
+                  {errors.bio && touched.bio ?
+                    <div className='error-text'>{errors.bio}</div> : null}
                 </div>
                 <div className="form-login-buttons-confirm">
                   <button type='submit' className="button-green-confirm">
