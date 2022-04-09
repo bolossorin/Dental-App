@@ -10,7 +10,7 @@ interface UserProps {
   username: string;
   created_at: Date;
   exp: string | null;
-  accountType: string;
+  subscription_plan: string;
   email: string;
   gdc_number: string;
   post_code: string;
@@ -36,10 +36,10 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
       <section className={cn(styles.user, theme)}>
         <span className={cn(styles.text, theme)}>{props.username}</span>
         <span className={cn(styles.text, theme)}>{creationDate}</span>
-        {props.accountType === "premium" && (<span className={cn(styles.text, theme)}>
+        {props.subscription_plan === "PREMIUM" && (<span className={cn(styles.text, theme)}>
             Paid Subscription Ends: {props.exp}
           </span>)}
-        {props.accountType === "free" && (<span className={cn(styles.text, theme)}>Account is free</span>)}
+        {props.subscription_plan === "FREE" && (<span className={cn(styles.text, theme)}>Account is free</span>)}
         <a className={cn(styles.link, styles.text, theme)}>
           <img className={svgColor} src={"../images/user.svg"} alt='' />
           <span>View Profile</span>

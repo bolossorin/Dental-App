@@ -17,7 +17,7 @@ const registrationSchema = Yup.object().shape({
   password: Yup.string()
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });
-export const Register = ({setNextStep}) => {
+export const Register = ({setNextStep, registerValues, setRegisterValues}) => {
   const [isPassHidden, setIsPassHidden] = useState<boolean>(true);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -29,8 +29,16 @@ export const Register = ({setNextStep}) => {
       initialValues={{dentist_name: '', email: '', gdc: '', password: ''}}
       onSubmit={async (values: IRegisterFormChildren) => {
         try {
-          await registerDentistApi(values)
-          setNextStep("pricingCheck");
+          const response = await registerDentistApi(values)
+
+          if (response) {
+            // const {data} = await loginDentistApi(values);
+
+            registerValues.email = values.email;
+            registerValues.dentist_name = values.dentist_name;
+            setRegisterValues(registerValues);
+            setNextStep("pricingCheck");
+          }
         } catch (error: any) {
           setNotification({
             type: "error",

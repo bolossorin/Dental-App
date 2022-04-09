@@ -1,18 +1,15 @@
 import React, {useCallback, useContext, useState} from "react";
 
-// libs
-import axios from "axios";
-
 // components
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
-import {API} from "../../../api/AWS-gateway";
+import {deleteSubscriptionPI} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 import {Billing} from "../Billing/Billing";
 
 export const Subscription: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email}: any = state.dentistState;
+  const {access_token}: any = state.dentistState;
 
   const [showBilling, setShowBilling] = useState(false);
 
@@ -25,12 +22,10 @@ export const Subscription: React.FC = () => {
 
   const cancelSubscription = async () => {
     try {
-      await axios.delete(`${API.STRIPE_SUBSCRIPTION}?email=${email}`);
-    } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Error to delete account, please try again!",
-      });
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      await deleteSubscriptionPI(config);
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 

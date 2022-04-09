@@ -35,7 +35,7 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
                 className="index-gallery-image"
                 src={dentist.avatarUrl || "../images/empty_avatar.png"}
                 alt="gallery image" />
-              {dentist.accountType !== "free" && (<>
+              {dentist.subscription_plan !== "FREE" && (<>
                 <p className="index-gallery-image-watermark" />
                 <img
                   className="index-gallery-image-watermark-img"

@@ -1,6 +1,6 @@
 .form-login {
-  width:     450px;
-  max-width: 100%;
+  max-width: 450px;
+  width:     100%;
   padding:   20px;
   input {
     color:            var(--black);
@@ -8,9 +8,7 @@
     border-radius:    5px;
     box-shadow:       0 4px 4px rgba(0, 0, 0, 0.05);
     position:         relative;
-    width:            410px;
-    min-width:        100%;
-    max-width:        100%;
+    width:            100%;
     padding:          9px 30px 10.7px 17px;
     outline:          none;
     background-color: #fff;
@@ -190,7 +188,7 @@
 
 @media (max-width: 450px) {
   .form-login-input input {
-    width:     410px;
-    min-width: 100%;
+    max-width: 410px;
+    width:     100%;
   }
 }

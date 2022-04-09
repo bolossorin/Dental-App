@@ -26,7 +26,7 @@ export interface IDentistFullDataResponse
     IServices, IDentistBio {
   avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
-  accountType: string;
+  subscription_plan: string;
 }
 
 const loginSchema = Yup.object().shape({
@@ -55,7 +55,8 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
             if (title === 'Current FYD admins') {
               localStorage.setItem("admin", JSON.stringify(values));
               localStorage.removeItem("dentist");
-            } else {
+            }
+            else {
               localStorage.setItem("dentist", JSON.stringify(values));
               localStorage.removeItem("admin");
               dispatch({type: DentistTypes.LOGIN, payload: {email: values.email}});
@@ -84,9 +85,8 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
                 },
               ],
               cover_url: '',
-              accountType: "free"
+              subscription_plan: data.subscription_plan
             }
-
             if (title === 'Current FYD admins') {
               fullDataAdmin = {
                 adminDetails: {username: 'John Doe', email: values.email, avatarUrl: '../images/doctor1.png'},
@@ -164,8 +164,9 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               setTimeout(() => {
                 Router.push(routes.dashboard);
               }, 800);
-            } else {
-              const {bio, avatarUrl, locations, services, cover_url, accountType, access_token} = fullData;
+            }
+            else {
+              const {bio, avatarUrl, locations, services, cover_url, subscription_plan, access_token} = fullData;
               localStorage.setItem("dentist", JSON.stringify(fullData));
               dispatch({
                 type: DentistTypes.SET_FULL_DATA,
@@ -176,7 +177,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
                   cover_url,
                   locations,
                   services,
-                  accountType,
+                  subscription_plan,
                   isLogged: true,
                   allowedServices: null,
                   gallery: null,

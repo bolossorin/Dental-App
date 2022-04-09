@@ -37,6 +37,7 @@ export const useLocalData = () => {
             email: email,
             gdc: gdc,
             avatarUrl: avatarUrl,
+            subscription_plan: data.subscription_plan,
             isLogged: true,
             allowedServices: null,
             gallery: null,

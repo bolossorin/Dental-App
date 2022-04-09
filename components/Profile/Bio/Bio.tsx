@@ -34,7 +34,7 @@ const bioSchema = Yup.object().shape({
 });
 export const Bio: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, dentist_name, title, accountType, bio, qualifications, website, phone} = state.dentistState;
+  const {email, dentist_name, title, subscription_plan, bio, qualifications, website, phone} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(
     ({...notifyProps}) => {
@@ -165,11 +165,11 @@ export const Bio: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className={`profile-block-box ${accountType === "free" && "disabled"}`}>
+            <div className={`profile-block-box ${subscription_plan === "FREE" && "disabled"}`}>
               <div>
                 <div className="form-profile-label ">
                   <label className="form-profile-label  " htmlFor="website">
-                    Website Address {accountType === 'free' && '- Premium'}
+                    Website Address {subscription_plan === 'FREE' && '- Premium'}
                   </label>
                 </div>
                 <div className='form-input'>
@@ -177,14 +177,14 @@ export const Bio: React.FC = () => {
                     className="form-profile-input"
                     name="website"
                     placeholder="Website..."
-                    disabled={accountType === "free"} />
+                    disabled={subscription_plan === "FREE"} />
                   {errors.website && touched.website ? (<div className='error-text'>{errors.website}</div>) : null}
                 </div>
               </div>
               <div>
                 <div className="form-profile-label">
                   <label className="form-profile-label " htmlFor="phone">
-                    Phone {accountType === 'free' && '- Premium'}
+                    Phone {subscription_plan === 'FREE' && '- Premium'}
                   </label>
                 </div>
                 <div className='form-input'>
@@ -192,7 +192,7 @@ export const Bio: React.FC = () => {
                     className="form-profile-input"
                     name="phone"
                     placeholder="Phone"
-                    disabled={accountType === "free"} />
+                    disabled={subscription_plan === "FREE"} />
                   {errors.phone && touched.phone ? (<div className='error-text'>{errors.phone}</div>) : null}
                 </div>
               </div>

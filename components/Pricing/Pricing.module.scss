@@ -20,16 +20,12 @@
 
 .pricing {
   display:         flex;
-  justify-content: space-between;
+  justify-content: space-evenly;
   width:           100%;
   :global {
     .account-profile-box-form {
       margin: 0;
       width:  30%;
-      &:nth-child(2) {
-        border:    2px solid #095c5c;
-        transform: scale(1.15);
-      }
     }
     .account-form-login-subtitle {
       line-height:    1.4;
@@ -96,10 +92,6 @@
         max-width:     400px;
         width:         100%;
         margin-bottom: 16px;
-        &:nth-child(2) {
-          border:    2px solid #095c5c;
-          transform: scale(1);
-        }
       }
     }
   }

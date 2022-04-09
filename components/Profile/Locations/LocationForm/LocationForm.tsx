@@ -23,7 +23,7 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
   const {state, dispatch} = useContext(AppContext);
   const {
     // email,
-    accountType, access_token} = state.dentistState;
+    subscription_plan, access_token} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -76,7 +76,7 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
     }}>
     {({values, errors, touched}) =>
       <Form
-        className={cn("profile-block-box", "profile-block-box-noWrap", {"disabled": (!primary && accountType === 'free')})}>
+        className={cn("profile-block-box", "profile-block-box-noWrap", {"disabled": (!primary && subscription_plan === 'FREE')})}>
         <div className="form-profile-label">
           <label className="form-profile-label">{title}</label>
         </div>

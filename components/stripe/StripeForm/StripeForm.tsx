@@ -1,20 +1,18 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
 import {CardElement, useElements, useStripe} from "@stripe/react-stripe-js";
 import axios from "axios";
-import Router from "next/router";
 import {Formik, Field, Form} from "formik";
+import * as Yup from "yup";
 
 // components
 import {Spinner} from "../../";
-import {API} from "../../../api/AWS-gateway";
+import {API, createSubscriptionPI, getPricePI} from "../../../api/AWS-gateway";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {CARD_OPTIONS} from "../../../utils/cardOptions";
-import * as Yup from "yup";
-import cn from "classnames";
-import {routes} from "../../../utils/routes";
+import {AppContext} from "../../../context/app.context";
 
 const getCurrency = (price: number, oldPrice: number) => {
   return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
@@ -25,18 +23,19 @@ const stripeCheckoutSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 export const StripeForm = ({backButton, setNextStep}) => {
+  const {state} = useContext(AppContext);
+  const {access_token, email, dentist_name}: any = state.dentistState;
+
   const stripe = useStripe();
   const elements = useElements();
-
-  const [error, setError] = useState<any>(null);
   const [couponField, showCouponField] = useState<boolean>(false);
   const [couponValue, setCouponValue] = useState<string>("");
-  const [couponId, setCouponId] = useState<string>("");
+  // const [couponId, setCouponId] = useState<string>("");
   const [couponStatus, setCouponStatus] = useState<"success" | "error" | null>(null);
   const [checking, processCheckingCoupon] = useState<boolean>(false);
-  const [cardComplete, setCardComplete] = useState(false);
   const [processing, setProcessing] = useState(false);
-  const [price, setPrice] = useState({original: 120, withCoupon: 0});
+  const [price, setPrice] = useState({original: 0, withCoupon: 0});
+  const [clientSecret, setClientSecret] = useState("");
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -52,21 +51,15 @@ export const StripeForm = ({backButton, setNextStep}) => {
       if (!data) return false;
 
       setCouponStatus("success");
-      setCouponId(data.coupon);
+      // setCouponId(data.coupon);
       const cost = price.original - (price.original * data.percent_off) / 100;
       setPrice(({original}) => ({original, withCoupon: cost}));
-      setNotification({
-        type: "success",
-        message: `Coupon with bonus -${data.percent_off}%`,
-      });
+      setNotification({type: "success", message: `Coupon with bonus -${data.percent_off}%`});
       processCheckingCoupon(false);
     } catch (exp) {
       console.error(exp, 'error');
       setCouponStatus("error");
-      setNotification({
-        type: "error",
-        message: "Coupon not found!",
-      });
+      setNotification({type: "error", message: "Coupon not found!"});
       processCheckingCoupon(false);
     } finally {
       processCheckingCoupon(false);
@@ -87,68 +80,42 @@ export const StripeForm = ({backButton, setNextStep}) => {
     }
   };
 
+  useEffect(() => {
+    if (access_token) {
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      createSubscriptionPI(config, process.env.NEXT_PUBLIC_STRIPE_CREATE_SUBSCRIPTION)
+        .then(({data}) => setClientSecret(data.clientSecret))
+        .catch((error) => console.log(error, 'error'));
+
+      getPricePI(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
+        .then(({data}) => setPrice({original: data, withCoupon: 0}))
+        .catch((error) => console.log(error, 'error'));
+    }
+  }, [access_token]);
+
   return <Formik
+    enableReinitialize
     validationSchema={stripeCheckoutSchema}
-    initialValues={{name: '', email: ''}}
-    onSubmit={async (values) => {
+    initialValues={{name: dentist_name, email: email}}
+    onSubmit={(values) => {
+      setProcessing(true);
       if (!stripe || !elements) {
         // Stripe.js has not loaded yet. Make sure to disable
         // form submission until Stripe.js has loaded.
         setNotification({type: "error", message: "Stripe Error..."});
         return;
       }
-
-      if (error) {
-        elements.getElement("card")!.focus();
-        setNotification({type: "error", message: "Stripe Error..."});
-        return;
-      }
-
-      if (cardComplete) setProcessing(true);
-
-      const payload = await stripe.createPaymentMethod({
-        type: "card",
-        card: elements.getElement(CardElement) as any,
-        billing_details: values,
-      });
-
-      if (payload.error) {
-        setError(payload.error as any);
-        setNotification({
-          type: "error",
-          message: payload.error.message || "Stripe Error",
-        });
-        setProcessing(false);
-      } else {
-        try {
-          const body = {
-            email: values.email,
-            dentist_name: values.name,
-            coupon: couponId || null,
-            paymentMethodId: payload.paymentMethod.id,
-          };
-
-          const {data} = await axios.post(API.STRIPE_SUBSCRIPTION, body);
-
-          if (data.subscription_id) {
-            setNotification({
-              type: "success",
-              message: "Payment Successful! Please wait...",
-              autoClose: 3,
-            });
-          }
-
-          setTimeout(() => {
-            Router.push("/dentist/profile");
-          }, 3000);
-
-        } catch (exp) {
-          // setNotification({type: "error", message: "Stripe Subscription Error"});
-        } finally {
-          setProcessing(false);
+      stripe.confirmCardPayment(
+        clientSecret,
+        {payment_method: {card: elements.getElement(CardElement) as any, billing_details: values}}
+      ).then((data: any) => {
+        if (data.error) {
+          setNotification({type: "error", message: data.error.message});
+        } else {
+          setNotification({type: "error", message: data.response.description});
         }
-        Router.push(routes.login);
-      }
+      })
+      setProcessing(false);
     }}>
     {({errors, touched}) =>
       (<Form className="form-login stripe-checkout">
@@ -164,22 +131,17 @@ export const StripeForm = ({backButton, setNextStep}) => {
         </div>
         <div className="form-login-input">
           <div className='stripe-cart'>
-            <CardElement
-              options={CARD_OPTIONS as any}
-              onChange={(e: any) => {
-                setError(e.error);
-                setCardComplete(e.complete);
-              }} />
+            <CardElement options={CARD_OPTIONS as any} />
           </div>
         </div>
         <div className="form-login-input">
           <div className='stripe-buttons'>
-            <button
-              className={cn("btn btn-success", {"btn btn btn-danger": error})}
+            {price.original !== 0 && <button
+              className="btn btn-success"
               type="submit"
               disabled={processing || (!stripe || checking)}>
               {processing ? <Spinner /> : `Pay ${getCurrency(price.withCoupon, price.original)}`}
-            </button>
+            </button>}
             {couponField ? (<div id="coupon_input_container">
                 <Field
                   type="text"
@@ -203,7 +165,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
                 </div>
               </div>)
               : <button
-                className={`btn btn-success ${error ? "btn btn btn-danger" : ""}`}
+                className="btn btn-success"
                 type="submit"
                 disabled={checking || processing}
                 onClick={() => showCouponField(true)}>

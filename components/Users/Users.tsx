@@ -26,7 +26,7 @@ const usersInitial: any = [
     post_code: 'Post Code',
     auth_time: '13:05 04/04/2021',
     created_at: new Date().toISOString().slice(0, 10),
-    accountType: 'premium',
+    subscription_plan: 'PREMIUM',
     exp: '03/09/2021',
     isSuspended: false,
   },
@@ -34,7 +34,7 @@ const usersInitial: any = [
     subscription_id: '#StripeID',
     gdc_number: '12345',
     email: 'email@email.email',
-    accountType: 'free',
+    subscription_plan: 'FREE',
     username: 'Name',
     exp: '03/09/2021',
     auth_time: '01.01.2021',
@@ -49,7 +49,7 @@ const usersInitial: any = [
     post_code: 'Post Code',
     auth_time: '13:05 04/04/2021',
     created_at: new Date('01-01-2022').toISOString().slice(0, 10),
-    accountType: 'premium',
+    subscription_plan: 'PREMIUM',
     exp: '03/09/2021',
     isSuspended: false,
   },
@@ -139,8 +139,8 @@ export const Users: React.FC = () => {
   const handleStatusChange = ({status}) => {
     if (status) {
       const usersToFilter = alreadyFiltered.byPeriod ? filteredByPeriod : users;
-      const formattedStatus = status === "Paid" ? "premium" : "free";
-      const filUsers = usersToFilter.filter((user: IAdminUser) => user.accountType === formattedStatus);
+      const formattedStatus = status === "Paid" ? "PREMIUM" : "FREE";
+      const filUsers = usersToFilter.filter((user: IAdminUser) => user.subscription_plan === formattedStatus);
       setUsersToRender(filUsers);
       setFilteredByStatus(filUsers);
       setAlreadyFiltered({...alreadyFiltered, byStatus: true});
@@ -187,7 +187,7 @@ export const Users: React.FC = () => {
                 username={user.username ? user.username : user.email}
                 created_at={user.created_at}
                 exp={user.exp}
-                accountType={user.accountType}
+                subscription_plan={user.subscription_plan}
                 email={user.email}
                 post_code={user.post_code}
                 gdc_number={user.gdc_number}

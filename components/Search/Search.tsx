@@ -24,7 +24,7 @@ export enum MILES {
 export type searchFunc = (service: string | undefined, miles: MILES | undefined) => Promise<any>;
 
 export interface SearchDentistResult {
-  accountType: string;
+  subscription_plan: string;
   avatarUrl: string;
   email: string;
   key: string;

@@ -12,13 +12,13 @@ import {AppContext} from "../../context/app.context";
 
 const AccountPage: NextPage = (): JSX.Element => {
   const {state} = useContext(AppContext);
-  const {accountType}: any = state.dentistState;
+  const {subscription_plan}: any = state.dentistState;
 
 
   return (
     <LayoutDentist>
       <AccountInfoBlock />
-      {accountType === 'free' ? <Upgrade /> : <Subscription />}
+      {subscription_plan === 'FREE' ? <Upgrade /> : <Subscription />}
     </LayoutDentist>
   );
 };

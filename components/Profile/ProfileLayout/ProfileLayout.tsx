@@ -5,7 +5,7 @@ import {AppContext} from "../../../context/app.context";
 
 export const ProfileLayout = ({children, title, subTitle}: any) => {
   const {state} = useContext(AppContext);
-  const {accountType} = state.dentistState;
+  const {subscription_plan} = state.dentistState;
 
   return (
     <div className="profile-box-form">
@@ -14,7 +14,7 @@ export const ProfileLayout = ({children, title, subTitle}: any) => {
           <p className="form-bio-title green px20">{title}</p>
           <p className="form-bio-subtitle gray px12 mb-6px">{subTitle}</p>
         </div>
-        {accountType === "free" && (<div className="upgrade-button-bio">
+        {subscription_plan === "FREE" && (<div className="upgrade-button-bio">
           <Link href={routes.pricing}>
             <button className="button-green-outline">Upgrade</button>
           </Link>

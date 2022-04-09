@@ -86,7 +86,7 @@ export const DentistInitialState: TdentistReducerState = {
   email: "",
   qualifications: "",
   bio: "",
-  accountType: "free",
+  subscription_plan: "FREE",
   avatarUrl: "",
   cover_url: "",
   locations: null,

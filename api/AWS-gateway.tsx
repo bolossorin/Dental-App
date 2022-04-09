@@ -5,11 +5,18 @@ import axios from "axios";
 export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`, body);
 export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
 export const passwordResetDentistApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/reset-password`, body, config);
+
 export const getDentistLocations = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, config);
 export const setDentistLocation = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, body, config);
 export const updateDentistLocation = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations/${id}`, body, config);
+
 export const uploadDentistAvatarAPI = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/avatar`, body, config);
+
 export const getDentistInfoAPI = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/authenticated`, config);
+
+export const createSubscriptionPI = (config, price_id) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/create/${price_id}`, '', config);
+export const deleteSubscriptionPI = (config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/cancel`, '', config);
+export const getPricePI = (price_id) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/price/${price_id}`);
 
 // Patient
 export const getAllDentistAPI = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
@@ -29,11 +36,7 @@ export const API = {
   DENTIST_SERVICES: "/api/dentist/profile/services",
   UPLOAD_DENTIST_COVER: "/api/dentist/profile/cover",
 
-  STRIPE_CHARGE: "/api/dentist/payment/charge",
-  STRIPE_REFUND: "/api/dentist/payment/refund",
-  STRIPE_SUBSCRIPTION: "/api/dentist/payment/subscription",
   STRIPE_CHECK_COUPON: "/api/dentist/payment/activate-coupon",
-  STRIPE_GET_PREMIUM_PRICE: "/api/dentist/payment/price",
 
   SET_DENTIST_GALLERY: "/api/dentist/gallery",
 

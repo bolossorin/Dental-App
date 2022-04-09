@@ -12,7 +12,7 @@ const Locations: React.FC = () => {
   const {dispatch} = useContext(AppContext);
   const {state} = useContext(AppContext);
 
-  const {accountType, access_token, locations} = state.dentistState;
+  const {subscription_plan, access_token, locations} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -32,8 +32,8 @@ const Locations: React.FC = () => {
         {(locations && locations.length > 0) ? locations.map((location, index) =>
             <LocationForm key={index} locations={locations} location={location} primary title='Primary Location' />) :
           <LocationForm locations={locations} primary title='Primary Location' />}
-        <div className={`profile-block-box ${accountType === "free" && "disabled"}`}>
-          <LocationForm title={`Second Location ${accountType === 'free' ? '- Premium' : ''}`} />
+        <div className={`profile-block-box ${subscription_plan === "FREE" && "disabled"}`}>
+          <LocationForm title={`Second Location ${subscription_plan === 'FREE' ? '- Premium' : ''}`} />
         </div>
       </div>
     </ProfileLayout>

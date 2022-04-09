@@ -49,7 +49,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
       <div className="person-index-leftmenu">
         <img
           className="cover-image"
-          src={dentist.accountType !== "premium" ? "../images/empty.png" : dentist.cover_url || ""}
+          src={dentist.subscription_plan !== "PREMIUM" ? "../images/empty.png" : dentist.cover_url || ""}
           alt="cover image" />
         <div className="person-index-leftmenu-profile-information">
           <img className="profile-photo" src={dentist.avatarUrl || "../images/empty_avatar.png"} alt="/" />
@@ -57,7 +57,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
             <div className="person-form-login-title">
               {dentist.title} <br />
               {dentist.dentist_name}
-              {dentist.accountType === "premium" && (<img
+              {dentist.subscription_plan === "PREMIUM" && (<img
                 className="person-index-gallery-image-watermark-img person-relative-img"
                 src={"../images/check_circle.svg"}
                 alt="check" />)}

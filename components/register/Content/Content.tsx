@@ -15,10 +15,10 @@ export interface IRegisterFormChildren {
 
 export const Content: React.FC = () => {
   const [nextStep, setNextStep] = useState<"cardCheck" | "pricingCheck" | "register">("register");
-
+  const [registerValues, setRegisterValues] = useState({email: '', dentist_name: '', secret_key: ''});
   return (
     <Layout>
-      {nextStep === "register" && (<Register setNextStep={setNextStep} />)}
+      {nextStep === "register" && (<Register setNextStep={setNextStep} registerValues={registerValues} setRegisterValues={setRegisterValues}/>)}
       {nextStep === "pricingCheck" && <Pricing setNextStep={setNextStep} />}
       {nextStep === "cardCheck" && <StripeCheckout backButton setNextStep={setNextStep} />}
     </Layout>

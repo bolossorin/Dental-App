@@ -65,7 +65,7 @@ export type IDentistGallery = {
 };
 export type IDentist_SpecialState = {
   isLogged: boolean;
-  accountType: string;
+  subscription_plan: string;
   avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
   allowedServices: Null_Or_<IService[]>;
@@ -106,7 +106,7 @@ export interface IAdminUser {
   bio: string | null;
   email: string;
   post_code: string;
-  accountType: string;
+  subscription_plan: string;
   qualifications: string | null;
   username: string;
   exp: string | null;

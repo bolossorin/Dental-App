@@ -12,7 +12,7 @@ import {Spinner} from "../../Spinner/Spinner";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {avatarUrl, cover_url, accountType, access_token} = state.dentistState;
+  const {avatarUrl, cover_url, subscription_plan, access_token} = state.dentistState;
   const [avatarSrc, setAvatarSrc] = useState<any>("");
   const [coverSrc, setCoverSrc] = useState<any>("");
   const [isSubmitting, setIsSubmitting] = useState<any>(false);
@@ -21,7 +21,7 @@ export const Photos: React.FC = () => {
     notify({...notifyProps});
   }, []);
 
-  const freeAccountLimit = accountType === "free";
+  const freeAccountLimit = subscription_plan === "FREE";
 
   const onProfileImageChange = async (e: any, what: "avatar" | "cover") => {
     setIsSubmitting(true);
@@ -79,9 +79,9 @@ export const Photos: React.FC = () => {
               id="profile_picture" />
           </p>
         </div>
-        <div className={`profile-block-box ${accountType === "free" && "disabled"}`}>
+        <div className={`profile-block-box ${subscription_plan === "FREE" && "disabled"}`}>
           <p className="form-profile-label">
-            <label className="form-profile-label ">Watermark {accountType === 'free' && '- Premium'}</label>
+            <label className="form-profile-label ">Watermark {subscription_plan === 'FREE' && '- Premium'}</label>
           </p>
           <p className="profile-photo-box">
             <img

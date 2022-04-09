@@ -294,14 +294,14 @@ img {
   display: none;
 }
 
-.active {
-  //color:      var(--color-green);
-  //background: var(--color-white);
+.leftmenu-list.active {
+  color:      var(--color-green);
+  background: var(--color-white);
 }
 
-.active .leftmenu-link {
-  //color:      var(--color-green);
-  //background: var(--color-white);
+.leftmenu-list.active .leftmenu-link {
+  color:      var(--color-green);
+  background: var(--color-white);
 }
 
 .leftmenu-link-image {
@@ -311,8 +311,8 @@ img {
   transition: all 0.3s linear;
 }
 
-.active .leftmenu-link-image {
-  //filter: invert(0%);
+.leftmenu-list.active .leftmenu-link-image {
+  filter: invert(0%);
 }
 
 .leftmenu-list:hover .leftmenu-link-image {

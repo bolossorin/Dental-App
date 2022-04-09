@@ -21,7 +21,7 @@ import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {services, accountType, allowedServices,
+  const {services, subscription_plan, allowedServices,
     // email
   } = state.dentistState;
   const [selectedServiceId, selectService] = useState<string>("");
@@ -30,7 +30,7 @@ export const Services: React.FC = () => {
     notify({...notifyProps});
   }, []);
 
-  const freeAccountLimit = services?.length === 2 && accountType === "free";
+  const freeAccountLimit = services?.length === 2 && subscription_plan === "FREE";
 
   const handleAddService = async () => {
     if (freeAccountLimit) {
@@ -129,10 +129,10 @@ export const Services: React.FC = () => {
               </div>)}
           </div>}
         </div>
-        {services && <div className={cn("profile-block-box", {"disabled": accountType === 'free'})}>
+        {services && <div className={cn("profile-block-box", {"disabled": subscription_plan === 'FREE'})}>
           <div className="form-profile-label">
             <label className="form-profile-label">
-              Additional Services {accountType === 'free' ? '- Premium' : ''}
+              Additional Services {subscription_plan === 'FREE' ? '- Premium' : ''}
             </label>
           </div>
           {services.slice(2, services.length).map((el) =>
