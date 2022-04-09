@@ -118,7 +118,7 @@ export const SearchParams: React.FC<ISearchParamsProps> = (
               <option value="">Select Service</option>
               {allServices &&
               allServices.map((item) =>
-                <option value={item.service_id} key={item.service_id}>
+                <option value={item.id} key={item.id}>
                   {item.service_name}
                 </option>)}
             </select>

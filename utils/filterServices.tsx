@@ -5,11 +5,11 @@ export const filterAllServices = (
   choosen: IService[] | null
 ) => {
   const arr = choosen?.map((item) => {
-    return item.service_id;
+    return item.id;
   });
   const newAllServices: IService[] = [];
   for (const el of all) {
-    if (!arr?.includes(el.service_id)) {
+    if (!arr?.includes(el.id)) {
       newAllServices.push(el);
     }
   }

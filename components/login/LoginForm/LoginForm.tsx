@@ -66,18 +66,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
             if (title === 'Current FYD admins') {
               fullDataAdmin = {
                 adminDetails: {username: 'John Doe', email: values.email, avatarUrl: '../images/doctor1.png'},
-                services: [
-                  {
-                    key: '1',
-                    service_name: 'Teeth Whitening',
-                    service_id: 'Teeth Whitening',
-                  },
-                  {
-                    key: '2',
-                    service_name: 'Veneers',
-                    service_id: 'Veneers',
-                  },
-                ],
+                services: [],
                 premiumInformation: {
                   features: ['Verification Checkmark'],
                   price: 0,

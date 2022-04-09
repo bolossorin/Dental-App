@@ -44,7 +44,7 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
     if (!selectedService) setGalleryPhotos(gallery);
 
     if (selectedService) {
-      const filter = gallery?.filter((item) => item.service_id === selectedService);
+      const filter = gallery?.filter((item) => item.id === selectedService);
       setGalleryPhotos(filter as any);
     }
   };
@@ -90,7 +90,7 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
         <select className="person-gallery-select person-arrows" name="services" onChange={handleChangeOption}>
           <option value="" selected>All services</option>
           {services && services.map((service) =>
-            <option value={service.service_id} key={service.key}>{service.service_name}</option>)}
+            <option value={service.id} key={service.id}>{service.service_name}</option>)}
         </select>
       </div>
       {galleryPhotos && galleryPhotos.length > 0 ? <div className="gallery-box">

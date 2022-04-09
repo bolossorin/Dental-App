@@ -31,9 +31,9 @@ export const ServicesProvided: React.FC = () => {
     if (defaultServices?.length) {
       setLocalServices(defaultServices);
       defaultServices.map((item) => {
-        setServiceEditing({...serviceEditing, [item.service_id]: false});
-        setServiceOnPress({...serviceEditing, [item.service_id]: false});
-        setServiceEditingValue({...serviceEditing, [item.service_id]: ""});
+        setServiceEditing({...serviceEditing, [item.id]: false});
+        setServiceOnPress({...serviceEditing, [item.id]: false});
+        setServiceEditingValue({...serviceEditing, [item.id]: ""});
       });
     }
   }, [defaultServices]);
@@ -61,7 +61,7 @@ export const ServicesProvided: React.FC = () => {
 
   const onHandleDeleteService = async (id: string) => {
     try {
-      await axios.delete(`${API.CHANGE_SERVICES}?service_id=${id}`);
+      await axios.delete(`${API.CHANGE_SERVICES}?id=${id}`);
       dispatch({type: AdminTypes.DELETE_SERVICE, payload: {id}});
       setNotification({
         type: "success",
@@ -83,8 +83,8 @@ export const ServicesProvided: React.FC = () => {
 
     if (!serviceOnPress[id]) return;
 
-    const target = services.find((el) => el.service_id === id);
-    const body = {service_id: target?.service_id, service_name: target?.service_name};
+    const target = services.find((el) => el.id === id);
+    const body = {id: target?.id, service_name: target?.service_name};
 
     try {
       const res = await axios.put(API.CHANGE_SERVICES, body);
@@ -109,7 +109,7 @@ export const ServicesProvided: React.FC = () => {
     setServiceOnPress({...serviceOnPress, [id]: true});
 
     const WithEditedService = services.map((item) => {
-      if (item.service_id === id) item.service_name = name;
+      if (item.id === id) item.service_name = name;
       return item;
     });
     setLocalServices(WithEditedService);
@@ -152,23 +152,23 @@ export const ServicesProvided: React.FC = () => {
                   type="text"
                   name={item.service_name}
                   value={item.service_name}
-                  onChange={(e) => onChangeService(item.service_id, e.target.value)}
-                  disabled={!serviceEditing[item.service_id]} />
-                {!serviceEditing[item.service_id] && (<>
+                  onChange={(e) => onChangeService(item.id, e.target.value)}
+                  disabled={!serviceEditing[item.id]} />
+                {!serviceEditing[item.id] && (<>
                   <img
                     className="form-login-input-edit"
                     src={"../images/edit.svg"}
-                    onClick={() => setServiceEditing({...serviceEditing, [item.service_id]: true})}
+                    onClick={() => setServiceEditing({...serviceEditing, [item.id]: true})}
                     alt='' />
                   <img
                     className="form-login-input-close"
                     src={"../images/close.svg"}
-                    onClick={() => onHandleDeleteService(item.service_id)}
+                    onClick={() => onHandleDeleteService(item.id)}
                     alt='' />
                 </>)}
-                {serviceEditing[item.service_id] && (<button
+                {serviceEditing[item.id] && (<button
                   className="saveEditedServiceButton"
-                  onClick={() => onHandleEdit(item.service_id)}>
+                  onClick={() => onHandleEdit(item.id)}>
                   Ok
                 </button>)}
               </p>))}

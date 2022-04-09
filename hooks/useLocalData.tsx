@@ -8,7 +8,7 @@ import {DentistTypes} from "../reducers";
 import {AppContext} from "../context/app.context";
 
 import {routes} from "../utils/routes";
-import {getDentistInfoAPI} from "../api/AWS-gateway";
+import {getDentistInfoAPI, getDentistServices} from "../api/AWS-gateway";
 
 export const useLocalData = () => {
   const router = useRouter();
@@ -26,44 +26,29 @@ export const useLocalData = () => {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
 
       getDentistInfoAPI(config).then(({data}) => {
-        localStorage.removeItem("admin");
-        const payload = {
-          access_token: access_token,
-          dentist_name: data.dentist_name,
-          email: data.email,
-          gdc: data.gdc,
-          avatarUrl: data.avatarUrl,
-          locations: data.locations,
-          subscription_plan: data.subscription_plan,
-          allowedServices: null,
-          gallery: null,
-          title: "",
-          qualifications: "",
-          bio: "",
-          cover_url: "",
-          phone: null,
-          services: [
-            {
-              key: '1',
-              service_name: 'Teeth Whitening',
-              service_id: 'Teeth Whitening',
-            },
-            {
-              key: '2',
-              service_name: 'Veneers',
-              service_id: 'Veneers',
-            },
-            {
-              key: '3',
-              service_name: 'Crowns',
-              service_id: 'Crowns',
-            },
-          ],
-          website: null,
-        };
+        getDentistServices(data.email).then((services: any) => {
+          localStorage.removeItem("admin");
+          const payload = {
+            access_token: access_token,
+            dentist_name: data.dentist_name,
+            email: data.email,
+            gdc: data.gdc,
+            avatarUrl: data.avatarUrl,
+            locations: data.locations,
+            subscription_plan: data.subscription_plan,
+            gallery: null,
+            title: "",
+            qualifications: "",
+            bio: "",
+            cover_url: "",
+            phone: null,
+            services: services.data,
+            website: null,
+          };
 
-        dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});
-        localStorage.setItem("dentist", JSON.stringify(payload));
+          dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});
+          localStorage.setItem("dentist", JSON.stringify(payload));
+        })
       }).catch((error) => {
         console.error(error, 'error');
         Router.push(routes.login);

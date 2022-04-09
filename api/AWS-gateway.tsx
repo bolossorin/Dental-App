@@ -16,6 +16,13 @@ export const getDentistInfoAPI = (config) => axios.get(`${process.env.NEXT_PUBLI
 export const createSubscriptionPI = (config, price_id) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/create/${price_id}`, '', config);
 export const deleteSubscriptionPI = (config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/cancel`, '', config);
 export const getPricePI = (price_id) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/subscription/price/${price_id}`);
+export const getSettingsPI = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions/authenticated`, config);
+
+export const getAllServices = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/services`);
+export const getDentistServices = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/${email}`);
+export const addDentistService = (service_id, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/${service_id}`, '', config);
+export const removeDentistService = (service_id, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/${service_id}`, config);
+
 
 // Patient
 export const getAllDentistAPI = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
@@ -23,7 +30,6 @@ export const getDentistByEmailAPI = (email) => axios.get(`${process.env.NEXT_PUB
 export const getDentistGalleryByEmailAPI = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
 
 export const API = {
-  VERIFY_REGISTER: "/api/dentist/account/register_verify",
   PASSWORD_RESET: "/api/dentist/account/reset-password",
 
   DELETE_ACCOUNT: "/api/dentist/profile/account/deleteAccount",
@@ -32,7 +38,6 @@ export const API = {
 
   SET_DENTIST_INFORMATION: "/api/dentist/profile/information",
   SET_DENTIST_LOCATION: "/api/dentist/profile/location",
-  DENTIST_SERVICES: "/api/dentist/profile/services",
   UPLOAD_DENTIST_COVER: "/api/dentist/profile/cover",
 
   STRIPE_CHECK_COUPON: "/api/dentist/payment/activate-coupon",

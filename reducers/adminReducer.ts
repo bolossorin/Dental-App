@@ -47,23 +47,7 @@ export const AdminInitialState: TAdminReducerState = {
     email: '',
     avatarUrl: '',
   },
-  services: [
-    {
-      key: '1',
-      service_name: 'Teeth Whitening',
-      service_id: 'Teeth Whitening',
-    },
-    {
-      key: '2',
-      service_name: 'Veneers',
-      service_id: 'Veneers',
-    },
-    {
-      key: '3',
-      service_name: 'Crowns',
-      service_id: 'Crowns',
-    },
-  ],
+  services: [],
   premiumInformation: {
     features: [],
     price: 0,
@@ -118,7 +102,7 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
     case AdminTypes.GET_SERVICES:
       return {...state, services: action.payload};
     case AdminTypes.DELETE_SERVICE:
-      const filterServices = state.services.filter((item) => item.service_id !== action.payload.id);
+      const filterServices = state.services.filter((item) => item.id !== action.payload.id);
       return {...state, services: filterServices};
     default:
       return state;

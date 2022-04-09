@@ -125,7 +125,7 @@ export const Gallery: React.FC = () => {
       //       },
       //     },
       //   },
-      //   service_id: photoService,
+      //   id: photoService,
       // };
 
       // const res = await axios.post<IUserGallery>(API.SET_DENTIST_GALLERY, body);
@@ -204,12 +204,12 @@ export const Gallery: React.FC = () => {
       before_altTags: target.altTagsBefore,
       after_img: target.imageAfterUrl,
       before_img: target.imageBeforeUrl,
-      service: {id: target.service_id, name: target.service_name},
+      service: {id: target.id, name: target.service_name},
     })
     setAfterImg(target.imageAfterUrl as string);
     setBeforeImg(target.imageBeforeUrl as string);
-    setEditingService({id: target.service_id, name: target.service_name});
-    setServiceId(target.service_id);
+    setEditingService({id: target.id, name: target.service_name});
+    setServiceId(target.id);
     // setItemKey(target.key);
     setStep("edit");
 
@@ -247,7 +247,7 @@ export const Gallery: React.FC = () => {
       //       files: null,
       //     },
       //   },
-      //   service_id: photoService,
+      //   id: photoService,
       // };
       // const key = keyOfEditingPhoto;
       // const res = await axios.put<IUserGallery>(

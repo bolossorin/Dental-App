@@ -1,7 +1,7 @@
 export const personInitial = [
   {
     service_name: 'Teeth Whitening',
-    service_id: 'Teeth Whitening',
+    id: 'Teeth Whitening',
     imageBeforeUrl: '../images/zub1.png',
     imageAfterUrl: '../images/zub2.png',
     key: '1',
@@ -15,7 +15,7 @@ export const personInitial = [
   },
   {
     service_name: 'Veneers',
-    service_id: 'Veneers',
+    id: 'Veneers',
     imageBeforeUrl: '../images/zub3.png',
     imageAfterUrl: '../images/zub1.png',
     key: '2',
@@ -29,7 +29,7 @@ export const personInitial = [
   },
   {
     service_name: 'Teeth Whitening',
-    service_id: 'Teeth Whitening',
+    id: 'Teeth Whitening',
     imageBeforeUrl: '../images/zub1.png',
     imageAfterUrl: '../images/zub2.png',
     key: '3',
@@ -43,7 +43,7 @@ export const personInitial = [
   },
   {
     service_name: 'Teeth Whitening',
-    service_id: 'Teeth Whitening',
+    id: 'Teeth Whitening',
     imageBeforeUrl: '../images/zub1.png',
     imageAfterUrl: '../images/zub2.png',
     key: '4',
@@ -57,7 +57,7 @@ export const personInitial = [
   },
   {
     service_name: 'Teeth Whitening',
-    service_id: 'Teeth Whitening',
+    id: 'Teeth Whitening',
     imageBeforeUrl: '../images/zub1.png',
     imageAfterUrl: '../images/zub2.png',
     key: '5',
@@ -71,7 +71,7 @@ export const personInitial = [
   },
   {
     service_name: 'Veneers',
-    service_id: 'Veneers',
+    id: 'Veneers',
     imageBeforeUrl: '../images/zub3.png',
     imageAfterUrl: '../images/zub1.png',
     key: '6',
@@ -86,9 +86,9 @@ export const personInitial = [
 ];
 
 export const servicesInitial = [
-  {key: '1', service_name: 'Teeth Whitening', service_id: 'Teeth Whitening'},
-  {key: '2', service_name: 'Veneers', service_id: 'Veneers'},
-  {key: '3', service_name: 'Crowns', service_id: 'Crowns'},
-  {key: '3', service_name: 'Crowns', service_id: 'Crowns'},
-  {key: '4', service_name: 'Smile In A Day', service_id: 'Smile In A Day'}
+  {key: '1', service_name: 'Teeth Whitening', id: 'Teeth Whitening'},
+  {key: '2', service_name: 'Veneers', id: 'Veneers'},
+  {key: '3', service_name: 'Crowns', id: 'Crowns'},
+  {key: '3', service_name: 'Crowns', id: 'Crowns'},
+  {key: '4', service_name: 'Smile In A Day', id: 'Smile In A Day'}
 ]

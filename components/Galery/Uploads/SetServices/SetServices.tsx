@@ -43,9 +43,9 @@ const SetServices: React.FC<GallerySetServiceProps> = (
                 placeholder="asdasd"
                 onChange={(e) => setServiceId(e.target.value)}>
                 {servicesInitial?.map((item) => <option
-                  value={item.service_id}
-                  key={item.service_id}
-                  selected={item.service_id === editingService.id}>
+                  value={item.id}
+                  key={item.id}
+                  selected={item.id === editingService.id}>
                   {item.service_name}
                 </option>)}
               </select>

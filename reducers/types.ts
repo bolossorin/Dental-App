@@ -39,16 +39,15 @@ export type UserLocation = {
   lng: number;
 };
 export type IService = {
-  key: string;
   service_name: string;
-  service_id: string;
+  id: string;
 };
 export type IDentistLocations = {
   locations: Null_Or_<UserLocation[]>;
 };
 export type IUserGallery = {
   service_name: string;
-  service_id: string;
+  id: string;
   titleBefore: string;
   titleAfter: string;
   altTagsBefore: string;
@@ -67,7 +66,6 @@ export type IDentist_SpecialState = {
   subscription_plan: string;
   avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
-  allowedServices: Null_Or_<IService[]>;
 };
 
 export interface ISubSettings {

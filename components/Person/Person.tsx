@@ -28,7 +28,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
     if (!selectedService) setPhotos(gallery);
 
     if (selectedService) {
-      const filter = gallery?.filter((item) => item.service_id === selectedService);
+      const filter = gallery?.filter((item) => item.id === selectedService);
       setPhotos(filter as any);
     }
   };
@@ -70,7 +70,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
             <p>{dentist.bio}</p>
             <div className="person-button-list">
               {dentist.services?.map((item) =>
-                <button className="person-index-green-button" key={item.service_id}>
+                <button className="person-index-green-button" key={item.id}>
                   {item.service_name}
                 </button>)}
             </div>
@@ -117,7 +117,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
               <option value="">Service</option>
               {dentist.services &&
               dentist.services.map((service) => (
-                <option value={service.service_id} key={service.key}>
+                <option value={service.id} key={service.id}>
                   {service.service_name}
                 </option>
               ))}

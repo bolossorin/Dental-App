@@ -1,30 +1,22 @@
-import React, {useCallback, useContext, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
-// import axios from "axios";
 import cn from "classnames";
 
 // components
-// import {API} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
-// import {IService} from "../../../reducers/types";
-import {ISetNotofication} from "../../Toast";
-import notify from "../../Toast";
+import notify, {ISetNotofication} from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
+import {addDentistService, getAllServices, removeDentistService} from "../../../api/AWS-gateway";
+import {IService} from "../../../reducers/types";
 
-// interface IAddServiceBody {
-//   email: string;
-//   services: string[];
-// }
-// type IAddServiceResponse = IService[];
-
+type IAddServiceResponse = IService[];
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {services, subscription_plan, allowedServices,
-    // email
-  } = state.dentistState;
-  const [selectedServiceId, selectService] = useState<string>("");
+  const {access_token, services, subscription_plan, email} = state.dentistState;
+  const [selectedService, setSelectService] = useState<string>("");
+  const [allServices, setAllServices] = useState<IAddServiceResponse>([]);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -32,51 +24,41 @@ export const Services: React.FC = () => {
 
   const freeAccountLimit = services?.length === 2 && subscription_plan === "FREE";
 
-  const handleAddService = async () => {
+  const handleAddService = async (id) => {
     if (freeAccountLimit) {
+      // TODO: connect to account options API
       setNotification({type: "info", message: "Your cannot add more than 2 services"});
       return;
     }
-    // const body: IAddServiceBody = {email: email || "", services: [selectedServiceId]};
     try {
-      // const {data} = await axios.post<IAddServiceResponse>(API.DENTIST_SERVICES, body);
-      // dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
-      setNotification({
-        type: "success",
-        message: `Successfully added new service!`,
-        autoClose: 2,
-        position: "top-right",
-      });
-      selectService("");
-    } catch (exp) {
-      setNotification({
-        type: "error",
-        message: `Failed to add new service!`,
-        autoClose: 2,
-        position: "top-right",
-      });
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      const {data} = await addDentistService(id, config);
+      dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
+      setNotification({type: "success", message: `Successfully added new service!`});
+      setSelectService("");
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 
   const handleDeleteService = async (key: string) => {
     try {
-      // await axios.delete(`${API.DENTIST_SERVICES}?key=${key}`);
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      await removeDentistService(key, config);
       dispatch({type: DentistTypes.REMOVE_SERVICE, payload: {key}});
-      setNotification({
-        type: "success",
-        message: `Successfully deleted service!`,
-        autoClose: 2,
-        position: "top-right",
-      });
+      setNotification({type: "success", message: `Successfully deleted service!`});
     } catch (exp) {
-      setNotification({
-        type: "error",
-        message: `Failed to delete service!`,
-        autoClose: 2,
-        position: "top-right",
-      });
+      setNotification({type: "error", message: `Failed to delete service!`});
     }
   };
+
+  useEffect(() => {
+    if (email) {
+      getAllServices()
+        .then(({data}) => setAllServices(data))
+        .catch((error) => console.log(error, 'error'))
+    }
+  }, [email]);
 
   return (
     <ProfileLayout title='Services' subTitle='Information For Patients'>
@@ -90,11 +72,10 @@ export const Services: React.FC = () => {
               <span className="input-span">Service</span>
               <select
                 className="form-profile-input arrows"
-                name="services"
-                onChange={(e) => selectService(e.target.value)}>
+                value={selectedService}
+                onChange={(e) => setSelectService(e.target.value)}>
                 <option>Select service</option>
-                {allowedServices &&
-                allowedServices.map((item) => <option value={item.service_id} key={item.service_id}>
+                {allServices && allServices.map((item) => <option value={item.id} key={item.id}>
                   {item.service_name}
                 </option>)}
               </select>
@@ -103,8 +84,8 @@ export const Services: React.FC = () => {
           <div className="row-content">
             <button
               className="button-green-confirm button-green-confirm-mod"
-              onClick={handleAddService}
-              disabled={selectedServiceId === "" || freeAccountLimit}>
+              onClick={() => handleAddService(selectedService)}
+              disabled={selectedService === "" || freeAccountLimit}>
               Confirm
             </button>
           </div>
@@ -112,19 +93,13 @@ export const Services: React.FC = () => {
             <div className="form-profile-label">
               <label className="form-profile-label">Selected Services</label>
             </div>
-            {services.slice(0, 2).map((el) =>
-              <div className="form-login-input" key={el.service_id}>
-                <input
-                  className='services-selected'
-                  type="text"
-                  name={el.service_name}
-                  value={el.service_name}
-                  id={el.service_id}
-                  disabled />
+            {services.slice(0, 2).map((service) =>
+              <div className="form-login-input" key={service.id}>
+                <input className='services-selected' type="text" value={service.service_name} disabled />
                 <img
                   className="form-login-input-close"
                   src={"../images/close.svg"}
-                  onClick={() => handleDeleteService(el.key)}
+                  onClick={() => handleDeleteService(service.id)}
                   alt='' />
               </div>)}
           </div>}
@@ -135,16 +110,9 @@ export const Services: React.FC = () => {
               Additional Services {subscription_plan === 'FREE' ? '- Premium' : ''}
             </label>
           </div>
-          {services.slice(2, services.length).map((el) =>
-            <div className="form-login-input" key={el.service_id}>
-              <input
-                className='services-additionally'
-                key={el.service_id}
-                type="text"
-                name={el.service_name}
-                value={el.service_name}
-                id={el.service_id}
-                disabled />
+          {services.slice(2, services.length).map((service) =>
+            <div className="form-login-input" key={service.id}>
+              <input className='services-additionally' type="text" value={service.service_name} disabled />
             </div>)}
         </div>}
       </div>

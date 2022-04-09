@@ -49,17 +49,17 @@ export type dentistPayload = {
       key: string;
       altTagsAfter: string;
       altTagsBefore: string;
-      service_id: string;
+      id: string;
       service_name: string;
       titleAfter: string;
       titleBefore: string;
     };
   };
   [DentistTypes.SET_GALLERY]: { gallery: IUserGallery[]; };
-  [DentistTypes.SET_ALL_SERVICES]: { allowedServices: IService[]; };
+  [DentistTypes.SET_ALL_SERVICES]: IService[];
   [DentistTypes.REMOVE_SERVICE]: { key: string; };
   [DentistTypes.ADD_SERVICES]: { services: IService[]; };
-  [DentistTypes.SET_AVATAR_URL]:  string;
+  [DentistTypes.SET_AVATAR_URL]: string;
   [DentistTypes.SET_COVER_URL]: { cover_ul: string; };
   [DentistTypes.SET_FULL_DATA]: TdentistReducerState;
 };
@@ -88,25 +88,8 @@ export const DentistInitialState: TdentistReducerState = {
   locations: null,
   gallery: null,
   phone: null,
-  services: [
-    {
-      key: '1',
-      service_name: 'Teeth Whitening',
-      service_id: 'Teeth Whitening',
-    },
-    {
-      key: '2',
-      service_name: 'Veneers',
-      service_id: 'Veneers',
-    },
-    {
-      key: '3',
-      service_name: 'Crowns',
-      service_id: 'Crowns',
-    },
-  ],
+  services: [],
   website: null,
-  allowedServices: null,
 };
 
 export const dentistReducer = (
@@ -132,14 +115,12 @@ export const dentistReducer = (
       const afterRemovingLocation = state.locations?.filter((item) => item.key !== action.payload.id) || null;
       return {...state, locations: afterRemovingLocation};
     case DentistTypes.REMOVE_SERVICE:
-      const afterRemovingService = state.services?.filter((item) => item.key !== action.payload.key) ||
+      const afterRemovingService = state.services?.filter((item) => item.id !== action.payload.key) ||
         null;
       return {...state, services: afterRemovingService};
     case DentistTypes.ADD_SERVICES:
       const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};
-    case DentistTypes.SET_ALL_SERVICES:
-      return {...state, allowedServices: action.payload.allowedServices};
     case DentistTypes.SET_GALLERY:
       return {...state, gallery: action.payload.gallery};
     case DentistTypes.ADD_TO_GALLERY:
