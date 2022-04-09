@@ -7,7 +7,7 @@ import {Layout} from "../components";
 const PricingPage = () => {
   return (
     <Layout>
-      <Pricing setNextStep={false} />
+      <Pricing />
     </Layout>
   )
 }

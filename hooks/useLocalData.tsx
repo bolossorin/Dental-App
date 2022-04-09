@@ -17,32 +17,53 @@ export const useLocalData = () => {
   const [loading, setLoading] = useState(false);
 
   useEffect(() => {
-    const localDentistState = JSON.parse(localStorage.getItem("dentist") as any);
-    localStorage.setItem("dentist", JSON.stringify(localDentistState));
+    const access_token = JSON.parse(localStorage.getItem("access_token") as any);
 
     setLoading(true);
-    if (localDentistState && localDentistState.access_token) {
+    if (access_token) {
 
       if (router.pathname.includes("admin")) Router.push(routes.home);
-      const config = {headers: {Authorization: `Bearer ${localDentistState.access_token}`}};
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
 
       getDentistInfoAPI(config).then(({data}) => {
-        const {avatarUrl, dentist_name, email, gdc} = data;
         localStorage.removeItem("admin");
-        dispatch({
-          type: DentistTypes.SET_FULL_DATA,
-          payload: {
-            ...localDentistState,
-            dentist_name: dentist_name,
-            email: email,
-            gdc: gdc,
-            avatarUrl: avatarUrl,
-            subscription_plan: data.subscription_plan,
-            isLogged: true,
-            allowedServices: null,
-            gallery: null,
-          },
-        });
+        const payload = {
+          access_token: access_token,
+          dentist_name: data.dentist_name,
+          email: data.email,
+          gdc: data.gdc,
+          avatarUrl: data.avatarUrl,
+          locations: data.locations,
+          subscription_plan: data.subscription_plan,
+          allowedServices: null,
+          gallery: null,
+          title: "",
+          qualifications: "",
+          bio: "",
+          cover_url: "",
+          phone: null,
+          services: [
+            {
+              key: '1',
+              service_name: 'Teeth Whitening',
+              service_id: 'Teeth Whitening',
+            },
+            {
+              key: '2',
+              service_name: 'Veneers',
+              service_id: 'Veneers',
+            },
+            {
+              key: '3',
+              service_name: 'Crowns',
+              service_id: 'Crowns',
+            },
+          ],
+          website: null,
+        };
+
+        dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});
+        localStorage.setItem("dentist", JSON.stringify(payload));
       }).catch((error) => {
         console.error(error, 'error');
         Router.push(routes.login);

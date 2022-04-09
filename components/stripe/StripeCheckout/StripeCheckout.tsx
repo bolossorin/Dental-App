@@ -10,10 +10,10 @@ import {ELEMENTS_OPTIONS} from "../../../utils/cardOptions";
 // recreating the `Stripe` object on every render.
 const stripePromise = loadStripe(`${process.env.NEXT_PUBLIC_STRIPE_PK_KEY}`);
 
-export const StripeCheckout = ({backButton, setNextStep}: any) => {
-  return (
-    <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
-      <StripeForm backButton={backButton} setNextStep={setNextStep} />
-    </Elements>
-  );
+export const StripeCheckout = () => {
+    return (
+        <Elements stripe={stripePromise} options={ELEMENTS_OPTIONS}>
+            <StripeForm />
+        </Elements>
+    );
 };

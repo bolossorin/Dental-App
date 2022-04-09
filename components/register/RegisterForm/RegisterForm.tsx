@@ -3,12 +3,14 @@ import React, {useCallback, useState} from "react";
 // libs
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
+import Router from "next/router";
 
 // components
 import {ShowPassword} from "../../common/ShowPassword/ShowPassword";
-import {IRegisterFormChildren} from "../Content/Content";
-import {registerDentistApi} from "../../../api/AWS-gateway";
+import {IRegisterFormChildren} from "../../../pages/register";
+import {loginDentistApi, registerDentistApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
+import {routes} from "../../../utils/routes";
 
 const registrationSchema = Yup.object().shape({
   dentist_name: Yup.string().matches(/[A-Za-z]{1,28}/, "Invalid Name").required('Name is required'),
@@ -17,7 +19,7 @@ const registrationSchema = Yup.object().shape({
   password: Yup.string()
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });
-export const Register = ({setNextStep, registerValues, setRegisterValues}) => {
+export const RegisterForm = () => {
   const [isPassHidden, setIsPassHidden] = useState<boolean>(true);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -32,12 +34,9 @@ export const Register = ({setNextStep, registerValues, setRegisterValues}) => {
           const response = await registerDentistApi(values)
 
           if (response) {
-            // const {data} = await loginDentistApi(values);
-
-            registerValues.email = values.email;
-            registerValues.dentist_name = values.dentist_name;
-            setRegisterValues(registerValues);
-            setNextStep("pricingCheck");
+            const {data} = await loginDentistApi(values);
+            localStorage.setItem("access_token", JSON.stringify(data.access_token));
+            Router.push(routes.pricing)
           }
         } catch (error: any) {
           setNotification({

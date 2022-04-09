@@ -1,4 +1,4 @@
-import React, {useState, useContext} from "react";
+import React, {useState, useContext, useEffect} from "react";
 
 // libs
 import Link from "next/link";
@@ -12,18 +12,25 @@ import {routes} from "../../utils/routes";
 
 export const Header: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {isLogged} = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
-  const [toggle, setToggle] = useState(false);
 
   const [logOut] = useLogout(() => setToggle(false));
+
+  const [toggle, setToggle] = useState(false);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
+
+  useEffect(() => {
+    if (localStorage.getItem('access_token')) {
+      setAccessToken(localStorage.getItem('access_token'));
+    }
+  }, []);
 
   return (
     <div className='header-wrapper'>
       <div className="header_shadow" />
       <div className="header bg-green">
         <div className="menu" id="mobile_menu">
-          {(isLogged || isLoggedAdmin) ? (<svg
+          {(accessToken || isLoggedAdmin) ? (<svg
             className="menu-logo"
             xmlns="http://www.w3.org/2000/svg"
             height="28px"
@@ -43,7 +50,7 @@ export const Header: React.FC = () => {
             alt='' />
         </Link>
         <div className="header_actions">
-          {(!isLogged && !isLoggedAdmin) ? <>
+          {(!accessToken && !isLoggedAdmin) ? <>
             <button className="button-green-login" onClick={() => Router.push(routes.login)}>Login</button>
             <button className="button-green-register" onClick={() => Router.push(routes.register)}>Register</button>
           </> : <button className="button-green-login" onClick={logOut}>Logout</button>}

@@ -64,7 +64,6 @@ export type IDentistGallery = {
   gallery: Null_Or_<IUserGallery[]>;
 };
 export type IDentist_SpecialState = {
-  isLogged: boolean;
   subscription_plan: string;
   avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;

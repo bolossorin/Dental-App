@@ -10,24 +10,16 @@ import {routes} from "../../utils/routes";
 // assets
 import styles from "./Pricing.module.scss";
 
-export const Pricing = ({setNextStep}) => {
+export const Pricing = () => {
   const [showMap, setShowMap] = useState(false);
   const handleSwitch = () => setShowMap(!showMap);
 
   const handleSubmit = () => {
-    if (setNextStep) {
-      setNextStep('cardCheck')
-    } else {
-      Router.push(routes.purchase)
-    }
+    Router.push(routes.purchase)
   }
 
   const handleFreeSubmit = () => {
-    if (setNextStep) {
-      Router.push(routes.login);
-    } else {
-      Router.push(routes.purchase)
-    }
+    Router.push(routes.account)
   }
 
   return (

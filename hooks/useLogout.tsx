@@ -11,6 +11,7 @@ import {routes} from "../utils/routes";
 export const useLogout = (callback?: Function, path?: string) => {
   const {dispatch} = useContext(AppContext);
   const logOut = async () => {
+    localStorage.removeItem("access_token");
     localStorage.removeItem("dentist");
     localStorage.removeItem("admin");
     dispatch({type: DentistTypes.LOGOUT});

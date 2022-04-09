@@ -7,8 +7,7 @@ import {get} from "lodash";
 import * as Yup from "yup";
 
 // components
-import {API, getDentistLocations, setDentistLocation, updateDentistLocation} from "../../../../api/AWS-gateway";
-// import {UserLocation} from "../../../../reducers/types";
+import {API, setDentistLocation, updateDentistLocation} from "../../../../api/AWS-gateway";
 import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
@@ -23,7 +22,9 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
   const {state, dispatch} = useContext(AppContext);
   const {
     // email,
-    subscription_plan, access_token} = state.dentistState;
+    subscription_plan,
+    access_token
+  } = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -58,14 +59,11 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
             setNotification({type: "warning", message: "Location already exist!"});
             return;
           }
-          await updateDentistLocation(location.id, values, config);
+          await updateDentistLocation(0, values, config);
         } else {
           await setDentistLocation(values, config);
         }
         setNotification({type: "success", message: "Successfully", position: "top-right"});
-        getDentistLocations(config)
-          .then(({data}) => dispatch({type: DentistTypes.SET_LOCATIONS, payload: {locations: data}}))
-          .catch(error => setNotification({type: "error", message: error.response.data.message}));
       } catch (error: any) {
         setNotification({
           type: "error",

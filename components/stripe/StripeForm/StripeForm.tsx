@@ -22,9 +22,9 @@ const stripeCheckoutSchema = Yup.object().shape({
   name: Yup.string().matches(/^([A-Za-z]){1,28}$/, 'Invalid name').required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
-export const StripeForm = ({backButton, setNextStep}) => {
+export const StripeForm = () => {
   const {state} = useContext(AppContext);
-  const {access_token, email, dentist_name}: any = state.dentistState;
+  const {email, dentist_name}: any = state.dentistState;
 
   const stripe = useStripe();
   const elements = useElements();
@@ -81,8 +81,8 @@ export const StripeForm = ({backButton, setNextStep}) => {
   };
 
   useEffect(() => {
-    if (access_token) {
-      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+    if (localStorage.getItem('access_token')) {
+      const config = {headers: {Authorization: `Bearer ${localStorage.getItem('access_token')}`}};
       createSubscriptionPI(config, process.env.NEXT_PUBLIC_STRIPE_CREATE_SUBSCRIPTION)
         .then(({data}) => setClientSecret(data.clientSecret))
         .catch((error) => console.log(error, 'error'));
@@ -91,7 +91,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
         .then(({data}) => setPrice({original: data, withCoupon: 0}))
         .catch((error) => console.log(error, 'error'));
     }
-  }, [access_token]);
+  }, []);
 
   return <Formik
     enableReinitialize
@@ -112,7 +112,7 @@ export const StripeForm = ({backButton, setNextStep}) => {
         if (data.error) {
           setNotification({type: "error", message: data.error.message});
         } else {
-          setNotification({type: "error", message: data.response.description});
+          setNotification({type: "success", message: data.paymentIntent.description});
         }
       })
       setProcessing(false);
@@ -173,9 +173,6 @@ export const StripeForm = ({backButton, setNextStep}) => {
               </button>}
           </div>
         </div>
-        {backButton && <div className="form-login-input">
-          <button type="button" className="button-Back mt-0" onClick={() => setNextStep("register")}>Back</button>
-        </div>}
       </Form>)}
   </Formik>
 }

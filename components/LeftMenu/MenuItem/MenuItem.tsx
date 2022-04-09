@@ -21,9 +21,10 @@ export const MenuItem = () => {
   const router = useRouter();
   const [links, setLinks] = useState<ILinks[]>([]);
   const [loginUrl, setLoginUrl] = useState(routes.login);
+  const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const {state} = useContext(AppContext);
-  const {isLogged, email} = state.dentistState;
+  const {email} = state.dentistState;
   const {isLoggedAdmin} = state.adminState;
 
   const [logOut] = useLogout();
@@ -46,15 +47,21 @@ export const MenuItem = () => {
       {icon: '../../images/more_vert.svg', title: 'Settings', url: routes.settings},
     ];
 
-    if (isLogged) {
+    if (localStorage.getItem('access_token')) {
       setLinks(dentistLinks)
       setLoginUrl(routes.login)
     } else if (isLoggedAdmin) {
       setLinks(adminLinks)
       setLoginUrl(routes.loginAdmin)
     }
+  }, [isLoggedAdmin, email])
 
-  }, [isLogged, isLoggedAdmin, email])
+
+  useEffect(() => {
+    if (localStorage.getItem('access_token')) {
+      setAccessToken(localStorage.getItem('access_token'));
+    }
+  }, []);
 
   return (
     <div className="leftmenu-navbar">
@@ -65,7 +72,7 @@ export const MenuItem = () => {
             <a className="leftmenu-link">{link.title}</a>
           </li>
         </Link>))}
-      {(isLogged || isLoggedAdmin) && <li className="leftmenu-list logout">
+      {(accessToken || isLoggedAdmin) && <li className="leftmenu-list logout">
         <img className="leftmenu-link-image" src={"../../images/left-arrow.svg"} alt="link image" />
         <a className="leftmenu-link" href={loginUrl} onClick={logOut}>
           Logout

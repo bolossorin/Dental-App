@@ -1,30 +1,13 @@
-import React, {useCallback, useContext, useEffect} from "react";
+import React, {useContext} from "react";
 
 // components
 import {AppContext} from "../../../context/app.context";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 import {LocationForm} from "./LocationForm/LocationForm";
-import {getDentistLocations} from "../../../api/AWS-gateway";
-import notify, {ISetNotofication} from "../../Toast";
-import {DentistTypes} from "../../../reducers";
 
 const Locations: React.FC = () => {
-  const {dispatch} = useContext(AppContext);
   const {state} = useContext(AppContext);
-
-  const {subscription_plan, access_token, locations} = state.dentistState;
-
-  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
-    notify({...notifyProps});
-  }, []);
-
-  useEffect(() => {
-    if (access_token) {
-      getDentistLocations({headers: {Authorization: `Bearer ${access_token}`}})
-        .then(({data}) => dispatch({type: DentistTypes.SET_LOCATIONS, payload: {locations: data}}))
-        .catch(error => setNotification({type: "error", message: error.response.data.message}));
-    }
-  }, [access_token]);
+  const {subscription_plan, locations} = state.dentistState;
 
   return (
     <ProfileLayout title='Locations' subTitle='Information For Patients'>

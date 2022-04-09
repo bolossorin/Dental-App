@@ -6,9 +6,8 @@ export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_B
 export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
 export const passwordResetDentistApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/reset-password`, body, config);
 
-export const getDentistLocations = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, config);
-export const setDentistLocation = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations`, body, config);
-export const updateDentistLocation = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/locations/${id}`, body, config);
+export const setDentistLocation = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/location`, body, config);
+export const updateDentistLocation = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/location/${id}`, body, config);
 
 export const uploadDentistAvatarAPI = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/avatar`, body, config);
 

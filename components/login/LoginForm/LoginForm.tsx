@@ -63,30 +63,6 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
             }
 
             let fullDataAdmin;
-            let fullData = {
-              access_token: data.access_token,
-              bio: {
-                title: '',
-                dentist_name: data.dentist_name,
-                email: data.email,
-                gdc: 12345,
-                qualifications: '',
-                bio: '',
-                website: '',
-                phone: '',
-              },
-              avatarUrl: '',
-              locations: [],
-              services: [
-                {
-                  key: '1',
-                  service_name: '',
-                  service_id: '',
-                },
-              ],
-              cover_url: '',
-              subscription_plan: data.subscription_plan
-            }
             if (title === 'Current FYD admins') {
               fullDataAdmin = {
                 adminDetails: {username: 'John Doe', email: values.email, avatarUrl: '../images/doctor1.png'},
@@ -166,24 +142,7 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
               }, 800);
             }
             else {
-              const {bio, avatarUrl, locations, services, cover_url, subscription_plan, access_token} = fullData;
-              localStorage.setItem("dentist", JSON.stringify(fullData));
-              dispatch({
-                type: DentistTypes.SET_FULL_DATA,
-                payload: {
-                  access_token,
-                  ...bio,
-                  avatarUrl,
-                  cover_url,
-                  locations,
-                  services,
-                  subscription_plan,
-                  isLogged: true,
-                  allowedServices: null,
-                  gallery: null,
-                },
-              });
-
+              localStorage.setItem("access_token", JSON.stringify(data.access_token));
               setTimeout(() => {
                 Router.push(routes.profile);
               }, 800);

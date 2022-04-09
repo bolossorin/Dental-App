@@ -6,7 +6,6 @@ import {
   IServices,
   IDentist_SpecialState,
   IUserGallery,
-  UserLocation,
   IService,
 } from "./types";
 
@@ -17,7 +16,6 @@ export enum DentistTypes {
   SET_INFO = "DENTIST_SET_INFO",
   SET_FULL_DATA = "SET_FULL_DATA",
   REMOVE_LOCATION = "REMOVE_LOCATION",
-  SET_LOCATIONS = "SET_LOCATIONS",
   SET_ALL_SERVICES = "SET_ALL_SERVICES",
   ADD_SERVICES = "ADD_SERVICES",
   REMOVE_SERVICE = "REMOVE_SERVICE",
@@ -44,7 +42,6 @@ export type dentistPayload = {
     phone?: string;
   };
   [DentistTypes.REMOVE_LOCATION]: { id: string; };
-  [DentistTypes.SET_LOCATIONS]: { locations: UserLocation[]; };
   [DentistTypes.REMOVE_FROM_GALLERY]: { key: string; };
   [DentistTypes.ADD_TO_GALLERY]: { item: IUserGallery; };
   [DentistTypes.UPDATE_ITEM_GALLERY]: {
@@ -80,7 +77,6 @@ export type DentistActions = ActionMap<dentistPayload>[keyof ActionMap<dentistPa
 export const DentistInitialState: TdentistReducerState = {
   access_token: '',
   gdc: 0,
-  isLogged: false,
   title: "",
   dentist_name: "",
   email: "",
@@ -121,7 +117,7 @@ export const dentistReducer = (
     case DentistTypes.RESET:
       return {...state, email: ""};
     case DentistTypes.LOGIN:
-      return {...state, ...action.payload, isLogged: true};
+      return {...state, ...action.payload};
     case DentistTypes.LOGOUT:
       return {...DentistInitialState};
     case DentistTypes.SET_INFO:
@@ -132,8 +128,6 @@ export const dentistReducer = (
       return {...state, cover_url: action.payload.cover_ul};
     case DentistTypes.SET_FULL_DATA:
       return {...state, ...action.payload};
-    case DentistTypes.SET_LOCATIONS:
-      return {...state, locations: action.payload.locations};
     case DentistTypes.REMOVE_LOCATION:
       const afterRemovingLocation = state.locations?.filter((item) => item.key !== action.payload.id) || null;
       return {...state, locations: afterRemovingLocation};
