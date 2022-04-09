@@ -22,7 +22,7 @@ const stripeCheckoutSchema = Yup.object().shape({
   name: Yup.string().matches(/^([A-Za-z]){1,28}$/, 'Invalid name').required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
-export const StripeForm = () => {
+export const StripeForm = ({setSubscriptionPlan}) => {
   const {state} = useContext(AppContext);
   const {email, dentist_name}: any = state.dentistState;
 
@@ -82,7 +82,9 @@ export const StripeForm = () => {
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
-      const config = {headers: {Authorization: `Bearer ${localStorage.getItem('access_token')}`}};
+      const access_token = JSON.parse(localStorage.getItem('access_token') as string);
+
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
       createSubscriptionPI(config, process.env.NEXT_PUBLIC_STRIPE_CREATE_SUBSCRIPTION)
         .then(({data}) => setClientSecret(data.clientSecret))
         .catch((error) => console.log(error, 'error'));
@@ -111,11 +113,13 @@ export const StripeForm = () => {
       ).then((data: any) => {
         if (data.error) {
           setNotification({type: "error", message: data.error.message});
+          setProcessing(false);
         } else {
+          if (setSubscriptionPlan) setSubscriptionPlan(data.paymentIntent);
           setNotification({type: "success", message: data.paymentIntent.description});
+          setProcessing(false);
         }
       })
-      setProcessing(false);
     }}>
     {({errors, touched}) =>
       (<Form className="form-login stripe-checkout">
@@ -140,7 +144,7 @@ export const StripeForm = () => {
               className="btn btn-success"
               type="submit"
               disabled={processing || (!stripe || checking)}>
-              {processing ? <Spinner /> : `Pay ${getCurrency(price.withCoupon, price.original)}`}
+              Pay ${getCurrency(price.withCoupon, price.original)}
             </button>}
             {couponField ? (<div id="coupon_input_container">
                 <Field

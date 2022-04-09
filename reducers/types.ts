@@ -64,6 +64,7 @@ export type IDentistGallery = {
 };
 export type IDentist_SpecialState = {
   subscription_plan: string;
+  subscription_end_date: Null_Or_<number>;
   avatarUrl: Null_Or_<string>;
   cover_url: Null_Or_<string>;
 };

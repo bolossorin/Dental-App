@@ -7,7 +7,7 @@ import {StripeCheckout} from "../components/stripe/StripeCheckout/StripeCheckout
 const Payment = (): JSX.Element => {
   return (
     <Layout footer>
-      <StripeCheckout />
+      <StripeCheckout setSubscriptionPlan={false} />
     </Layout>
   );
 };

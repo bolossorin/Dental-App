@@ -1,4 +1,4 @@
-import React, {useContext, useEffect} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 // libs
 import type {NextPage} from "next";
@@ -15,23 +15,31 @@ const AccountPage: NextPage = (): JSX.Element => {
   const {state} = useContext(AppContext);
   const {subscription_plan, access_token}: any = state.dentistState;
 
+  const [subscriptionPlan, setSubscriptionPlan] = useState<string>("");
 
   useEffect(() => {
     if (access_token) {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
       getSettingsPI(config)
-        .then((data) => {
-          console.log(data)
+        .then(({data}) => {
+          console.log(data, 'getSettingsPI')
         })
         .catch((error) => {
           console.log(error)
         })
     }
-  }, [access_token])
+  }, [access_token]);
+
+  useEffect(() => {
+    setSubscriptionPlan(subscription_plan)
+  }, [subscription_plan])
+
   return (
     <LayoutDentist>
       <AccountInfoBlock />
-      {subscription_plan === 'FREE' ? <Upgrade /> : <Subscription />}
+      {subscriptionPlan === 'FREE'
+        ? <Upgrade setSubscriptionPlan={setSubscriptionPlan} />
+        : <Subscription subscriptionPlan={subscriptionPlan} setSubscriptionPlan={setSubscriptionPlan} />}
     </LayoutDentist>
   );
 };

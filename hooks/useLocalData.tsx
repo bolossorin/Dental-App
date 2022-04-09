@@ -36,6 +36,7 @@ export const useLocalData = () => {
             avatarUrl: data.avatarUrl,
             locations: data.locations,
             subscription_plan: data.subscription_plan,
+            subscription_end_date: data.subscription_end_date,
             gallery: null,
             title: "",
             qualifications: "",

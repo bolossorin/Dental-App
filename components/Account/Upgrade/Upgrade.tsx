@@ -7,7 +7,11 @@ import Link from "next/link";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {Billing} from "../Billing/Billing";
 
-export const Upgrade: React.FC = () => {
+interface IUpgrade {
+  setSubscriptionPlan: (value: string) => void
+}
+
+export const Upgrade: React.FC<IUpgrade> = ({setSubscriptionPlan}) => {
   return (
     <ProfileBox title='Upgrade to Premium' subTitle='Paid Subscription'>
       <div className="account-profile-block-box">
@@ -30,7 +34,7 @@ export const Upgrade: React.FC = () => {
           </ul>
         </div>
       </div>
-      <Billing />
+      <Billing setSubscriptionPlan={setSubscriptionPlan} />
     </ProfileBox>
   );
 };
