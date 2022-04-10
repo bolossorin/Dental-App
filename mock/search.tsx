@@ -84,11 +84,3 @@ export const personInitial = [
     extensionBefore: 'Image Alt Text 4',
   }
 ];
-
-export const servicesInitial = [
-  {key: '1', service_name: 'Teeth Whitening', id: 'Teeth Whitening'},
-  {key: '2', service_name: 'Veneers', id: 'Veneers'},
-  {key: '3', service_name: 'Crowns', id: 'Crowns'},
-  {key: '3', service_name: 'Crowns', id: 'Crowns'},
-  {key: '4', service_name: 'Smile In A Day', id: 'Smile In A Day'}
-]

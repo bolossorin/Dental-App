@@ -10,21 +10,18 @@ import {Crop} from "../Crop/Crop";
 import {resizeFile} from "../../../../utils/resizer";
 
 interface UploadProps {
-  onSaveCrop: (src: string) => void;
   img: File | string;
   setImg: (src: File | string) => void;
-  disableEdit: boolean;
   type: string;
   errors: any;
   touched: any;
 }
 
-export const Upload: React.FC<UploadProps> = ({onSaveCrop, img, setImg, disableEdit, type, errors, touched}) => {
+export const Upload: React.FC<UploadProps> = ({img, setImg, type, errors, touched}) => {
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
+    notify({...notifyProps});
+  }, []);
 
   const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
     const file = e.target.files && e.target.files[0];
@@ -33,10 +30,7 @@ export const Upload: React.FC<UploadProps> = ({onSaveCrop, img, setImg, disableE
       const image = await resizeFile(file);
       setImg(image as any);
     } else {
-      setNotification({
-        type: "warning",
-        message: "Please  upload file size no bigger than 2 mb",
-      });
+      setNotification({type: "warning", message: "Please  upload file size no bigger than 2 mb"});
     }
   };
 
@@ -47,11 +41,16 @@ export const Upload: React.FC<UploadProps> = ({onSaveCrop, img, setImg, disableE
         <p className="form-login-subtitle gray px12 mb-6px">Add and edit your images</p>
       </div>
       <div className="profile-block-box">
-        {img ? <Crop src={img as string} onSave={onSaveCrop} disableEdit={disableEdit} setImg={setImg} />
+        {img ? <Crop src={img as string} setImg={setImg} />
           : <div className="gallery-block-image">
             <p className="gallery-upload">
-              <label className="button-green-file" form="cover_image">Upload</label>
-              <Field type="file" className="input-file2" name='cover_image' onChange={(e) => handleImgChange(e)} />
+              <label className="button-green-file" htmlFor={`cover_image_${type.toLowerCase()}`}>Upload</label>
+              <Field
+                id={`cover_image_${type.toLowerCase()}`}
+                type="file"
+                className="input-file2"
+                name='cover_image'
+                onChange={(e) => handleImgChange(e)} />
               <span className="upload-subtitle">Max Size 2MB</span>
             </p>
           </div>}

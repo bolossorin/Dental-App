@@ -1,10 +1,7 @@
-import React, {useCallback,
-  // useContext,
-  useState} from "react";
+import React, {useCallback, useEffect, useContext, useState} from "react";
 
 // libs
 import Skeleton from "react-loading-skeleton";
-// import axios from "axios";
 import {Form, Formik} from "formik";
 import * as Yup from "yup";
 
@@ -13,15 +10,11 @@ import {useLocalData} from "../../hooks/useLocalData";
 import {GalleryPhotos} from "./Main/Photos/Photos";
 import {Upload} from "./Uploads/After/After";
 import SetServices from "./Uploads/SetServices/SetServices";
-import {Watermark} from "./Uploads/Watermark/Watermark";
-import watermark from "../../utils/watermark/builded";
 import {ISetNotofication} from "../Toast";
 import notify from "../Toast";
-// import {API} from "../../api/AWS-gateway";
-// import {AppContext} from "../../context/app.context";
-import {resizeFile} from "../../utils/resizer";
+import {AppContext} from "../../context/app.context";
 import {IUserGallery} from "../../reducers/types";
-// import {DentistTypes} from "../../reducers";
+import {getAllGallery, setGallery} from "../../api/AWS-gateway";
 
 const gallerySchema = Yup.object().shape({
   before_title: Yup.string().required(),
@@ -29,31 +22,17 @@ const gallerySchema = Yup.object().shape({
   before_altTags: Yup.string(),
   after_altTags: Yup.string(),
 });
-
 export const Gallery: React.FC = () => {
   const {loading} = useLocalData();
 
-  // const {state, dispatch} = useContext(AppContext);
+  const {state} = useContext(AppContext);
+  const {email, access_token} = state.dentistState;
 
   const [step, setStep] = useState<"gallery" | "uploads" | "edit">("gallery");
-  // const [keyOfEditingPhoto, setItemKey] = useState("");
-
-  const [watermarkedAfter, setWatermarkedAfter] = useState("");
-  const [watermarkedBefore, setWatermarkedBefore] = useState("");
-
-  const [confirmCheckbox, setConfirm] = useState<"yes" | "no">("no");
-  const [photoService, setServiceId] = useState("");
-
-  const [editingService, setEditingService] = useState({id: "", name: "Choose Service"});
-
-  const [watermarkFile, setWatermarkFile] = useState<File | string>("");
-
+  const [confirm, setConfirm] = useState<boolean>(false);
+  const [selectedService, setSelectedService] = useState("");
   const [afterImg, setAfterImg] = useState<File | string>("");
   const [beforeImg, setBeforeImg] = useState<File | string>("");
-
-  const [afterCroppedImg, setAfterCroppedImg] = useState<File | string>("");
-  const [beforeCroppedImg, setBeforeCroppedImg] = useState<File | string>("");
-
   const [initialValues, setInitialValues] = useState({
     before_title: '',
     after_title: '',
@@ -61,142 +40,26 @@ export const Gallery: React.FC = () => {
     after_altTags: '',
     after_img: '',
     before_img: '',
-    service: {id: '', name: ''},
   });
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
+    notify({...notifyProps});
+  }, []);
 
-  const onBeforeSaveCrop = (src) => setBeforeCroppedImg(src);
-  const onAfterSaveCrop = (src) => setAfterCroppedImg(src);
-
-  const onSubmitForm = async (
-    // data
-  ) => {
-    if (!watermarkedAfter || !watermarkedBefore) {
-      setNotification({
-        type: "warning",
-        message: "Please set watermark and use it!",
-      });
-      return;
-    }
-    if (confirmCheckbox === "no") {
-      setNotification({
-        type: "warning",
-        message: "Please check confirmation",
-      });
-      return;
-    }
-    if (!photoService) {
-      setNotification({
-        type: "warning",
-        message: "Please select service",
-      });
-      return;
-    }
-    try {
-      // const {email} = state.dentistState;
-      // const {after_altTags, after_title, before_altTags, before_title} = data;
-      // const body = {
-      //   email,
-      //   images: {
-      //     before: {
-      //       title: before_title,
-      //       altTags: before_altTags,
-      //       files: {
-      //         extension: watermarkedBefore
-      //           .split(",")[0]!
-      //           .split("/")[1]
-      //           .split(";")[0],
-      //         value: watermarkedBefore.split(",")[1],
-      //       },
-      //     },
-      //     after: {
-      //       title: after_title,
-      //       altTags: after_altTags,
-      //       files: {
-      //         extension: watermarkedAfter
-      //           .split(",")[0]!
-      //           .split("/")[1]
-      //           .split(";")[0],
-      //         value: watermarkedAfter.split(",")[1],
-      //       },
-      //     },
-      //   },
-      //   id: photoService,
-      // };
-
-      // const res = await axios.post<IUserGallery>(API.SET_DENTIST_GALLERY, body);
-      // dispatch({
-      //   type: DentistTypes.ADD_TO_GALLERY,
-      //   payload: {
-      //     item: res.data,
-      //   },
-      // });
-      setNotification({
-        type: "success",
-        message: "Successfully added new image to Gallery!",
-        autoClose: 2,
-        position: "top-right",
-      });
-      reset();
-      setStep("gallery");
-    } catch (exp) {
-    }
-  };
-
-  const reset = () => {
+  const resetForm = () => {
     setAfterImg("");
     setBeforeImg("");
-    setAfterCroppedImg("");
-    setBeforeCroppedImg("");
-    setServiceId("");
-    setWatermarkFile("");
-    setConfirm("no");
-    setEditingService({
-      id: "",
-      name: "Select service",
-    });
+    setSelectedService("");
+    setConfirm(false);
   };
 
   const onCancel = () => {
-    reset();
+    resetForm();
     setStep("gallery");
   };
 
-  const handleUseWatermark = async () => {
-    if (!beforeImg || !afterImg) {
-      setNotification({type: "warning", message: "Please upload all images"});
-      return;
-    }
-    if (!beforeCroppedImg || !afterCroppedImg) {
-      setNotification({type: "warning", message: "Please crop all images"});
-      return;
-    }
-    try {
-      const image = await resizeFile(watermarkFile, 100, 100, 80);
-      const watermarkedAfter = await watermark([afterCroppedImg, image]).image(watermark.image.upperRight(0.5));
-      setWatermarkedAfter(watermarkedAfter.src);
-      const watermarkedBefore = await watermark([beforeCroppedImg, image]).image(watermark.image.upperRight(0.5));
-      setWatermarkedBefore(watermarkedBefore.src);
-      setNotification({
-        type: "success",
-        message: "Successfully applied watermark!",
-        autoClose: 2,
-        position: "top-right",
-      });
-    } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Error on create watermark image",
-      });
-    }
-  };
-
   const onEdit = async (target: IUserGallery) => {
-    reset();
+    resetForm();
     setInitialValues({
       after_title: target.titleAfter,
       before_title: target.titleBefore,
@@ -204,154 +67,102 @@ export const Gallery: React.FC = () => {
       before_altTags: target.altTagsBefore,
       after_img: target.imageAfterUrl,
       before_img: target.imageBeforeUrl,
-      service: {id: target.id, name: target.service_name},
     })
     setAfterImg(target.imageAfterUrl as string);
     setBeforeImg(target.imageBeforeUrl as string);
-    setEditingService({id: target.id, name: target.service_name});
-    setServiceId(target.id);
-    // setItemKey(target.key);
+    setSelectedService(target.id);
     setStep("edit");
-
-    window.scrollTo({
-      top: 0,
-      behavior: "smooth"
-    });
+    window.scrollTo({top: 0, behavior: "smooth"});
   };
 
-  const onSubmitEdit = async (
-    // data
-  ) => {
-    // const {email} = state.dentistState;
-    if (!photoService) {
+  const onSubmitEdit = async () => {
+    if (!selectedService) {
       setNotification({type: "warning", message: "Please choose service!"});
       return;
     }
-    if (confirmCheckbox === "no") {
+    if (!confirm) {
       setNotification({type: "warning", message: "Please confirm!"});
       return;
     }
     try {
-      // const {after_altTags, after_title, before_altTags, before_title} = data;
-      // const body = {
-      //   email,
-      //   images: {
-      //     before: {
-      //       title: before_title,
-      //       altTags: before_altTags || null,
-      //       files: null,
-      //     },
-      //     after: {
-      //       title: after_title,
-      //       altTags: after_altTags || null,
-      //       files: null,
-      //     },
-      //   },
-      //   id: photoService,
-      // };
-      // const key = keyOfEditingPhoto;
-      // const res = await axios.put<IUserGallery>(
-      //   `${API.SET_DENTIST_GALLERY}?key=${key}`,
-      //   body
-      // );
-      // dispatch({
-      //   type: DentistTypes.UPDATE_ITEM_GALLERY,
-      //   payload: {
-      //     item: {...res.data, key},
-      //   },
-      // });
-      setNotification({
-        type: "success",
-        message: "Successfully added new image to Gallery!",
-        autoClose: 2,
-        position: "top-right",
-      });
-      reset();
-      setStep("gallery");
-    } catch (exp) {
+      // const res = await axios.put<IUserGallery>(`${API.SET_DENTIST_GALLERY}?key=${key}`, body);
+      // dispatch({type: DentistTypes.UPDATE_ITEM_GALLERY, payload: {item: {...res.data, key}}});
+      setNotification({type: "success", message: "Successfully added new image to Gallery!"});
+      // resetForm();
+      // setStep("gallery");
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 
-  const disabledAction = !(afterImg && beforeImg && afterCroppedImg && beforeCroppedImg);
-
-  const onFire = !disabledAction ? handleUseWatermark : undefined;
-
+  useEffect(() => {
+    if (email) {
+      getAllGallery(email)
+        .then(() => {
+          console.log(11111)
+        })
+        .catch((error) => console.error(error, 'error'));
+    }
+  }, [email]);
 
   return (
     <>
       {step === "uploads" && (
-        <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={onSubmitForm}>
+        <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={async (values) => {
+          if (!confirm) {
+            setNotification({type: "warning", message: "Please check confirmation"});
+            return;
+          }
+          if (!selectedService) {
+            setNotification({type: "warning", message: "Please select service"});
+            return;
+          }
+          try {
+            console.log(values, 'values');
+            const config = {headers: {Authorization: `Bearer ${access_token}`}};
+            await setGallery(selectedService, values, config);
+            // dispatch({type: DentistTypes.ADD_TO_GALLERY, payload: {item: res.data}});
+            setNotification({type: "success", message: "Successfully added new image to Gallery!"});
+            // resetForm();
+            // setStep("gallery");
+          } catch (error: any) {
+            setNotification({type: "error", message: error.response.data.message});
+          }
+        }}>
           {({errors, touched}) =>
             <Form className='gallery-edit'>
               <div className="row-gallery row-gallery-upload">
-                <Upload
-                  type='After'
-                  img={afterImg}
-                  setImg={setAfterImg}
-                  onSaveCrop={onAfterSaveCrop}
-                  disableEdit={!!watermarkFile}
-                  errors={errors}
-                  touched={touched} />
-                <Upload
-                  type='Before'
-                  img={beforeImg}
-                  setImg={setBeforeImg}
-                  onSaveCrop={onBeforeSaveCrop}
-                  disableEdit={!!watermarkFile}
-                  errors={errors}
-                  touched={touched} />
-                <Watermark
-                  setWatermarkFile={setWatermarkFile}
-                  onFire={onFire}
-                  disableUpload={disabledAction} />
+                <Upload type='After' img={afterImg} setImg={setAfterImg} errors={errors} touched={touched} />
+                <Upload type='Before' img={beforeImg} setImg={setBeforeImg} errors={errors} touched={touched} />
               </div>
               <div className="row-gallery">
                 <SetServices
-                  editingService={editingService}
                   onCancel={onCancel}
-                  isConfirmed={confirmCheckbox}
-                  setConfirm={setConfirm}
-                  setServiceId={setServiceId} />
+                  confirm={confirm} setConfirm={setConfirm}
+                  setSelectedService={setSelectedService} />
               </div>
             </Form>}
         </Formik>)}
       {step === "edit" && (<Formik
-          initialValues={initialValues}
-          enableReinitialize={true}
-          validationSchema={gallerySchema}
-          onSubmit={onSubmitEdit}>
-          {({errors, touched}) =>
-            <Form className='gallery-edit'>
-              <div className="row-gallery">
-                <Upload
-                  type='Before'
-                  img={beforeImg}
-                  setImg={setBeforeImg}
-                  onSaveCrop={onBeforeSaveCrop}
-                  disableEdit={!!watermarkFile}
-                  errors={errors}
-                  touched={touched} />
-                <Upload
-                  type='After'
-                  img={afterImg}
-                  setImg={setAfterImg}
-                  onSaveCrop={onAfterSaveCrop}
-                  disableEdit={!!watermarkFile}
-                  errors={errors}
-                  touched={touched}
-                />
-              </div>
-              <div className="row-gallery">
-                <SetServices
-                  editingService={editingService}
-                  onCancel={onCancel}
-                  isConfirmed={confirmCheckbox}
-                  setConfirm={setConfirm}
-                  setServiceId={setServiceId} />
-              </div>
-            </Form>}
-        </Formik>
-      )}
+        initialValues={initialValues}
+        enableReinitialize={true}
+        validationSchema={gallerySchema}
+        onSubmit={onSubmitEdit}>
+        {({errors, touched}) =>
+          <Form className='gallery-edit'>
+            <div className="row-gallery">
+              <Upload type='Before' img={beforeImg} setImg={setBeforeImg} errors={errors} touched={touched} />
+              <Upload type='After' img={afterImg} setImg={setAfterImg} errors={errors} touched={touched} />
+            </div>
+            <div className="row-gallery">
+              <SetServices
+                onCancel={onCancel}
+                confirm={confirm}
+                setConfirm={setConfirm}
+                setSelectedService={setSelectedService} />
+            </div>
+          </Form>}
+      </Formik>)}
       {step === "gallery" && loading ? <Skeleton width={"80vw"} height={"98vh"} />
         : <GalleryPhotos onUpload={() => setStep("uploads")} onEdit={onEdit} />}
     </>

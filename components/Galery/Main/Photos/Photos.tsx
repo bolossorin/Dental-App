@@ -88,7 +88,7 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
       <GallerySearch onUpload={onUpload} onSearch={onHandleSearchByTitle} />
       <div className="flex-end">
         <select className="person-gallery-select person-arrows" name="services" onChange={handleChangeOption}>
-          <option value="" selected>All services</option>
+          <option value="">All services</option>
           {services && services.map((service) =>
             <option value={service.id} key={service.id}>{service.service_name}</option>)}
         </select>

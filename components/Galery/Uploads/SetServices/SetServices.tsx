@@ -1,32 +1,19 @@
-// import {useContext} from "react";
+import React, {useContext} from "react";
 
 // components
-// import {AppContext} from "../../../../context/app.context";
-import {servicesInitial} from "../../../../mock/search";
+import {AppContext} from "../../../../context/app.context";
 
 interface GallerySetServiceProps {
-  isConfirmed: "yes" | "no";
-  setConfirm: (status: "yes" | "no") => void;
-  setServiceId: (service: string) => void;
+  setSelectedService: (value: string) => void;
+  confirm: boolean;
+  setConfirm: (status: boolean) => void;
   onCancel: () => void;
-  editingService: {
-    name: string;
-    id: string;
-  };
 }
 
-const SetServices: React.FC<GallerySetServiceProps> = (
-  {
-    isConfirmed,
-    setConfirm,
-    setServiceId,
-    onCancel,
-    editingService,
-  }) => {
+const SetServices: React.FC<GallerySetServiceProps> = ({confirm, setConfirm, onCancel, setSelectedService}) => {
+  const {state} = useContext(AppContext);
+  const {services} = state.dentistState;
 
-  // todo: need backend
-  // const {state} = useContext(AppContext);
-  // const {services} = state.dentistState;
   return (
     <div className="row-gallery">
       <div className="profile-box-form cut-block">
@@ -37,33 +24,20 @@ const SetServices: React.FC<GallerySetServiceProps> = (
             </div>
             <div className="row-content space-between">
               <select
+                onChange={(e: any) => setSelectedService(e.target.value)}
                 className="gallery-select arrows"
-                name="services"
-                id="services"
-                placeholder="asdasd"
-                onChange={(e) => setServiceId(e.target.value)}>
-                {servicesInitial?.map((item) => <option
-                  value={item.id}
-                  key={item.id}
-                  selected={item.id === editingService.id}>
-                  {item.service_name}
-                </option>)}
+                name="service">
+                <option value='' defaultValue=''>Select Service</option>
+                {services?.map((item, index) =>
+                  <option key={index} value={item.id}>{item.service_name}</option>)}
               </select>
-
               <div className="checkbox">
                 <input
                   type="checkbox"
-                  name="delete"
-                  id="delete"
-                  value={isConfirmed}
-                  onChange={(e) => {
-                    if (e.target.value === "no") {
-                      setConfirm("yes");
-                    } else {
-                      setConfirm("no");
-                    }
-                  }} />
-                <label htmlFor='delete' className="gallery-checkbox-text">
+                  id="confirm_checkbox"
+                  value={JSON.stringify(confirm)}
+                  onChange={(e: any) => setConfirm(e.target.checked)} />
+                <label htmlFor='confirm_checkbox' className="gallery-checkbox-text">
                   I confirm I have full rights for the use and publication of these images.
                 </label>
               </div>
@@ -73,15 +47,10 @@ const SetServices: React.FC<GallerySetServiceProps> = (
       </div>
       <div className="gallery-button-block services-buttons">
         <div className="form-login-buttons">
-          <button className="gallery-button-green" type="submit">
-            Confirm
-          </button>
+          <button className="gallery-button-green" type="submit">Confirm</button>
         </div>
         <div className="form-login-buttons">
-          <button
-            type='button'
-            className="gallery-button-green-outline"
-            onClick={() => onCancel()}>
+          <button type='button' className="gallery-button-green-outline" onClick={() => onCancel()}>
             Cancel
           </button>
         </div>

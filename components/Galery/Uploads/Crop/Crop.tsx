@@ -5,12 +5,10 @@ import ReactCrop from "react-image-crop";
 
 interface CropProps {
   src: string;
-  onSave: (src: string) => void;
   setImg: (src: string) => void;
-  disableEdit: boolean;
 }
 
-export const Crop: React.FC<CropProps> = ({src, onSave, disableEdit, setImg}) => {
+export const Crop: React.FC<CropProps> = ({src, setImg}) => {
 
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
@@ -62,7 +60,6 @@ export const Crop: React.FC<CropProps> = ({src, onSave, disableEdit, setImg}) =>
       (blob) => {
         const previewUrl = window.URL.createObjectURL(blob);
         setSavedImg(previewUrl);
-        onSave(previewUrl);
       },
       "image/png",
       1
@@ -106,15 +103,14 @@ export const Crop: React.FC<CropProps> = ({src, onSave, disableEdit, setImg}) =>
       </>)}
       {step === "save" && (<>
         <img className='cropped-image' src={savedImg} alt="" />
-        {!disableEdit && (
-          <div className="form-login-buttons ai-fs">
-            <button
-              className="button-green"
-              type="button"
-              onClick={() => setStep("edit")}>
-              Edit
-            </button>
-          </div>)}
+        <div className="form-login-buttons ai-fs">
+          <button
+            className="button-green"
+            type="button"
+            onClick={() => setStep("edit")}>
+            Edit
+          </button>
+        </div>
       </>)}
     </>
   );
