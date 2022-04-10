@@ -6,15 +6,16 @@ import SimpleImageSlider from "react-image-gallery";
 import Link from "next/link";
 
 // components
-import {IUserGallery} from "../../reducers/types";
+import {IService, IUserGallery} from "../../reducers/types";
 import {IDentistFullDataResponse} from "..";
 
 interface IPersonProps {
   dentist: IDentistFullDataResponse;
   gallery: IUserGallery[];
+  allServices: IService[];
 }
 
-const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
+const Person: React.FC<IPersonProps> = ({dentist, gallery, allServices}) => {
 
   const [photos, setPhotos] = useState<IUserGallery[] | null | undefined>(gallery || null);
 
@@ -49,7 +50,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
       <div className="person-index-leftmenu">
         <img
           className="cover-image"
-          src={dentist.subscription_plan !== "PREMIUM" ? "../images/empty.png" : dentist.cover_url || ""}
+          src={dentist.subscription_plan !== "PREMIUM" ? "../images/cover-image.jpg" : dentist.cover_url || "../images/cover-image.jpg"}
           alt="cover image" />
         <div className="person-index-leftmenu-profile-information">
           <img className="profile-photo" src={dentist.avatarUrl || "../images/empty_avatar.png"} alt="/" />
@@ -69,8 +70,8 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
             <p>Bio: </p>
             <p>{dentist.bio}</p>
             <div className="person-button-list">
-              {dentist.services?.map((item) =>
-                <button className="person-index-green-button" key={item.id}>
+              {dentist.services?.map((item, index) =>
+                <button className="person-index-green-button" key={index}>
                   {item.service_name}
                 </button>)}
             </div>
@@ -88,11 +89,11 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
             </div>
             <p>Locations:</p>
             <div>
-              {dentist.locations?.map((item) =>
-                <div key={item.key}>
+              {dentist.locations?.map((item, index) =>
+                <div key={index}>
                   <span>
-                    <strong>{item.location.split(":")[0]}:</strong>
-                    {item.location.split(":")[1]}
+                    {/*<strong>{item.location.split(":")[0]}:</strong>*/}
+                    {/*{item.location.split(":")[1]}*/}
                   </span>
                   <br />
                 </div>)}
@@ -114,9 +115,8 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
               id="services"
               defaultValue='service'
               onChange={handleChangeOption}>
-              <option value="">Service</option>
-              {dentist.services &&
-              dentist.services.map((service) => (
+              <option value="">Dentist Services</option>
+              {allServices.map((service) => (
                 <option value={service.id} key={service.id}>
                   {service.service_name}
                 </option>
@@ -125,8 +125,8 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
           </div>
           {photos && photos.length > 0 ?
             <div className="person-index-dentist-gallery-box">
-              {photos.map((item) => (
-                <div className="person-index-dentist-gallery-image-box" key={item.key}>
+              {photos.map((item, index) => (
+                <div className="person-index-dentist-gallery-image-box" key={index}>
                   <SimpleImageSlider
                     showThumbnails={false}
                     showPlayButton={false}

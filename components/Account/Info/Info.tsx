@@ -50,6 +50,7 @@ export const AccountInfoBlock: React.FC = () => {
   return (
     <ProfileBox title='Account Information' subTitle='Login Details'>
       <Formik
+        enableReinitialize
         validationSchema={accountInfoSchema}
         initialValues={{email: email, gdc: gdc}}
         onSubmit={async (values) => {

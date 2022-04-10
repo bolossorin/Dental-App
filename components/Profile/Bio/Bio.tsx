@@ -1,45 +1,43 @@
 import React, {useCallback, useContext} from "react";
 
 // libs
-import axios from "axios";
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
-import {API} from "../../../api/AWS-gateway";
+import {updateProfileAPI} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 
-interface IBioResponse {
-  title: string;
-  dentist_name: string;
-  qualifications: string;
-  bio: string;
-  email?: string;
-  website?: string | null;
-  phone?: string | null;
-}
-
 const bioSchema = Yup.object().shape({
   title: Yup.string().matches(/(^[A-Za-z]{2,10})/, 'Invalid Title').required("Title is required"),
-  name: Yup.string().matches(/(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})/, 'Invalid Name').required("Name is required"),
+  dentist_name: Yup.string().matches(/(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})/, 'Invalid Name').required("Name is required"),
   email: Yup.string().email("Invalid email").required("Email is required"),
   qualifications: Yup.string(),
   bio: Yup.string(),
   website: Yup.string().matches(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/, 'Invalid Website'),
-  phone: Yup.string().matches(/^(0|[1-9]\d*)$/, 'Invalid Phone'),
+  phone: Yup.string().matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im, 'Invalid Phone'),
 });
 export const Bio: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {email, dentist_name, title, subscription_plan, bio, qualifications, website, phone} = state.dentistState;
+  const {
+    access_token,
+    email,
+    dentist_name,
+    title,
+    subscription_plan,
+    bio,
+    qualifications,
+    website,
+    phone
+  } = state.dentistState;
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
+    notify({...notifyProps});
+  }, []);
 
   return (
     <ProfileLayout title='Bio and Contact Information' subTitle='Information For Patients'>
@@ -48,7 +46,7 @@ export const Bio: React.FC = () => {
         enableReinitialize
         initialValues={{
           title: title || '',
-          name: dentist_name || '',
+          dentist_name: dentist_name || '',
           email: email || '',
           qualifications: qualifications || '',
           bio: bio || '',
@@ -57,44 +55,13 @@ export const Bio: React.FC = () => {
           website: website || ''
         }}
         onSubmit={async (values) => {
-          const {phone, website} = values;
-
-          const body: IBioResponse = {
-            title: values.title || "Dr",
-            email: values.email,
-            dentist_name: values.name,
-            bio: values.bio,
-            qualifications: values.qualifications,
-            phone,
-            website,
-          };
           try {
-            const {data} = await axios.post<IBioResponse>(API.SET_DENTIST_INFORMATION, body);
-            dispatch({
-              type: DentistTypes.SET_INFO,
-              payload: {
-                email: values.email,
-                bio: data.bio,
-                qualifications: data.qualifications,
-                title: data.title,
-                dentist_name: data.dentist_name,
-                phone: data.phone || undefined,
-                website: data.website || undefined,
-              },
-            });
-            setNotification({
-              type: "success",
-              message: "Successfully updated dentist Bio!",
-              autoClose: 2,
-              position: "top-right",
-            });
+            const config = {headers: {Authorization: `Bearer ${access_token}`}};
+            await updateProfileAPI(values, config);
+            dispatch({type: DentistTypes.SET_INFO, payload: values});
+            setNotification({type: "success", message: "Successfully updated dentist Bio!"});
           } catch (exp) {
-            setNotification({
-              type: "error",
-              message: "Please try again!",
-              autoClose: 2,
-              position: "top-right",
-            });
+            setNotification({type: "error", message: "Please try again!"});
           }
         }}>
         {({errors, touched}) =>
@@ -103,9 +70,7 @@ export const Bio: React.FC = () => {
               <div className="double-blocks">
                 <div>
                   <div className="form-profile-label">
-                    <label className="form-profile-label" htmlFor="title">
-                      Title
-                    </label>
+                    <label className="form-profile-label">Title</label>
                   </div>
                   <div className='form-input'>
                     <Field className="form-profile-input" name="title" placeholder="Dr." />
@@ -114,61 +79,51 @@ export const Bio: React.FC = () => {
                 </div>
                 <div>
                   <div className="form-profile-label">
-                    <label className="form-profile-label" htmlFor="name">
-                      Name
-                    </label>
+                    <label className="form-profile-label">Name</label>
                   </div>
                   <div className='form-input'>
-                    <Field className="form-profile-input" name="name" placeholder="Name" />
-                    {errors.name && touched.name ? (<div className='error-text'>{errors.name}</div>) : null}
+                    <Field className="form-profile-input" name="dentist_name" placeholder="Name" />
+                    {errors.dentist_name && touched.dentist_name ?
+                      (<div className='error-text'>{errors.dentist_name}</div>) : null}
                   </div>
                 </div>
               </div>
               <div>
                 <div className="form-profile-label">
-                  <label className="form-profile-label">
-                    Contact Email
-                  </label>
+                  <label className="form-profile-label">Contact Email</label>
                 </div>
                 <div className='form-input'>
-                  <Field className="form-profile-input" name="email" placeholder="Email" />
+                  <Field className="form-profile-input" name="email" placeholder="Email" disabled />
                   {errors.email && touched.email ? (<div className='error-text'>{errors.email}</div>) : null}
                 </div>
               </div>
               <div>
                 <div className="form-profile-label">
-                  <label className="form-profile-label" htmlFor="Qualifications">
-                    Qualifications
-                  </label>
+                  <label className="form-profile-label">Qualifications</label>
                 </div>
                 <div className='form-input'>
                   <Field className="form-profile-input" name="qualifications" placeholder="Notes Here" />
-                  {errors.qualifications && touched.qualifications ? (
-                    <div className='error-text'>{errors.qualifications}</div>) : null}
+                  {errors.qualifications && touched.qualifications ?
+                    (<div className='error-text'>{errors.qualifications}</div>) : null}
                 </div>
               </div>
               <div>
                 <div className="form-profile-label">
-                  <label className="form-profile-label" htmlFor="profile_bio">
-                    Profile Bio
-                  </label>
+                  <label className="form-profile-label">Profile Bio</label>
                 </div>
                 <div className='form-input'>
                   <Field as='textarea' className="form-profile-input" name="bio" placeholder="Profile Bio..." />
-                  {errors.bio && touched.bio ?
-                    <div className='error-text'>{errors.bio}</div> : null}
+                  {errors.bio && touched.bio ? <div className='error-text'>{errors.bio}</div> : null}
                 </div>
                 <div className="form-login-buttons-confirm">
-                  <button type='submit' className="button-green-confirm">
-                    Confirm
-                  </button>
+                  <button type='submit' className="button-green-confirm">Confirm</button>
                 </div>
               </div>
             </div>
             <div className={`profile-block-box ${subscription_plan === "FREE" && "disabled"}`}>
               <div>
                 <div className="form-profile-label ">
-                  <label className="form-profile-label  " htmlFor="website">
+                  <label className="form-profile-label">
                     Website Address {subscription_plan === 'FREE' && '- Premium'}
                   </label>
                 </div>
@@ -183,7 +138,7 @@ export const Bio: React.FC = () => {
               </div>
               <div>
                 <div className="form-profile-label">
-                  <label className="form-profile-label " htmlFor="phone">
+                  <label className="form-profile-label">
                     Phone {subscription_plan === 'FREE' && '- Premium'}
                   </label>
                 </div>

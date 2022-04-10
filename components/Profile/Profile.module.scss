@@ -904,6 +904,14 @@ input[type=file]::-webkit-file-upload-button {
   border-left:   none;
   outline:       none;
   background:    none;
+  color:         var(--color-green);
+  &:disabled {
+    color: #707070;
+  }
+  &::placeholder {
+    opacity: .4;
+    color:   #707070;
+  }
 }
 
 option {

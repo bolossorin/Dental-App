@@ -38,13 +38,13 @@ export const useLocalData = () => {
             subscription_plan: data.subscription_plan,
             subscription_end_date: data.subscription_end_date,
             gallery: null,
-            title: "",
-            qualifications: "",
-            bio: "",
+            title: data.title,
+            qualifications: data.qualifications,
+            bio: data.bio,
             cover_url: "",
-            phone: null,
+            phone: data.phone,
             services: services.data,
-            website: null,
+            website: data.website,
           };
 
           dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});

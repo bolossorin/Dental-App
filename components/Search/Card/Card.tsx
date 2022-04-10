@@ -28,7 +28,9 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
             <div
               className={cn("index-gallery-image-box", {'active': selectedDentist === dentist})}
               onClick={() => {
-                setMyLocation({lat: +dentist.locations[0].lat, lng: +dentist.locations[0].lng})
+                if (+dentist.locations[0]) {
+                  setMyLocation({lat: +dentist.locations[0].lat, lng: +dentist.locations[0].lng})
+                }
                 setSelectedDentist(dentist);
               }}>
               <img
