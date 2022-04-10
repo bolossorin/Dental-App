@@ -12,6 +12,9 @@
   position:         relative;
   border:           solid 1px #f6f6f6;
   background-color: #f6f6f6;
+  .image-gallery-image {
+    min-height:       216px;
+  }
 }
 
 .gallery-image {
@@ -50,12 +53,12 @@
 }
 
 .gallery-image-edit {
-  position:  absolute;
-  top:       50%;
-  right:     54px;
-  width:     22px;
-  cursor:    pointer;
-  transform: translate(0, -50%);
+  position:   absolute;
+  top:        50%;
+  right:      54px;
+  width:      22px;
+  cursor:     pointer;
+  transform:  translate(0, -50%);
   transition: .3s linear;
   &:hover {
     opacity: .7;

@@ -62,7 +62,7 @@ export const Subscription: React.FC<ISubscription> = ({subscriptionPlan, setSubs
             <input className="account-form-profile-input" type="text" defaultValue="ACTIVE" disabled />
           </div>
           {date && <div className="account-form-profile-label">
-            <label className="form-profile-label">Renewal</label>
+            <label className="account-form-profile-label">Renewal</label>
             <input type="text" className="account-form-profile-input" value={date} disabled />
           </div>}
         </div>

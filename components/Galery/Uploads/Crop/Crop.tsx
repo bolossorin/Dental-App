@@ -2,13 +2,15 @@ import React, {useState, useCallback, useRef, useEffect} from "react";
 
 // libs
 import ReactCrop from "react-image-crop";
+import {dataURLtoFile, toDataURL} from "../../../../utils/toBase64";
 
 interface CropProps {
-  src: string;
-  setImg: (src: string) => void;
+  getSrcImage: any;
+  setImgUpload: (src: string) => void;
+  setImg: (src: File | string) => void;
 }
 
-export const Crop: React.FC<CropProps> = ({src, setImg}) => {
+export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) => {
 
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
@@ -16,10 +18,13 @@ export const Crop: React.FC<CropProps> = ({src, setImg}) => {
   const [completedCrop, setCompletedCrop] = useState<any>(null);
   const [savedImg, setSavedImg] = useState("");
   const [step, setStep] = useState<"save" | "edit">("edit");
+  const [src, setSrc] = useState<string>("");
 
   const onLoad = useCallback((img) => {
     imgRef.current = img;
   }, []);
+
+  getSrcImage.then((data) => setSrc(data));
 
   useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) return;
@@ -39,31 +44,22 @@ export const Crop: React.FC<CropProps> = ({src, setImg}) => {
     ctx.setTransform(pixelRatio, 0, 0, pixelRatio, 0, 0);
     ctx.imageSmoothingQuality = "high";
 
-    ctx.drawImage(
-      image,
-      crop.x * scaleX,
-      crop.y * scaleY,
-      crop.width * scaleX,
-      crop.height * scaleY,
-      0,
-      0,
-      crop.width * scaleX,
-      crop.height * scaleY
-    );
+    ctx.drawImage(image, crop.x * scaleX, crop.y * scaleY, crop.width * scaleX, crop.height * scaleY, 0, 0, crop.width * scaleX, crop.height * scaleY);
   }, [completedCrop]);
 
   const generateDownload = (canvas, crop) => {
+    setStep("save");
     if (!crop || !canvas) return;
 
+    canvas.toBlob((blob) => {
+      const previewUrl = window.URL.createObjectURL(blob);
+      setSavedImg(previewUrl);
 
-    canvas.toBlob(
-      (blob) => {
-        const previewUrl = window.URL.createObjectURL(blob);
-        setSavedImg(previewUrl);
-      },
-      "image/png",
-      1
-    );
+      toDataURL(previewUrl)
+        .then(dataUrl => setImg(dataURLtoFile(dataUrl, "gallery.jpg")))
+    }, "image/png", 1);
+
+
   };
 
   return (
@@ -87,31 +83,26 @@ export const Crop: React.FC<CropProps> = ({src, setImg}) => {
               className="button-green"
               type="button"
               disabled={!completedCrop?.width || !completedCrop?.height}
-              onClick={() => {
-                generateDownload(previewCanvasRef.current, completedCrop);
-                setStep("save");
-              }}>
+              onClick={() => generateDownload(previewCanvasRef.current, completedCrop)}>
               Save
             </button>
           </div>
           <div className="form-login-buttons">
-            <button className="button-green" type="button" onClick={() => setImg("")}>
+            <button className="button-green" type="button" onClick={() => {
+              setImg("");
+              setImgUpload("");
+            }}>
               Cancel
             </button>
           </div>
         </div>
       </>)}
-      {step === "save" && (<>
+      {step === "save" && (<div className="form-login-buttons ai-fs">
         <img className='cropped-image' src={savedImg} alt="" />
-        <div className="form-login-buttons ai-fs">
-          <button
-            className="button-green"
-            type="button"
-            onClick={() => setStep("edit")}>
-            Edit
-          </button>
-        </div>
-      </>)}
+        <button className="button-green" type="button" onClick={() => setStep("edit")}>
+          Edit
+        </button>
+      </div>)}
     </>
   );
 };

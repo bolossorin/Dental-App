@@ -1,18 +1,13 @@
-import React, {useCallback, useContext, useEffect, useState} from "react";
-
-// libs
-// import axios from "axios";
+import React, {useCallback, useContext} from "react";
 
 // components
-// import {API} from "../../../../api/AWS-gateway";
 import {AppContext} from "../../../../context/app.context";
-// import {DentistTypes} from "../../../../reducers";
 import {IUserGallery} from "../../../../reducers/types";
 import {ISetNotofication} from "../../../Toast";
 import {GallerySearch} from "../Search/Search";
 import notify from "../../../Toast";
 import {GalleryPhotoSlider} from "./Slider/Slider";
-import {personInitial} from "../../../../mock/search";
+import {ServicesSelect} from "../../../common/ServicesSelect/ServicesSelect";
 
 interface GalleryPhotosProps {
   onUpload: () => void;
@@ -20,45 +15,25 @@ interface GalleryPhotosProps {
 }
 
 export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) => {
-  const {state,
-    // dispatch
-  } = useContext(AppContext);
+  const {state} = useContext(AppContext);
   const {gallery, services} = state.dentistState;
 
-  const [galleryPhotos, setGalleryPhotos] = useState<IUserGallery[] | null>(personInitial);
+  const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
+    notify({...notifyProps});
+  }, []);
 
-  useEffect(() => {
-    // TODO: need backend
-    // setGalleryPhotos(gallery);
-  }, [gallery]);
-
-  // useLocalData();
-
-  const setNotification = useCallback<ISetNotofication>(
-    ({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
-
-  const handleChangeOption = (e) => {
-    const selectedService = e.target.value;
-    if (!selectedService) setGalleryPhotos(gallery);
-
-    if (selectedService) {
-      const filter = gallery?.filter((item) => item.id === selectedService);
-      setGalleryPhotos(filter as any);
-    }
-  };
-
-  const onHandleSearchByTitle = (title: string) => {
-    const results = personInitial?.filter((item) => {
-      return (
-        item.titleBefore.toLowerCase().includes(title.toLowerCase()) ||
-        item.titleAfter.toLowerCase().includes(title.toLowerCase()) ||
-        item.altTagsBefore?.toLowerCase().includes(title.toLowerCase()) ||
-        item.altTagsAfter?.toLowerCase().includes(title.toLowerCase())
-      );
-    });
-    setGalleryPhotos(results);
+  const onHandleSearchByTitle = (
+    // title: string
+  ) => {
+    // const results = gallery?.filter((item) => {
+    //   return (
+    //     item.before.title.toLowerCase().includes(title.toLowerCase()) ||
+    //     item.after.title.toLowerCase().includes(title.toLowerCase()) ||
+    //     item.before.tag?.toLowerCase().includes(title.toLowerCase()) ||
+    //     item.after.tag?.toLowerCase().includes(title.toLowerCase())
+    //   );
+    // });
+    // setGalleryPhotos(results);
   };
 
   const handleDelete = async (
@@ -70,33 +45,22 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
       //   type: DentistTypes.REMOVE_FROM_GALLERY,
       //   payload: {key},
       // });
-      setNotification({
-        type: "success",
-        message: "Successfully delete gallery photo!",
-        autoClose: 2,
-        position: "top-right",
-      });
+      setNotification({type: "success", message: "Successfully delete gallery photo!"});
     } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Error on delete gallery photo",
-      });
+      setNotification({type: "error", message: "Error on delete gallery photo"});
     }
   };
+
   return (
     <>
       <GallerySearch onUpload={onUpload} onSearch={onHandleSearchByTitle} />
       <div className="flex-end">
-        <select className="person-gallery-select person-arrows" name="services" onChange={handleChangeOption}>
-          <option value="">All services</option>
-          {services && services.map((service) =>
-            <option value={service.id} key={service.id}>{service.service_name}</option>)}
-        </select>
+        <ServicesSelect setPhotos={gallery} services={services} photos={gallery} />
       </div>
-      {galleryPhotos && galleryPhotos.length > 0 ? <div className="gallery-box">
-        {galleryPhotos.map((photo) =>
+      {gallery && gallery.length > 0 ? <div className="gallery-box">
+        {gallery.map((photo, index) =>
           <GalleryPhotoSlider
-            key={photo.key}
+            key={index}
             photo={photo}
             onEdit={onEdit}
             onDelete={handleDelete} />)}

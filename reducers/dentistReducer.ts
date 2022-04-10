@@ -87,7 +87,7 @@ export const DentistInitialState: TdentistReducerState = {
   avatarUrl: "",
   cover_url: "",
   locations: null,
-  gallery: null,
+  gallery: [],
   phone: null,
   services: [],
   website: null,
@@ -125,13 +125,9 @@ export const dentistReducer = (
     case DentistTypes.SET_GALLERY:
       return {...state, gallery: action.payload.gallery};
     case DentistTypes.ADD_TO_GALLERY:
-      const afterAddingGallery =
-        state.gallery?.concat(action.payload.item) || null;
-      return {...state, gallery: afterAddingGallery};
+      return {...state, gallery: [action.payload.item, ...state.gallery!]};
     case DentistTypes.REMOVE_FROM_GALLERY:
-      const afterRemovingPhoto =
-        state.gallery?.filter((item) => item.key !== action.payload.key) ||
-        null;
+      const afterRemovingPhoto = state.gallery?.filter((item) => item.key !== action.payload.key) || null;
       return {...state, gallery: afterRemovingPhoto};
     case DentistTypes.UPDATE_ITEM_GALLERY:
       const {key, ...updated} = action.payload.item;
@@ -143,10 +139,8 @@ export const dentistReducer = (
               ...updated,
               key,
               email: item.email,
-              extensionAfter: item.extensionAfter,
-              extensionBefore: item.extensionBefore,
-              imageAfterUrl: item.imageAfterUrl,
-              imageBeforeUrl: item.imageBeforeUrl,
+              imageAfterUrl: item.after.url,
+              imageBeforeUrl: item.after.url,
             };
           }
           return i;

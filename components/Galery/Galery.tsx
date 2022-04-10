@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useContext, useState} from "react";
+import React, {useCallback, useContext, useState} from "react";
 
 // libs
 import Skeleton from "react-loading-skeleton";
@@ -14,33 +14,29 @@ import {ISetNotofication} from "../Toast";
 import notify from "../Toast";
 import {AppContext} from "../../context/app.context";
 import {IUserGallery} from "../../reducers/types";
-import {getAllGallery, setGallery} from "../../api/AWS-gateway";
+import {setDentistGallery} from "../../api/AWS-gateway";
+import {DentistTypes} from "../../reducers";
 
 const gallerySchema = Yup.object().shape({
-  before_title: Yup.string().required(),
-  after_title: Yup.string().required(),
-  before_altTags: Yup.string(),
-  after_altTags: Yup.string(),
+  beforeTitle: Yup.string().required('Field is required'),
+  afterTitle: Yup.string().required('Field is required'),
+  beforeTag: Yup.string().required('Field is required'),
+  afterTag: Yup.string().required('Field is required'),
 });
 export const Gallery: React.FC = () => {
   const {loading} = useLocalData();
 
-  const {state} = useContext(AppContext);
-  const {email, access_token} = state.dentistState;
+  const {state, dispatch} = useContext(AppContext);
+  const {access_token} = state.dentistState;
 
   const [step, setStep] = useState<"gallery" | "uploads" | "edit">("gallery");
   const [confirm, setConfirm] = useState<boolean>(false);
   const [selectedService, setSelectedService] = useState("");
+  const [afterUploadImg, setAfterUploadImg] = useState<File | string>("");
+  const [beforeUploadImg, setBeforeUploadImg] = useState<File | string>("");
   const [afterImg, setAfterImg] = useState<File | string>("");
   const [beforeImg, setBeforeImg] = useState<File | string>("");
-  const [initialValues, setInitialValues] = useState({
-    before_title: '',
-    after_title: '',
-    before_altTags: '',
-    after_altTags: '',
-    after_img: '',
-    before_img: '',
-  });
+  const [initialValues, setInitialValues] = useState({beforeTitle: '', afterTitle: '', beforeTag: '', afterTag: ''});
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -49,6 +45,8 @@ export const Gallery: React.FC = () => {
   const resetForm = () => {
     setAfterImg("");
     setBeforeImg("");
+    setAfterUploadImg("");
+    setBeforeUploadImg("");
     setSelectedService("");
     setConfirm(false);
   };
@@ -61,15 +59,13 @@ export const Gallery: React.FC = () => {
   const onEdit = async (target: IUserGallery) => {
     resetForm();
     setInitialValues({
-      after_title: target.titleAfter,
-      before_title: target.titleBefore,
-      after_altTags: target.altTagsAfter,
-      before_altTags: target.altTagsBefore,
-      after_img: target.imageAfterUrl,
-      before_img: target.imageBeforeUrl,
+      afterTitle: target.after.title,
+      beforeTitle: target.before.title,
+      afterTag: target.after.tag,
+      beforeTag: target.before.tag,
     })
-    setAfterImg(target.imageAfterUrl as string);
-    setBeforeImg(target.imageBeforeUrl as string);
+    setAfterUploadImg(target.after.url as string);
+    setBeforeUploadImg(target.after.url as string);
     setSelectedService(target.id);
     setStep("edit");
     window.scrollTo({top: 0, behavior: "smooth"});
@@ -88,58 +84,75 @@ export const Gallery: React.FC = () => {
       // const res = await axios.put<IUserGallery>(`${API.SET_DENTIST_GALLERY}?key=${key}`, body);
       // dispatch({type: DentistTypes.UPDATE_ITEM_GALLERY, payload: {item: {...res.data, key}}});
       setNotification({type: "success", message: "Successfully added new image to Gallery!"});
-      // resetForm();
-      // setStep("gallery");
+      // onCancel();
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
     }
   };
 
-  useEffect(() => {
-    if (email) {
-      getAllGallery(email)
-        .then(() => {
-          console.log(11111)
-        })
-        .catch((error) => console.error(error, 'error'));
-    }
-  }, [email]);
-
   return (
     <>
       {step === "uploads" && (
-        <Formik initialValues={initialValues} enableReinitialize={true} onSubmit={async (values) => {
-          if (!confirm) {
-            setNotification({type: "warning", message: "Please check confirmation"});
-            return;
-          }
-          if (!selectedService) {
-            setNotification({type: "warning", message: "Please select service"});
-            return;
-          }
-          try {
-            console.log(values, 'values');
-            const config = {headers: {Authorization: `Bearer ${access_token}`}};
-            await setGallery(selectedService, values, config);
-            // dispatch({type: DentistTypes.ADD_TO_GALLERY, payload: {item: res.data}});
-            setNotification({type: "success", message: "Successfully added new image to Gallery!"});
-            // resetForm();
-            // setStep("gallery");
-          } catch (error: any) {
-            setNotification({type: "error", message: error.response.data.message});
-          }
-        }}>
-          {({errors, touched}) =>
+        <Formik
+          validationSchema={gallerySchema}
+          initialValues={initialValues}
+          enableReinitialize={true}
+          onSubmit={async (values) => {
+            if (!confirm) {
+              setNotification({type: "warning", message: "Please check confirmation"});
+              return;
+            }
+            if (!afterImg || !beforeImg) {
+              setNotification({type: "warning", message: "Please load After and Before images"});
+              return;
+            }
+            if (!selectedService) {
+              setNotification({type: "warning", message: "Please select service"});
+              return;
+            }
+            try {
+              let formData = new FormData();
+              formData.append('after', afterImg);
+              formData.append('afterTitle', values.afterTitle);
+              formData.append('afterTag', values.afterTag);
+              formData.append('before', beforeImg);
+              formData.append('beforeTitle', values.beforeTitle);
+              formData.append('beforeTag', values.beforeTag);
+
+              const config = {headers: {Authorization: `Bearer ${access_token}`}};
+              const {data} = await setDentistGallery(selectedService, formData, config);
+              console.log(data, 'setDentistGallery')
+              dispatch({type: DentistTypes.ADD_TO_GALLERY, payload: {item: data}});
+              setNotification({type: "success", message: "Successfully added new image to Gallery!"});
+              onCancel();
+            } catch (error: any) {
+              setNotification({type: "error", message: error.response.data.message});
+            }
+          }}>
+          {({errors, isSubmitting, touched}) =>
             <Form className='gallery-edit'>
               <div className="row-gallery row-gallery-upload">
-                <Upload type='After' img={afterImg} setImg={setAfterImg} errors={errors} touched={touched} />
-                <Upload type='Before' img={beforeImg} setImg={setBeforeImg} errors={errors} touched={touched} />
+                <Upload
+                  type='Before'
+                  imgUpload={beforeUploadImg}
+                  setImgUpload={setBeforeUploadImg}
+                  setImg={setBeforeImg}
+                  errors={errors}
+                  touched={touched} />
+                <Upload
+                  type='After'
+                  imgUpload={afterUploadImg}
+                  setImgUpload={setAfterUploadImg}
+                  setImg={setAfterImg}
+                  errors={errors}
+                  touched={touched} />
               </div>
               <div className="row-gallery">
                 <SetServices
                   onCancel={onCancel}
                   confirm={confirm} setConfirm={setConfirm}
-                  setSelectedService={setSelectedService} />
+                  setSelectedService={setSelectedService}
+                  isSubmitting={isSubmitting} />
               </div>
             </Form>}
         </Formik>)}
@@ -148,17 +161,30 @@ export const Gallery: React.FC = () => {
         enableReinitialize={true}
         validationSchema={gallerySchema}
         onSubmit={onSubmitEdit}>
-        {({errors, touched}) =>
+        {({errors, isSubmitting, touched}) =>
           <Form className='gallery-edit'>
             <div className="row-gallery">
-              <Upload type='Before' img={beforeImg} setImg={setBeforeImg} errors={errors} touched={touched} />
-              <Upload type='After' img={afterImg} setImg={setAfterImg} errors={errors} touched={touched} />
+              <Upload
+                type='Before'
+                setImg={setBeforeImg}
+                imgUpload={beforeUploadImg}
+                setImgUpload={setBeforeUploadImg}
+                errors={errors}
+                touched={touched} />
+              <Upload
+                type='After'
+                setImg={setAfterImg}
+                imgUpload={afterUploadImg}
+                setImgUpload={setAfterUploadImg}
+                errors={errors}
+                touched={touched} />
             </div>
             <div className="row-gallery">
               <SetServices
                 onCancel={onCancel}
                 confirm={confirm}
                 setConfirm={setConfirm}
+                isSubmitting={isSubmitting}
                 setSelectedService={setSelectedService} />
             </div>
           </Form>}

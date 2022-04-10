@@ -4,20 +4,20 @@ import React, {useCallback} from "react";
 import {Field} from "formik";
 
 // components
-import {ISetNotofication} from "../../../Toast";
-import notify from "../../../Toast";
+import notify, {ISetNotofication} from "../../../Toast";
 import {Crop} from "../Crop/Crop";
 import {resizeFile} from "../../../../utils/resizer";
 
 interface UploadProps {
-  img: File | string;
+  imgUpload: File | string;
   setImg: (src: File | string) => void;
+  setImgUpload: (src: File | string) => void;
   type: string;
   errors: any;
   touched: any;
 }
 
-export const Upload: React.FC<UploadProps> = ({img, setImg, type, errors, touched}) => {
+export const Upload: React.FC<UploadProps> = ({imgUpload, setImgUpload, type, errors, touched, setImg}) => {
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -27,12 +27,15 @@ export const Upload: React.FC<UploadProps> = ({img, setImg, type, errors, touche
     const file = e.target.files && e.target.files[0];
     const fileSize = file!.size / (1024 * 1024);
     if (fileSize <= 2) {
-      const image = await resizeFile(file);
-      setImg(image as any);
+      setImgUpload(file as any);
     } else {
       setNotification({type: "warning", message: "Please  upload file size no bigger than 2 mb"});
     }
   };
+
+  const getSrcImage = async (file) => {
+    return await resizeFile(file)
+  }
 
   return (
     <div className="profile-box-form cut-block">
@@ -41,7 +44,7 @@ export const Upload: React.FC<UploadProps> = ({img, setImg, type, errors, touche
         <p className="form-login-subtitle gray px12 mb-6px">Add and edit your images</p>
       </div>
       <div className="profile-block-box">
-        {img ? <Crop src={img as string} setImg={setImg} />
+        {imgUpload ? <Crop setImg={setImg} getSrcImage={getSrcImage(imgUpload)} setImgUpload={setImgUpload} />
           : <div className="gallery-block-image">
             <p className="gallery-upload">
               <label className="button-green-file" htmlFor={`cover_image_${type.toLowerCase()}`}>Upload</label>
@@ -55,26 +58,26 @@ export const Upload: React.FC<UploadProps> = ({img, setImg, type, errors, touche
             </p>
           </div>}
         <p className="form-profile-label">Title</p>
-        {type === 'Before' ? <div>
-            <Field className="form-profile-input" name='before_title' placeholder="Image Title" />
-            {errors.before_title && touched.before_title ?
-              <p className='account-error-text'>{errors.before_title}</p> : null}
+        {type === 'Before' ? <div className="form-input">
+            <Field className="form-profile-input" name='beforeTitle' placeholder="Image Title" />
+            {errors.beforeTitle && touched.beforeTitle ?
+              <p className='error-text'>{errors.beforeTitle}</p> : null}
           </div>
-          : <div>
-            <Field className="form-profile-input" name='after_title' placeholder="Image Title" />
-            {errors.after_title && touched.after_title ?
-              <p className='account-error-text'>{errors.after_title}</p> : null}
+          : <div className="form-input">
+            <Field className="form-profile-input" name='afterTitle' placeholder="Image Title" />
+            {errors.afterTitle && touched.afterTitle ?
+              <p className='error-text'>{errors.afterTitle}</p> : null}
           </div>}
         <p className="form-profile-label">Alt Tags</p>
-        {type === 'Before' ? <div>
-            <Field className="form-profile-input" name='before_altTags' placeholder="Alt Tag" />
-            {errors.before_altTags && touched.before_altTags ?
-              <p className='account-error-text'>{errors.before_altTags}</p> : null}
+        {type === 'Before' ? <div className="form-input">
+            <Field className="form-profile-input" name='beforeTag' placeholder="Alt Tag" />
+            {errors.beforeTag && touched.beforeTag ?
+              <p className='error-text'>{errors.beforeTag}</p> : null}
           </div>
-          : <div>
-            <Field className="form-profile-input" name='after_altTags' placeholder="Alt Tag" />
-            {errors.after_altTags && touched.after_altTags ?
-              <p className='account-error-text'>{errors.after_altTags}</p> : null}
+          : <div className="form-input">
+            <Field className="form-profile-input" name='afterTag' placeholder="Alt Tag" />
+            {errors.afterTag && touched.afterTag ?
+              <p className='error-text'>{errors.afterTag}</p> : null}
           </div>}
       </div>
     </div>

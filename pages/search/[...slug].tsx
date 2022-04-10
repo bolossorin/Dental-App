@@ -9,7 +9,6 @@ import {Header, IDentistFullDataResponse} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
-import {personInitial} from "../../mock/search";
 import {getDentistByEmailAPI, getDentistGalleryByEmailAPI, getDentistServices} from "../../api/AWS-gateway";
 
 
@@ -18,8 +17,8 @@ const PersonPage = () => {
   const {slug} = router.query
 
   const [dentist, setDentist] = useState<IDentistFullDataResponse | null>(null);
-  const [gallery, setGallery] = useState<IUserGallery[]>(personInitial);
-  const [allServices, setAllServices] = useState<IUserGallery[]>([]);
+  const [gallery, setGallery] = useState<IUserGallery[]>([]);
+  const [dentistServices, setDentistServices] = useState<IUserGallery[]>([]);
 
   useEffect(() => {
     if (slug) {
@@ -32,7 +31,7 @@ const PersonPage = () => {
         .catch((error) => console.error(error, 'error'));
 
       getDentistServices(slug[0])
-        .then(({data}) => setAllServices(data))
+        .then(({data}) => setDentistServices(data))
         .catch((error) => console.log(error, 'error'))
     }
   }, [slug]);
@@ -40,7 +39,7 @@ const PersonPage = () => {
     <>
       <Header />
       {!(dentist && gallery) && <Skeleton width="100wh" height="90vh" />}
-      {!!(dentist && gallery) && (<Person allServices={allServices} dentist={dentist} gallery={gallery} />)}
+      {!!(dentist && gallery) && (<Person dentistServices={dentistServices} dentist={dentist} gallery={gallery} />)}
       <Footer />
     </>
   );

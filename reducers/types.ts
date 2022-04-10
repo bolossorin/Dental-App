@@ -45,20 +45,22 @@ export type IService = {
 export type IDentistLocations = {
   locations: Null_Or_<UserLocation[]>;
 };
+
+export type IImageGallery = {
+  public_id: string,
+  title: string,
+  tag: string,
+  url: string
+}
 export type IUserGallery = {
-  service_name: string;
   id: string;
-  titleBefore: string;
-  titleAfter: string;
-  altTagsBefore: string;
-  altTagsAfter: string;
-  imageBeforeUrl: string;
-  imageAfterUrl: string;
-  key: string;
   email: string;
-  extensionAfter: string;
-  extensionBefore: string;
+  before: IImageGallery;
+  after: IImageGallery;
+  dentist_service_id: string;
+  service_name: string
 };
+
 export type IDentistGallery = {
   gallery: Null_Or_<IUserGallery[]>;
 };

@@ -8,7 +8,7 @@ import {DentistTypes} from "../reducers";
 import {AppContext} from "../context/app.context";
 
 import {routes} from "../utils/routes";
-import {getDentistInfoAPI, getDentistServices} from "../api/AWS-gateway";
+import {getDentistGallery, getDentistInfoAPI, getDentistServices} from "../api/AWS-gateway";
 
 export const useLocalData = () => {
   const router = useRouter();
@@ -16,43 +16,44 @@ export const useLocalData = () => {
   const {dispatch} = useContext(AppContext);
   const [loading, setLoading] = useState(false);
 
+
   useEffect(() => {
     const access_token = JSON.parse(localStorage.getItem("access_token") as any);
 
     setLoading(true);
     if (access_token) {
-
       if (router.pathname.includes("admin")) Router.push(routes.home);
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-
       getDentistInfoAPI(config).then(({data}) => {
         getDentistServices(data.email).then((services: any) => {
-          localStorage.removeItem("admin");
-          const payload = {
-            access_token: access_token,
-            dentist_name: data.dentist_name,
-            email: data.email,
-            gdc: data.gdc,
-            avatarUrl: data.avatarUrl,
-            locations: data.locations,
-            subscription_plan: data.subscription_plan,
-            subscription_end_date: data.subscription_end_date,
-            gallery: null,
-            title: data.title,
-            qualifications: data.qualifications,
-            bio: data.bio,
-            cover_url: "",
-            phone: data.phone,
-            services: services.data,
-            website: data.website,
-          };
-
-          dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});
-          localStorage.setItem("dentist", JSON.stringify(payload));
+          getDentistGallery(data.email)
+            .then((gallery) => {
+              localStorage.removeItem("admin");
+              const payload = {
+                access_token: access_token,
+                dentist_name: data.dentist_name,
+                email: data.email,
+                gdc: data.gdc,
+                avatarUrl: data.avatarUrl,
+                locations: data.locations,
+                subscription_plan: data.subscription_plan,
+                subscription_end_date: data.subscription_end_date,
+                gallery: gallery.data,
+                title: data.title,
+                qualifications: data.qualifications,
+                bio: data.bio,
+                cover_url: "",
+                phone: data.phone,
+                services: services.data,
+                website: data.website,
+              };
+              dispatch({type: DentistTypes.SET_FULL_DATA, payload: payload});
+              localStorage.setItem("dentist", JSON.stringify(payload));
+            });
         })
       }).catch((error) => {
         console.error(error, 'error');
-        Router.push(routes.login);
+        Router.push(routes.home);
       });
     } else {
       if (router.pathname.includes("dentist")) Router.push(routes.login);

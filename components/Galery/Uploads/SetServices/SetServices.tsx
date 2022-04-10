@@ -8,9 +8,17 @@ interface GallerySetServiceProps {
   confirm: boolean;
   setConfirm: (status: boolean) => void;
   onCancel: () => void;
+  isSubmitting: boolean;
 }
 
-const SetServices: React.FC<GallerySetServiceProps> = ({confirm, setConfirm, onCancel, setSelectedService}) => {
+const SetServices: React.FC<GallerySetServiceProps> = (
+  {
+    confirm,
+    setConfirm,
+    onCancel,
+    setSelectedService,
+    isSubmitting
+  }) => {
   const {state} = useContext(AppContext);
   const {services} = state.dentistState;
 
@@ -47,7 +55,7 @@ const SetServices: React.FC<GallerySetServiceProps> = ({confirm, setConfirm, onC
       </div>
       <div className="gallery-button-block services-buttons">
         <div className="form-login-buttons">
-          <button className="gallery-button-green" type="submit">Confirm</button>
+          <button disabled={isSubmitting} className="gallery-button-green" type="submit">Confirm</button>
         </div>
         <div className="form-login-buttons">
           <button type='button' className="gallery-button-green-outline" onClick={() => onCancel()}>

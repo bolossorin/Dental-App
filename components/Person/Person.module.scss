@@ -221,9 +221,13 @@
 }
 
 .person-index-dentist-gallery-image-box {
-  justify-self: center;
-  position:     relative;
-  width:        100%;
+  justify-self:     center;
+  position:         relative;
+  width:            100%;
+  background-color: #f6f6f6;
+  .image-gallery-image {
+    min-height: 216px;
+  }
 }
 
 .person-index-dentist-gallery-image-watermark {

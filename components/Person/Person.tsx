@@ -4,35 +4,31 @@ import React, {useEffect, useState} from "react";
 import QRCode from "qrcode";
 import SimpleImageSlider from "react-image-gallery";
 import Link from "next/link";
+import {get} from "lodash";
 
 // components
 import {IService, IUserGallery} from "../../reducers/types";
 import {IDentistFullDataResponse} from "..";
+import {ServicesSelect} from "../common/ServicesSelect/ServicesSelect";
 
 interface IPersonProps {
   dentist: IDentistFullDataResponse;
   gallery: IUserGallery[];
-  allServices: IService[];
+  dentistServices: IService[];
 }
 
-const Person: React.FC<IPersonProps> = ({dentist, gallery, allServices}) => {
+const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => {
 
-  const [photos, setPhotos] = useState<IUserGallery[] | null | undefined>(gallery || null);
+  const [photos, setPhotos] = useState<IUserGallery[]>([]);
+
+  useEffect(() => {
+    setPhotos(gallery)
+  }, [gallery]);
 
   useEffect(() => {
     const canvas: any = document.getElementById("canvasQrcode");
     void QRCode.toCanvas(canvas, window.location.href);
   }, []);
-
-  const handleChangeOption = (e) => {
-    const selectedService = e.target.value;
-    if (!selectedService) setPhotos(gallery);
-
-    if (selectedService) {
-      const filter = gallery?.filter((item) => item.id === selectedService);
-      setPhotos(filter as any);
-    }
-  };
 
   const downloadQRCode = () => {
     const canvas: any = document.getElementById("canvasQrcode");
@@ -71,7 +67,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, allServices}) => {
             <p>{dentist.bio}</p>
             <div className="person-button-list">
               {dentist.services?.map((item, index) =>
-                <button className="person-index-green-button" key={index}>
+                <button key={index} className="person-index-green-button">
                   {item.service_name}
                 </button>)}
             </div>
@@ -108,34 +104,17 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, allServices}) => {
       </div>
       <div className="person-index-box-to-box">
         <div className="person-main-index person-index-main-box person-relative">
-          <div className="person-gallery-select-box">
-            <select
-              className="person-gallery-select person-arrows"
-              name="services"
-              id="services"
-              defaultValue='service'
-              onChange={handleChangeOption}>
-              <option value="">Dentist Services</option>
-              {allServices.map((service) => (
-                <option value={service.id} key={service.id}>
-                  {service.service_name}
-                </option>
-              ))}
-            </select>
-          </div>
+          <ServicesSelect setPhotos={setPhotos} services={dentistServices} photos={gallery} />
           {photos && photos.length > 0 ?
             <div className="person-index-dentist-gallery-box">
-              {photos.map((item, index) => (
-                <div className="person-index-dentist-gallery-image-box" key={index}>
+              {photos.map((photo, index) => (
+                photo.after && <div className="person-index-dentist-gallery-image-box" key={index}>
                   <SimpleImageSlider
                     showThumbnails={false}
                     showPlayButton={false}
                     showBullets={true}
                     showNav={false}
-                    items={[
-                      {original: item.imageAfterUrl},
-                      {original: item.imageBeforeUrl},
-                    ]} />
+                    items={[{original: get(photo, 'after.url', '')}, {original: get(photo, 'before.url', '')}]} />
                 </div>))}
             </div> : <h2 className='empty'>Not found</h2>}
         </div>

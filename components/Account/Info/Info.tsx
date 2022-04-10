@@ -25,8 +25,8 @@ export const AccountInfoBlock: React.FC = () => {
   const [isEdit, setIsEdit] = useState(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
-      notify({...notifyProps});
-    }, []);
+    notify({...notifyProps});
+  }, []);
 
   const handleDeleteAccount = async () => {
     if (canDelete) {
@@ -57,18 +57,10 @@ export const AccountInfoBlock: React.FC = () => {
           const body = {email: values.email, gdc: values.gdc};
           try {
             await axios.post(API.UPDATE_ACCOUNT, body);
-            setNotification({
-              type: "success",
-              message: "Successfully updated account information!",
-              position: "top-right",
-              autoClose: 2,
-            });
+            setNotification({type: "success", message: "Successfully updated account information!"});
           } catch (error) {
             console.log(error, 'error')
-            setNotification({
-              type: "error",
-              message: "Error, please try again!",
-            });
+            setNotification({type: "error", message: "Error, please try again!"});
           }
         }}>
         {({resetForm, errors, touched}) =>
