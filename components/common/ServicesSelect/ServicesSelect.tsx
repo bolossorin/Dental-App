@@ -2,7 +2,9 @@ import React from "react";
 
 export const ServicesSelect = ({services, setFilteredGallery, gallery}) => {
   const handleChangeOption = (e) => {
-    if (!e.target.value) setFilteredGallery(gallery);
+    if (!e.target.value) {
+      setFilteredGallery(gallery);
+    }
 
     if (e.target.value) {
       const filter = gallery.filter((item) => item.dentist_service_id === e.target.value);

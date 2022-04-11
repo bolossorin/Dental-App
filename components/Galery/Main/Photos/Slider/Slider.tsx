@@ -10,17 +10,17 @@ import {IUserGallery} from "../../../../../reducers/types";
 interface IGalleryPhotoSlider {
   photo: IUserGallery;
   onEdit: (target: IUserGallery) => void;
-  onDelete: (key: string) => Promise<void>;
+  handleDelete: (key: string) => Promise<void>;
 }
 
-export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit, onDelete}) => {
+export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit, handleDelete}) => {
   const [currentKey, setCurrentKey] = useState("");
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentTag, setCurrentTag] = useState("");
 
   const onChangePhoto = (idx, photo: IUserGallery) => {
     setCurrentKey(photo.id);
-    if (!!idx) {
+    if (idx === 0) {
       setCurrentTag(photo.after.tag);
       setCurrentTitle(photo.after.title);
     } else {
@@ -51,7 +51,7 @@ export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit
             className="gallery-image-delete"
             src={"../images/delete_forever.svg"}
             alt="delete"
-            onClick={() => onDelete(photo.id)} />
+            onClick={() => handleDelete(photo.id)} />
         </div>
       </div> : null
   );

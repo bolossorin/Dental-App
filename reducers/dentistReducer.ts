@@ -42,7 +42,7 @@ export type dentistPayload = {
     phone?: string;
   };
   [DentistTypes.REMOVE_LOCATION]: { id: string; };
-  [DentistTypes.REMOVE_FROM_GALLERY]: { key: string; };
+  [DentistTypes.REMOVE_FROM_GALLERY]: string;
   [DentistTypes.ADD_TO_GALLERY]: { item: IUserGallery; };
   [DentistTypes.UPDATE_ITEM_GALLERY]: {
     item: {
@@ -127,14 +127,14 @@ export const dentistReducer = (
     case DentistTypes.ADD_TO_GALLERY:
       return {...state, gallery: [action.payload.item, ...state.gallery!]};
     case DentistTypes.REMOVE_FROM_GALLERY:
-      const afterRemovingPhoto = state.gallery?.filter((item) => item.key !== action.payload.key) || null;
+      const afterRemovingPhoto = state.gallery.filter((item) => item.id !== action.payload);
       return {...state, gallery: afterRemovingPhoto};
     case DentistTypes.UPDATE_ITEM_GALLERY:
       const {key, ...updated} = action.payload.item;
       const afterUpdateGallery =
         state.gallery?.map((item) => {
           let i = item;
-          if (item.key === key) {
+          if (item.id === key) {
             i = {
               ...updated,
               key,

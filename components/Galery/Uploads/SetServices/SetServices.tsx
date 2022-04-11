@@ -36,7 +36,7 @@ const SetServices: React.FC<GallerySetServiceProps> = (
                 className="gallery-select arrows"
                 name="service">
                 <option value='' defaultValue=''>Select Service</option>
-                {services?.map((item, index) =>
+                {services.map((item, index) =>
                   <option key={index} value={item.id}>{item.service_name}</option>)}
               </select>
               <div className="checkbox">

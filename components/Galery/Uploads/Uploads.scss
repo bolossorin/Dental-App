@@ -5,7 +5,6 @@
 .row-gallery {
   &-upload {
     flex-wrap:       wrap;
-    justify-content: space-between;
     .profile-box-form {
       width: calc(33% - 30px);
     }
