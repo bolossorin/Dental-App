@@ -1,16 +1,15 @@
 import React from "react";
 
-export const ServicesSelect = ({services, setPhotos, photos}) => {
+export const ServicesSelect = ({services, setFilteredGallery, gallery}) => {
   const handleChangeOption = (e) => {
-    if (!e.target.value) setPhotos(photos);
+    if (!e.target.value) setFilteredGallery(gallery);
 
-    // if (e.target.value) {
-    // const filter = photos?.filter((item) => item.id === e.target.value);
-    // setPhotos(filter as any);
-    // }
+    if (e.target.value) {
+      const filter = gallery.filter((item) => item.dentist_service_id === e.target.value);
+      setFilteredGallery(filter as any);
+    }
   };
 
-  console.log(services, 'services')
   return (
     <div className="person-gallery-select-box">
       <select className="person-gallery-select person-arrows" defaultValue='All Services' onChange={handleChangeOption}>

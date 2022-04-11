@@ -103,7 +103,7 @@ export const Gallery: React.FC = () => {
               return;
             }
             if (!afterImg || !beforeImg) {
-              setNotification({type: "warning", message: "Please load After and Before images"});
+              setNotification({type: "warning", message: "Please save After and Before images"});
               return;
             }
             if (!selectedService) {

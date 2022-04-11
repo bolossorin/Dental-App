@@ -12,8 +12,21 @@
   position:         relative;
   border:           solid 1px #f6f6f6;
   background-color: #f6f6f6;
+  display:          flex;
+  flex-direction:   column;
+  .image-gallery {
+    flex:           1 1 auto;
+    display:        flex;
+    flex-direction: column;
+  }
+  .image-gallery-content {
+    flex: 1 1 auto;
+  }
+  .image-gallery-slide-wrapper {
+    height: 100%;
+  }
   .image-gallery-image {
-    min-height:       216px;
+    min-height: 216px;
   }
 }
 

@@ -1,4 +1,4 @@
-import React, {useCallback, useContext} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // components
 import {AppContext} from "../../../../context/app.context";
@@ -17,10 +17,16 @@ interface GalleryPhotosProps {
 export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) => {
   const {state} = useContext(AppContext);
   const {gallery, services} = state.dentistState;
+  const [filteredGallery, setFilteredGallery] = useState<IUserGallery[]>([]);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
+
+
+  useEffect(() => {
+    setFilteredGallery(gallery);
+  }, [gallery]);
 
   const onHandleSearchByTitle = (
     // title: string
@@ -55,10 +61,10 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
     <>
       <GallerySearch onUpload={onUpload} onSearch={onHandleSearchByTitle} />
       <div className="flex-end">
-        <ServicesSelect setPhotos={gallery} services={services} photos={gallery} />
+        <ServicesSelect setFilteredGallery={setFilteredGallery} services={services} gallery={gallery} />
       </div>
-      {gallery && gallery.length > 0 ? <div className="gallery-box">
-        {gallery.map((photo, index) =>
+      {filteredGallery && filteredGallery.length > 0 ? <div className="gallery-box">
+        {filteredGallery.map((photo, index) =>
           <GalleryPhotoSlider
             key={index}
             photo={photo}

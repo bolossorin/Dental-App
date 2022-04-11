@@ -59,7 +59,6 @@ export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) =
         .then(dataUrl => setImg(dataURLtoFile(dataUrl, "gallery.jpg")))
     }, "image/png", 1);
 
-
   };
 
   return (

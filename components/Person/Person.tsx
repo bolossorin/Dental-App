@@ -19,10 +19,10 @@ interface IPersonProps {
 
 const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => {
 
-  const [photos, setPhotos] = useState<IUserGallery[]>([]);
+  const [filteredGallery, setFilteredGallery] = useState<IUserGallery[]>([]);
 
   useEffect(() => {
-    setPhotos(gallery)
+    setFilteredGallery(gallery)
   }, [gallery]);
 
   useEffect(() => {
@@ -104,17 +104,17 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => 
       </div>
       <div className="person-index-box-to-box">
         <div className="person-main-index person-index-main-box person-relative">
-          <ServicesSelect setPhotos={setPhotos} services={dentistServices} photos={gallery} />
-          {photos && photos.length > 0 ?
+          <ServicesSelect setFilteredGallery={setFilteredGallery} services={dentistServices} gallery={gallery} />
+          {filteredGallery && filteredGallery.length > 0 ?
             <div className="person-index-dentist-gallery-box">
-              {photos.map((photo, index) => (
+              {filteredGallery.map((photo, index) => (
                 photo.after && <div className="person-index-dentist-gallery-image-box" key={index}>
                   <SimpleImageSlider
                     showThumbnails={false}
                     showPlayButton={false}
                     showBullets={true}
                     showNav={false}
-                    items={[{original: get(photo, 'after.url', '')}, {original: get(photo, 'before.url', '')}]} />
+                    items={[{original: get(photo, 'before.url', '')}, {original: get(photo, 'after.url', '')}]} />
                 </div>))}
             </div> : <h2 className='empty'>Not found</h2>}
         </div>
