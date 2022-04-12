@@ -27,13 +27,19 @@ export const removeDentistService = (service_id, config) => axios.delete(`${proc
 export const getDentistGallery = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
 export const setDentistGallery = (service_id, body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${service_id}`, body, config);
 export const deleteDentistGallery = (service_id, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${service_id}`, config);
-export const updateDentistGallery = (body,config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery`,body, config);
+export const updateDentistGallery = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery`, body, config);
 
 
 // Patient
 export const getAllDentistAPI = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
 export const getDentistByEmailAPI = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/${email}`);
 export const getDentistGalleryByEmailAPI = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
+
+
+// Admin
+export const loginAdminApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/login`, body);
+export const getSettingsSubscriptionsApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions`, config);
+export const updateSettingsSubscriptionsApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions`, body, config);
 
 export const API = {
   PASSWORD_RESET: "/api/dentist/account/reset-password",
@@ -42,14 +48,10 @@ export const API = {
   UPDATE_ACCOUNT: "/api/dentist/profile/account/updateAccount",
   PASSWORD_RESET_VERIFY: "/api/dentist/verify_password_reset",
 
-  SET_DENTIST_INFORMATION: "/api/dentist/profile/information",
   SET_DENTIST_LOCATION: "/api/dentist/profile/location",
-  UPLOAD_DENTIST_COVER: "/api/dentist/profile/cover",
-
   STRIPE_CHECK_COUPON: "/api/dentist/payment/activate-coupon",
 
   // Admin
-  LOGIN_ADMIN: "/api/admin/login",
   PASSWORD_RESET_ADMIN: "/api/admin/reset-password",
   PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
   SETTINGS_CHANGE: "/api/admin/settings/subscriber",

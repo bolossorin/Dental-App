@@ -15,14 +15,14 @@ const accountInfoSchema = Yup.object().shape({
 });
 export const AdminDetails: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {email, username} = state.adminState.adminDetails;
+  const {emailAdmin, usernameAdmin} = state.adminState;
 
   return (
     <ProfileBox title='Admin Details' subTitle='Login Details'>
       <Formik
         validationSchema={accountInfoSchema}
         enableReinitialize
-        initialValues={{email: email, name: username}}
+        initialValues={{email: emailAdmin, name: usernameAdmin}}
         onSubmit={async (values) => {
           console.log(values, values)
         }}>

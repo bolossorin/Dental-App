@@ -1,18 +1,17 @@
-import React, {useCallback, useContext} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
-import axios from "axios";
 import {Formik, Form} from "formik";
+import * as Yup from "yup";
+import {get} from "lodash";
 
 // components
-import {API} from "../../../api/AWS-gateway";
+import {getSettingsSubscriptionsApi, updateSettingsSubscriptionsApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {AdminTypes} from "../../../reducers";
-import {ISubSettings} from "../../../reducers/types";
 import {Subscriber} from "./Subscriber/Subscriber";
-import * as Yup from "yup";
 
 const subscriberSchema = Yup.object().shape({
   freeMaxLocations: Yup.string().matches(/^[0-9]$/, 'Invalid number').min(1).max(99).required("Field is required"),
@@ -22,72 +21,72 @@ const subscriberSchema = Yup.object().shape({
 });
 export const PaidSubscriber: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
+  const [plan, setPlan] = useState("")
 
-  const {
-    freeMaxLocations,
-    freeMaxServices,
-    freeHasPhoneNumber,
-    freeHasWebsite,
-    freeIsVerified,
-    paidMaxLocations,
-    paidMaxServices,
-    paidHasPhoneNumber,
-    paidHasWebsite,
-    paidIsVerified,
-  } = state.adminState.subscriberSettings;
+  const {access_token_admin, subscriberSettings} = state.adminState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
 
+  useEffect(() => {
+    const token = localStorage.getItem('access_token_admin');
+    if (token) {
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      getSettingsSubscriptionsApi(config)
+        .then(({data}) => dispatch({type: AdminTypes.GET_SUBSCRIBER_SETTINGS, payload: data}))
+        .catch((error) => console.error(error, 'error'));
+    }
+  }, [access_token_admin]);
+
   return (
     <Formik
       validationSchema={subscriberSchema}
+      enableReinitialize
       initialValues={{
-        freeMaxLocations: freeMaxLocations,
-        freeMaxServices: freeMaxServices,
-        freeHasWebsite: freeHasWebsite,
-        freeHasPhoneNumber: freeHasPhoneNumber,
-        freeIsVerified: freeIsVerified,
-        paidMaxLocations: paidMaxLocations,
-        paidMaxServices: paidMaxServices,
-        paidHasWebsite: paidHasWebsite,
-        paidHasPhoneNumber: paidHasPhoneNumber,
-        paidIsVerified: paidIsVerified,
+        freeMaxLocations: get(subscriberSettings, '[0].maxLocations', ''),
+        freeMaxServices: get(subscriberSettings, '[0].maxService', ''),
+        freeHasPhoneNumber: get(subscriberSettings, '[0].phoneAllowed', ''),
+        freeHasWebsite: get(subscriberSettings, '[0].websiteAllowed', ''),
+        freeIsVerified: get(subscriberSettings, '[0].appearVerifiedAllowed', ''),
+        paidMaxLocations: get(subscriberSettings, '[1].maxLocations', ''),
+        paidMaxServices: get(subscriberSettings, '[1].maxService', ''),
+        paidHasPhoneNumber: get(subscriberSettings, '[1].phoneAllowed', ''),
+        paidHasWebsite: get(subscriberSettings, '[1].websiteAllowed', ''),
+        paidIsVerified: get(subscriberSettings, '[1].appearVerifiedAllowed', ''),
       }}
       onSubmit={async (values) => {
-        const body = {
-          setting_code: "sys_settings",
-          free: {
+        let body;
+        if (plan === 'free') {
+          body = {
+            appearVerifiedAllowed: values.freeIsVerified,
             maxLocations: values.freeMaxLocations,
-            maxServices: values.freeMaxServices,
-            hasWebsite: values.freeHasWebsite,
-            hasPhoneNumber: values.freeHasPhoneNumber,
-            isVerified: values.freeIsVerified,
-          },
-          paid: {
+            maxService: values.freeMaxServices,
+            phoneAllowed: values.freeHasPhoneNumber,
+            subscription_type: "FREE",
+            websiteAllowed: values.freeHasWebsite
+          };
+        }
+        if (plan === 'paid') {
+          body = {
+            appearVerifiedAllowed: values.paidIsVerified,
             maxLocations: values.paidMaxLocations,
-            maxServices: values.paidMaxServices,
-            hasWebsite: values.paidHasWebsite,
-            hasPhoneNumber: values.paidHasPhoneNumber,
-            isVerified: values.paidIsVerified,
-          },
-        };
+            maxService: values.paidMaxServices,
+            phoneAllowed: values.paidHasPhoneNumber,
+            subscription_type: "PREMIUM",
+            websiteAllowed: values.paidHasWebsite
+          };
+        }
         try {
-          const {data} = await axios.post<ISubSettings>(API.SETTINGS_CHANGE, body);
-          dispatch({type: AdminTypes.GET_SUBSCRIBER_SETTINGS, payload: {...data}});
-          setNotification({
-            type: "success",
-            message: "Successfully changed settings",
-            autoClose: 3,
-            position: "top-right",
-          });
-        } catch (error) {
-          console.log(error, 'error');
+          const token = localStorage.getItem('access_token_admin');
+          const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+          const {data} = await updateSettingsSubscriptionsApi(body, config);
+          dispatch({type: AdminTypes.SET_SUBSCRIBER_SETTINGS, payload: data});
+          setNotification({type: "success", message: "Successfully changed settings"});
+        } catch (error: any) {
           setNotification({
             type: "error",
-            message: "Failed to change settings",
-            autoClose: 3,
+            message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message
           });
         }
       }}>
@@ -100,19 +99,16 @@ export const PaidSubscriber: React.FC = () => {
               subTitle='Set Limits'
               values={values}
               errors={errors}
-              touched={touched} />
+              touched={touched}
+              setPlan={setPlan} />
             <Subscriber
               type='paid'
               title='Paid Subscriber'
               subTitle='Set Limits'
               values={values}
               errors={errors}
-              touched={touched} />
-          </div>
-          <div className='account-form-login-buttons'>
-            <button className="account-button-green" type="submit">
-              Apply
-            </button>
+              touched={touched}
+              setPlan={setPlan} />
           </div>
         </Form>}
     </Formik>

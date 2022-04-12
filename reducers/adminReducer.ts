@@ -1,6 +1,5 @@
 import {
   ActionMap,
-  IAdminDetails,
   IPremiumInformation,
   ISubSettings,
   IService,
@@ -11,6 +10,7 @@ export enum AdminTypes {
   ADMIN_LOGIN = "ADMIN_LOGIN",
   ADMIN_LOGOUT = "ADMIN_LOGOUT",
   GET_SUBSCRIBER_SETTINGS = "GET_SUBSCRIBER_SETTINGS",
+  SET_SUBSCRIBER_SETTINGS = "SET_SUBSCRIBER_SETTINGS",
   GET_MONTHLY_STATS = "GET_MONTHLY_STATS",
   GET_SERVICES = "GET_SERVICES",
   DELETE_SERVICE = "DELETE_SERVICE",
@@ -19,9 +19,10 @@ export enum AdminTypes {
 
 // ADMIN_DATA_LAKE
 type AdminPayload = {
-  [AdminTypes.ADMIN_LOGIN]: TAdminReducerState;
+  [AdminTypes.ADMIN_LOGIN]: { email: string, access_token: string };
   [AdminTypes.ADMIN_LOGOUT]: undefined;
-  [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings[];
+  [AdminTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
   [AdminTypes.GET_MONTHLY_STATS]: IAdminMonthStats;
   [AdminTypes.GET_YEAR_STATS]: IAdminYearStats;
   [AdminTypes.GET_SERVICES]: IService[];
@@ -29,12 +30,13 @@ type AdminPayload = {
 };
 
 export type TAdminReducerState =
-  { isLoggedAdmin: boolean } &
+  { access_token_admin: string } &
   { isOpenLeftMenu: boolean } &
   { services: IService[] } &
-  { adminDetails: IAdminDetails } &
+  { emailAdmin: string } &
+  { usernameAdmin: string } &
   { premiumInformation: IPremiumInformation } &
-  { subscriberSettings: ISubSettings } &
+  { subscriberSettings: ISubSettings[] } &
   { monthlyStats: IAdminMonthStats } &
   { yearStats: IAdminYearStats }
 
@@ -42,11 +44,9 @@ export type AdminActions =
   ActionMap<AdminPayload>[keyof ActionMap<AdminPayload>];
 
 export const AdminInitialState: TAdminReducerState = {
-  adminDetails: {
-    username: '',
-    email: '',
-    avatarUrl: '',
-  },
+  access_token_admin: "",
+  emailAdmin: "",
+  usernameAdmin: "",
   services: [],
   premiumInformation: {
     features: [],
@@ -54,19 +54,26 @@ export const AdminInitialState: TAdminReducerState = {
     setting_code: "",
     terms: "",
   },
-  subscriberSettings: {
-    freeHasPhoneNumber: false,
-    freeHasWebsite: false,
-    freeIsVerified: false,
-    freeMaxLocations: 1,
-    freeMaxServices: 1,
-    paidHasPhoneNumber: false,
-    paidHasWebsite: false,
-    paidIsVerified: false,
-    paidMaxLocations: 1,
-    paidMaxServices: 1,
-    setting_code: "",
-  },
+  subscriberSettings:
+    [
+      {
+        appearVerifiedAllowed: false,
+        maxLocations: 0,
+        maxService: 0,
+        phoneAllowed: false,
+        subscription_type: "FREE",
+        websiteAllowed: false
+      },
+      {
+        appearVerifiedAllowed: false,
+        maxLocations: 0,
+        maxService: 0,
+        phoneAllowed: false,
+        subscription_type: "PREMIUM",
+        websiteAllowed: false,
+      }
+
+    ],
   monthlyStats: {
     amountOfNewAccounts: 0,
     amountOfSubscriptions: 0,
@@ -84,17 +91,23 @@ export const AdminInitialState: TAdminReducerState = {
     graphicOfSubscriptions: [],
   },
   isOpenLeftMenu: true,
-  isLoggedAdmin: false,
 };
 
 export const adminReducer = (state: TAdminReducerState, action: AdminActions): TAdminReducerState => {
   switch (action.type) {
     case AdminTypes.ADMIN_LOGIN:
-      return {...state, ...action.payload};
+      const payload = {emailAdmin: action.payload.email, access_token_admin: action.payload.access_token}
+      return {...state, ...payload};
     case AdminTypes.ADMIN_LOGOUT:
       return {...AdminInitialState};
     case AdminTypes.GET_SUBSCRIBER_SETTINGS:
-      return {...state, subscriberSettings: {...action.payload}};
+      return {...state, subscriberSettings: action.payload};
+    case AdminTypes.SET_SUBSCRIBER_SETTINGS:
+      const newSubscriberSettings = state.subscriberSettings.map(item => {
+        if (item.subscription_type === action.payload.subscription_type) return action.payload;
+        return item;
+      });
+      return {...state, subscriberSettings: newSubscriberSettings};
     case AdminTypes.GET_MONTHLY_STATS:
       return {...state, monthlyStats: {...action.payload}};
     case AdminTypes.GET_YEAR_STATS:

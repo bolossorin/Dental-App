@@ -72,23 +72,12 @@ export type IDentist_SpecialState = {
 };
 
 export interface ISubSettings {
-  freeHasPhoneNumber: boolean;
-  freeHasWebsite: boolean;
-  freeIsVerified: boolean;
-  freeMaxLocations: number;
-  freeMaxServices: number;
-  paidHasPhoneNumber: boolean;
-  paidHasWebsite: boolean;
-  paidIsVerified: boolean;
-  paidMaxLocations: number;
-  paidMaxServices: number;
-  setting_code: string;
-}
-
-export interface IAdminDetails {
-  username: string;
-  email: string;
-  avatarUrl: string;
+  appearVerifiedAllowed: boolean,
+  maxLocations: number,
+  maxService: number,
+  phoneAllowed: boolean,
+  subscription_type: string,
+  websiteAllowed: boolean
 }
 
 export interface IPremiumInformation {

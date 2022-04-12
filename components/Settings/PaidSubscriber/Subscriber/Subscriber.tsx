@@ -6,7 +6,7 @@ import {Field} from "formik";
 // components
 import {Switch} from "../../../common/Switch/Switch";
 
-export const Subscriber = ({type, title, subTitle, values, errors, touched}: any) => {
+export const Subscriber = ({type, title, subTitle, values, errors, touched, setPlan}: any) => {
 
   return <div>
     <p className="form-login-title green px20">{title}</p>
@@ -57,6 +57,11 @@ export const Subscriber = ({type, title, subTitle, values, errors, touched}: any
             values={values} />
         </p>
       </div>
+    </div>
+    <div className='account-form-login-buttons'>
+      <button className="account-button-green" type="submit" onClick={() => setPlan(type)}>
+        Apply
+      </button>
     </div>
   </div>
 }

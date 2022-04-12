@@ -32,7 +32,7 @@ export interface IDentistFullDataResponse
 const loginSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
   password: Yup.string()
-    .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
+  // .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });
 
 export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) => {
@@ -54,84 +54,21 @@ export const LoginForm: FC<ILoginForm> = ({title, loginApi, resetPasswordUrl}) =
             const {data} = await loginApi(values);
             if (title === 'Current FYD admins') {
               localStorage.setItem("admin", JSON.stringify(values));
+              localStorage.setItem("access_token_admin", JSON.stringify(data.access_token));
               localStorage.removeItem("dentist");
-            }
-            else {
-              localStorage.setItem("dentist", JSON.stringify(values));
-              localStorage.removeItem("admin");
-              dispatch({type: DentistTypes.LOGIN, payload: {email: values.email}});
-            }
+              localStorage.removeItem("access_token");
 
-            let fullDataAdmin;
-            if (title === 'Current FYD admins') {
-              fullDataAdmin = {
-                adminDetails: {username: 'John Doe', email: values.email, avatarUrl: '../images/doctor1.png'},
-                services: [],
-                premiumInformation: {
-                  features: ['Verification Checkmark'],
-                  price: 0,
-                  setting_code: "",
-                  terms: ""
-                },
-                subscriberSettings: {
-                  freeHasPhoneNumber: false,
-                  freeHasWebsite: false,
-                  freeIsVerified: false,
-                  freeMaxLocations: 1,
-                  freeMaxServices: 1,
-                  paidHasPhoneNumber: false,
-                  paidHasWebsite: false,
-                  paidIsVerified: false,
-                  paidMaxLocations: 1,
-                  paidMaxServices: 1,
-                  setting_code: "",
-                },
-                monthlyStats: {
-                  amountOfNewAccounts: 0,
-                  amountOfSubscriptions: 0,
-                  amountOfClosedAccounts: 0,
-                  amountOfClosedSubscriptions: 0,
-                  amountOfImages: 0,
-                },
-                yearStats: {
-                  amountOfNewAccounts: 0,
-                  amountOfSubscriptions: 0,
-                  amountOfClosedAccounts: 0,
-                  amountOfClosedSubscriptions: 0,
-                  amountOfImages: 0,
-                  graphicOfFreeAccounts: [],
-                  graphicOfSubscriptions: [],
-                },
-              };
-              const {
-                adminDetails,
-                services,
-                premiumInformation,
-                subscriberSettings,
-                monthlyStats,
-                yearStats
-              } = fullDataAdmin;
-              localStorage.setItem("admin", JSON.stringify(fullDataAdmin));
-              dispatch({
-                type: AdminTypes.ADMIN_LOGIN,
-                payload: {
-                  adminDetails,
-                  services,
-                  premiumInformation,
-                  subscriberSettings,
-                  monthlyStats,
-                  yearStats,
-                  isOpenLeftMenu: true,
-                  isLoggedAdmin: true,
-                },
-              });
-
+              dispatch({type: AdminTypes.ADMIN_LOGIN, payload: data});
               setTimeout(() => {
                 Router.push(routes.dashboard);
               }, 800);
-            }
-            else {
+            } else {
+              localStorage.setItem("dentist", JSON.stringify(values));
               localStorage.setItem("access_token", JSON.stringify(data.access_token));
+              localStorage.removeItem("admin");
+              localStorage.removeItem("access_token_admin");
+
+              dispatch({type: DentistTypes.LOGIN, payload: {email: values.email}});
               setTimeout(() => {
                 Router.push(routes.profile);
               }, 800);

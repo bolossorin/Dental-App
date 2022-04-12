@@ -25,7 +25,7 @@ export const MenuItem = () => {
 
   const {state} = useContext(AppContext);
   const {email} = state.dentistState;
-  const {isLoggedAdmin} = state.adminState;
+  const {emailAdmin} = state.adminState;
 
   const [logOut] = useLogout();
 
@@ -50,16 +50,19 @@ export const MenuItem = () => {
     if (localStorage.getItem('access_token')) {
       setLinks(dentistLinks)
       setLoginUrl(routes.login)
-    } else if (isLoggedAdmin) {
+    } else if (localStorage.getItem('access_token_admin')) {
       setLinks(adminLinks)
       setLoginUrl(routes.loginAdmin)
     }
-  }, [isLoggedAdmin, email])
-
+  }, [email, emailAdmin])
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
       setAccessToken(localStorage.getItem('access_token'));
+    } else if (localStorage.getItem('access_token_admin')) {
+      setAccessToken(localStorage.getItem('access_token_admin'));
+    } else {
+      setAccessToken("");
     }
   }, []);
 
@@ -72,7 +75,7 @@ export const MenuItem = () => {
             <a className="leftmenu-link">{link.title}</a>
           </li>
         </Link>))}
-      {(accessToken || isLoggedAdmin) && <li className="leftmenu-list logout">
+      {(accessToken) && <li className="leftmenu-list logout">
         <img className="leftmenu-link-image" src={"../../images/left-arrow.svg"} alt="link image" />
         <a className="leftmenu-link" href={loginUrl} onClick={logOut}>
           Logout

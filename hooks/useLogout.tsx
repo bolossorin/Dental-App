@@ -13,9 +13,13 @@ export const useLogout = (callback?: Function, path?: string) => {
   const logOut = async () => {
     localStorage.removeItem("access_token");
     localStorage.removeItem("dentist");
+
+    localStorage.removeItem("access_token_admin");
     localStorage.removeItem("admin");
+
     dispatch({type: DentistTypes.LOGOUT});
     dispatch({type: AdminTypes.ADMIN_LOGOUT});
+
     if (callback) callback();
     Router.push(path || routes.home);
   };

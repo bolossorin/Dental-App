@@ -1,19 +1,15 @@
-import React, {useState, useContext, useEffect} from "react";
+import React, {useState, useEffect} from "react";
 
 // libs
 import Link from "next/link";
 import Router from "next/router";
 
 // components
-import {AppContext} from "../../context/app.context";
 import {useLogout} from "../../hooks/useLogout";
 import {LeftMenuOnMobile} from "../LeftMenu/LeftMenuOnMobile/LeftMenuOnMobile";
 import {routes} from "../../utils/routes";
 
 export const Header: React.FC = () => {
-  const {state} = useContext(AppContext);
-  const {isLoggedAdmin} = state.adminState;
-
   const [logOut] = useLogout(() => setToggle(false));
 
   const [toggle, setToggle] = useState(false);
@@ -22,6 +18,10 @@ export const Header: React.FC = () => {
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
       setAccessToken(localStorage.getItem('access_token'));
+    } else if (localStorage.getItem('access_token')) {
+      setAccessToken(localStorage.getItem('access_token_admin'));
+    } else {
+      setAccessToken("")
     }
   }, []);
 
@@ -30,7 +30,7 @@ export const Header: React.FC = () => {
       <div className="header_shadow" />
       <div className="header bg-green">
         <div className="menu" id="mobile_menu">
-          {(accessToken || isLoggedAdmin) ? (<svg
+          {(accessToken) ? (<svg
             className="menu-logo"
             xmlns="http://www.w3.org/2000/svg"
             height="28px"
@@ -50,7 +50,7 @@ export const Header: React.FC = () => {
             alt='' />
         </Link>
         <div className="header_actions">
-          {(!accessToken && !isLoggedAdmin) ? <>
+          {(!accessToken) ? <>
             <button className="button-green-login" onClick={() => Router.push(routes.login)}>Login</button>
             <button className="button-green-register" onClick={() => Router.push(routes.register)}>Register</button>
           </> : <button className="button-green-login" onClick={logOut}>Logout</button>}

@@ -19,6 +19,7 @@ export const useLocalData = () => {
 
   useEffect(() => {
     const access_token = JSON.parse(localStorage.getItem("access_token") as any);
+    const access_token_admin = JSON.parse(localStorage.getItem("access_token_admin") as any);
 
     setLoading(true);
     if (access_token) {
@@ -55,29 +56,17 @@ export const useLocalData = () => {
         console.error(error, 'error');
         Router.push(routes.home);
       });
+    } else if (access_token_admin) {
+      if (router.pathname.includes("dentist")) Router.push(routes.home);
+      //  TODO: need  authenticated API below
     } else {
-      if (router.pathname.includes("dentist")) Router.push(routes.login);
+      if (router.pathname.includes("dentist")) {
+        Router.push(routes.login);
+      } else if (router.pathname.includes("admin")) {
+        Router.push(routes.loginAdmin);
+      }
     }
     setLoading(false);
-  }, []);
-
-  useEffect(() => {
-    // const localStateAmin = JSON.parse(localStorage.getItem("admin") as any);
-    // if (localStateAmin) {
-    //   if (router.pathname.includes("dentist")) Router.push(routes.home);
-    //   try {
-    //     if (localStateAmin) {
-    //       // const fullData = await axios.get<IAdminFullDataResponse>(`${API.SETTINGS_FULL_INFO}?email=${email}`);
-    //       dispatch({type: AdminTypes.ADMIN_LOGIN, payload: {...localStateAmin, isLoggedAdmin: true}});
-    //       localStorage.setItem("admin", JSON.stringify(localStateAmin));
-    //       localStorage.removeItem("dentist");
-    //     }
-    //   } catch (exp) {
-    //     Router.push(routes.login);
-    //   }
-    // } else {
-    //   if (router.pathname !== routes.home) Router.push(routes.home);
-    // }
   }, []);
 
   return {loading};

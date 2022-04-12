@@ -1,19 +1,23 @@
-import React from "react";
+import React, {useEffect} from "react";
 
 // libs
 import type {NextPage} from "next";
+import Router from "next/router";
 
 // components
-import {API} from "../../api/AWS-gateway";
+import {loginAdminApi} from "../../api/AWS-gateway";
 import {LoginForm} from "../../components";
 import {routes} from "../../utils/routes";
 
 
 const LoginAdminPage: NextPage = (): JSX.Element => {
-  const api = API.LOGIN_ADMIN;
   const resetPasswordUrl = routes.resetPasswordAdmin;
 
-  return <LoginForm title='Current FYD admins' loginApi={api}  resetPasswordUrl={resetPasswordUrl}/>;
+  useEffect(() => {
+    if (localStorage.getItem('access_token_admin')) Router.push(routes.settings)
+  }, []);
+
+  return <LoginForm title='Current FYD admins' loginApi={loginAdminApi} resetPasswordUrl={resetPasswordUrl} />;
 };
 
 export default LoginAdminPage;
