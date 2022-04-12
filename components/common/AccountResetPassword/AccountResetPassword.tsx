@@ -32,8 +32,8 @@ export const AccountResetPassword = () => {
         try {
           const config = {headers: {Authorization: `Bearer ${access_token}`}};
           await passwordResetDentistApi({
-            currentPassword: values.currentPassword,
-            newPassword: values.newPassword
+            old_password: values.currentPassword,
+            new_password: values.newPassword
           }, config);
           setNotification({type: "success", message: "Successfully changed password!", position: "top-right"});
         } catch (error: any) {

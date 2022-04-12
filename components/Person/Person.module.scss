@@ -3,7 +3,6 @@
   align-items:     flex-start;
   flex-wrap:       nowrap;
   justify-content: flex-start;
-
   width:           100%;
 }
 
@@ -65,7 +64,7 @@
 .person-form-login-title {
   position:       relative;
   display:        flex;
-  flex-direction: row;
+  flex-direction: column;
   flex-wrap:      nowrap;
   margin-top:     30px;
   margin-bottom:  16px;
@@ -83,11 +82,12 @@
 
 .person-index-gallery-image-watermark-img {
   position:      absolute;
-  top:           14px;
+  top:           50%;
   right:         0;
   width:         24px;
   height:        24px;
   border-radius: 50%;
+  transform:     translate(0, -50%);
 }
 
 .person-form-login-subtitle {

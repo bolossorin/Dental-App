@@ -5,7 +5,7 @@ import {useRouter} from "next/router";
 import Skeleton from "react-loading-skeleton";
 
 // components
-import {Header, IDentistFullDataResponse} from "../../components";
+import {Header} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
@@ -20,13 +20,12 @@ const PersonPage = () => {
 
   const {dispatch} = useContext(AppContext);
 
-  const [dentist, setDentist] = useState<IDentistFullDataResponse | null>(null);
   const [gallery, setGallery] = useState<IUserGallery[]>([]);
 
   useEffect(() => {
     if (slug) {
       getDentistByEmailApi(slug[0])
-        .then(({data}) => setDentist(data))
+        .then(({data}) => dispatch({type: DentistTypes.SET_FULL_DATA, payload: data}))
         .catch((error) => console.error(error, 'error'));
 
       getDentistGalleryByEmailApi(slug[0])
@@ -42,8 +41,8 @@ const PersonPage = () => {
   return (
     <>
       <Header />
-      {!(dentist && gallery) && <Skeleton width="100wh" height="90vh" />}
-      {!!(dentist && gallery) && (<Person dentist={dentist} gallery={gallery} />)}
+      {!(gallery) && <Skeleton width="100wh" height="90vh" />}
+      {!!(gallery) && (<Person gallery={gallery} />)}
       <Footer />
     </>
   );

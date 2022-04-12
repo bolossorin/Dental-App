@@ -8,7 +8,11 @@ import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import notify, {ISetNotofication} from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
-import {addDentistServiceApi, getAllServicesApi, removeDentistServiceApi} from "../../../api/AWS-gateway";
+import {
+  addDentistServiceApi,
+  getUnusedDentistServicesApi,
+  removeDentistServiceApi
+} from "../../../api/AWS-gateway";
 import {IService} from "../../../reducers/types";
 
 type IAddServiceResponse = IService[];
@@ -36,6 +40,9 @@ export const Services: React.FC = () => {
       dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
       setNotification({type: "success", message: `Successfully added new service!`});
       setSelectService("");
+
+      const response = await getUnusedDentistServicesApi(config);
+      setAllServices(response.data);
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
     }
@@ -47,16 +54,22 @@ export const Services: React.FC = () => {
       await removeDentistServiceApi(key, config);
       dispatch({type: DentistTypes.REMOVE_SERVICE, payload: {key}});
       setNotification({type: "success", message: `Successfully deleted service!`});
+
+      const response = await getUnusedDentistServicesApi(config);
+      setAllServices(response.data);
     } catch (exp) {
       setNotification({type: "error", message: `Failed to delete service!`});
     }
   };
 
   useEffect(() => {
-    getAllServicesApi()
-      .then(({data}) => setAllServices(data))
-      .catch((error) => console.log(error, 'error'))
-  }, []);
+    if (access_token) {
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      getUnusedDentistServicesApi(config)
+        .then(({data}) => setAllServices(data))
+        .catch((error) => console.log(error, 'error'))
+    }
+  }, [access_token]);
 
   return (
     <ProfileLayout title='Services' subTitle='Information For Patients'>

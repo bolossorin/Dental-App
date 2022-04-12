@@ -20,7 +20,6 @@ export enum DentistTypes {
   ADD_SERVICES = "ADD_SERVICES",
   REMOVE_SERVICE = "REMOVE_SERVICE",
   SET_AVATAR_URL = "SET_AVATAR_URL",
-  SET_COVER_URL = "SET_COVER_URL",
   REMOVE_FROM_GALLERY = "REMOVE_FROM_GALLERY",
   ADD_TO_GALLERY = "ADD_TO_GALLERY",
   UPDATE_ITEM_GALLERY = "UPDATE_ITEM_GALLERY",
@@ -48,7 +47,6 @@ export type dentistPayload = {
   [DentistTypes.REMOVE_SERVICE]: { key: string; };
   [DentistTypes.ADD_SERVICES]: { services: IService[]; };
   [DentistTypes.SET_AVATAR_URL]: string;
-  [DentistTypes.SET_COVER_URL]: { cover_ul: string; };
   [DentistTypes.SET_FULL_DATA]: TdentistReducerState;
 };
 
@@ -73,7 +71,6 @@ export const DentistInitialState: TdentistReducerState = {
   subscription_plan: "",
   subscription_end_date: null,
   avatarUrl: "",
-  cover_url: "",
   locations: null,
   gallery: [],
   phone: null,
@@ -93,12 +90,10 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
       return {...state, ...action.payload};
     case DentistTypes.SET_AVATAR_URL:
       return {...state, avatarUrl: action.payload};
-    case DentistTypes.SET_COVER_URL:
-      return {...state, cover_url: action.payload.cover_ul};
     case DentistTypes.SET_FULL_DATA:
       return {...state, ...action.payload};
     case DentistTypes.REMOVE_LOCATION:
-      const afterRemovingLocation = state.locations?.filter((item) => item.key !== action.payload.id) || null;
+      const afterRemovingLocation = state.locations?.filter((item) => item.id !== action.payload.id) || null;
       return {...state, locations: afterRemovingLocation};
     case DentistTypes.REMOVE_SERVICE:
       const afterRemovingService = state.services?.filter((item) => item.id !== action.payload.key) ||

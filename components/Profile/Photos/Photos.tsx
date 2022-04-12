@@ -12,9 +12,8 @@ import {Spinner} from "../../Spinner/Spinner";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {avatarUrl, cover_url, subscription_plan, access_token} = state.dentistState;
+  const {avatarUrl, subscription_plan, access_token} = state.dentistState;
   const [avatarSrc, setAvatarSrc] = useState<any>("");
-  const [coverSrc, setCoverSrc] = useState<any>("");
   const [isSubmitting, setIsSubmitting] = useState<any>(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -42,11 +41,6 @@ export const Photos: React.FC = () => {
           setAvatarSrc(avatarUrl);
           dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
           setNotification({type: "success", message: "Successfully changed avatar image", position: "top-right"});
-        }
-        if (what === "cover") {
-          setCoverSrc("");
-          dispatch({type: DentistTypes.SET_COVER_URL, payload: {cover_ul: file}});
-          setNotification({type: "success", message: "Successfully cover image", position: "top-right"});
         }
       }
     } catch (error: any) {
@@ -86,7 +80,7 @@ export const Photos: React.FC = () => {
           <p className="profile-photo-box">
             <img
               className="image"
-              src={freeAccountLimit ? "../images/empty-image.jpg" : coverSrc || cover_url || "../images/empty-image.jpg"}
+              src={"../images/empty-image.jpg"}
               alt="cover image" />
           </p>
           <p className={`row-content ${freeAccountLimit && "disabled"}`}>

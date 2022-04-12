@@ -43,7 +43,6 @@ export const useLocalData = () => {
                 title: data.title,
                 qualifications: data.qualifications,
                 bio: data.bio,
-                cover_url: "",
                 phone: data.phone,
                 services: services.data,
                 website: data.website,

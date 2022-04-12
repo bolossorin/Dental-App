@@ -8,18 +8,29 @@ import {get} from "lodash";
 
 // components
 import {IUserGallery} from "../../reducers/types";
-import {IDentistFullDataResponse} from "..";
 import {ServicesSelect} from "../common/ServicesSelect/ServicesSelect";
 import {AppContext} from "../../context/app.context";
 
 interface IPersonProps {
-  dentist: IDentistFullDataResponse;
   gallery: IUserGallery[];
 }
 
-const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
+const Person: React.FC<IPersonProps> = ({gallery}) => {
   const {state} = useContext(AppContext);
-  const {services} = state.dentistState;
+  const {
+    services,
+    locations,
+    avatarUrl,
+    email,
+    phone,
+    title,
+    dentist_name,
+    subscription_plan,
+    qualifications,
+    gdc,
+    bio,
+    website
+  } = state.dentistState;
 
   const [filteredGallery, setFilteredGallery] = useState<IUserGallery[]>([]);
 
@@ -46,31 +57,25 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
   return (
     <main className="person-flex-menu">
       <div className="person-index-leftmenu">
-        <img
-          className="cover-image"
-          src={dentist.subscription_plan !== "PREMIUM" ? "../images/cover-image.jpg" : dentist.cover_url || "../images/cover-image.jpg"}
-          alt="cover image" />
         <div className="person-index-leftmenu-profile-information">
-          <img className="profile-photo" src={dentist.avatarUrl || "../images/empty_avatar.png"} alt="/" />
+          <img className="profile-photo" src={avatarUrl || "../images/empty_avatar.png"} alt="/" />
           <div className='person-index-leftmenu-section'>
             <div className="person-form-login-title">
-              {dentist.title} <br />
-              {dentist.dentist_name}
-              {dentist.subscription_plan === "PREMIUM" && (<img
+              <p>{title}</p>
+              <p>{dentist_name}</p>
+              {subscription_plan === "PREMIUM" && (<img
                 className="person-index-gallery-image-watermark-img person-relative-img"
                 src={"../images/check_circle.svg"}
                 alt="check" />)}
             </div>
             <p className="person-form-login-subtitle">
-              Qualifications: {dentist.qualifications ? dentist.qualifications : 'there is no data'}
+              Qualifications: {qualifications ? qualifications : 'there is no data'}
             </p>
-            <p className="person-form-login-subtitle">GDC No: {dentist.gdc}</p>
+            <p className="person-form-login-subtitle">GDC No: {gdc}</p>
           </div>
           <div className="person-index-leftmenu-text">
             <p className='person-index-leftmenu-title'>Bio</p>
-            <p className="person-index-leftmenu-value">
-              {dentist.bio ? dentist.bio : 'There is no data'}
-            </p>
+            <p>{bio ? bio : 'There is no data'}</p>
             <div className="person-button-list">
               {services.map((item, index) =>
                 <button key={index} className="person-index-green-button">
@@ -80,25 +85,24 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
             <p className='person-index-leftmenu-title'>Contact</p>
             <div className='person-index-leftmenu-section'>
               <p>
-                <strong>Phone: </strong>{dentist.phone ? dentist.phone : 'there is no data'}
+                <strong>Phone: </strong>{phone ? phone : 'there is no data'}
               </p>
               <p>
-                <strong>Email: </strong>{dentist.email ? dentist.email : 'there is no data'}
+                <strong>Email: </strong>{email ? email : 'there is no data'}
               </p>
-              <Link href={`https://${dentist.website}`}>
+              <Link href={`https://${website}`}>
                 <a target="_blank" className='person-index-leftmenu-title'>
-                  <span><strong>Website:</strong> {dentist.website ? dentist.website : 'there is no data'}</span>
+                  <span><strong>Website:</strong> {website ? website : 'there is no data'}</span>
                 </a>
               </Link>
             </div>
             <div className='person-index-leftmenu-section'>
               <p className='person-index-leftmenu-title'>Locations</p>
               <div className='person-index-leftmenu-value'>
-                {(dentist.locations && dentist.locations.length > 0) ? dentist.locations.map((item, index) =>
+                {(locations && locations.length > 0) ? locations.map((item, index) =>
                   <div key={index}>
                   <span>
-                    <strong>{item.location.split(":")[0]}:</strong>
-                    {item.location.split(":")[1]}
+                    <strong>{item.location_name}</strong>
                   </span>
                   </div>) : 'There is no data'}
               </div>

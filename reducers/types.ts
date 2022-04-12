@@ -32,9 +32,11 @@ export interface IGraphicData {
 }
 
 export type UserLocation = {
-  email: string;
-  key: string;
+  id: string;
   location: string;
+  address: string;
+  location_name: string;
+  post_code: string;
   lat: number;
   lng: number;
 };
@@ -68,7 +70,6 @@ export type IDentist_SpecialState = {
   subscription_plan: string;
   subscription_end_date: Null_Or_<number>;
   avatarUrl: Null_Or_<string>;
-  cover_url: Null_Or_<string>;
 };
 
 export interface ISubSettings {

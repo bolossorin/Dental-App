@@ -25,7 +25,6 @@ export interface IDentistFullDataResponse
   extends IDentistLocations,
     IServices, IDentistBio {
   avatarUrl: Null_Or_<string>;
-  cover_url: Null_Or_<string>;
   subscription_plan: string;
 }
 
