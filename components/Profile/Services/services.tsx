@@ -69,7 +69,7 @@ export const Services: React.FC = () => {
             <div className="row-content">
               <span className="input-span">Service</span>
               <select
-                className="form-profile-input arrows"
+                className="form-profile-input person-arrows"
                 value={selectedService}
                 onChange={(e) => setSelectService(e.target.value)}>
                 <option>Select service</option>

@@ -913,6 +913,11 @@ select.arrows {
   background-size:     1em 1em;
 }
 
+select {
+  -webkit-appearance: none;
+  -moz-appearance:    none;
+}
+
 .form-profile-empty-input input {
   position:      relative;
 

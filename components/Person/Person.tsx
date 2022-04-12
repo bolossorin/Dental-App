@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 //libs
 import QRCode from "qrcode";
@@ -7,17 +7,19 @@ import Link from "next/link";
 import {get} from "lodash";
 
 // components
-import {IService, IUserGallery} from "../../reducers/types";
+import {IUserGallery} from "../../reducers/types";
 import {IDentistFullDataResponse} from "..";
 import {ServicesSelect} from "../common/ServicesSelect/ServicesSelect";
+import {AppContext} from "../../context/app.context";
 
 interface IPersonProps {
   dentist: IDentistFullDataResponse;
   gallery: IUserGallery[];
-  dentistServices: IService[];
 }
 
-const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => {
+const Person: React.FC<IPersonProps> = ({dentist, gallery}) => {
+  const {state} = useContext(AppContext);
+  const {services} = state.dentistState;
 
   const [filteredGallery, setFilteredGallery] = useState<IUserGallery[]>([]);
 
@@ -70,7 +72,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => 
               {dentist.bio ? dentist.bio : 'There is no data'}
             </p>
             <div className="person-button-list">
-              {dentist.services?.map((item, index) =>
+              {services.map((item, index) =>
                 <button key={index} className="person-index-green-button">
                   {item.service_name}
                 </button>)}
@@ -111,7 +113,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => 
       </div>
       <div className="person-index-box-to-box">
         <div className="person-main-index person-index-main-box person-relative">
-          <ServicesSelect setFilteredGallery={setFilteredGallery} services={dentistServices} gallery={gallery} />
+          <ServicesSelect setFilteredGallery={setFilteredGallery} services={services} gallery={gallery} />
           {filteredGallery && filteredGallery.length > 0 ?
             <div className="person-index-dentist-gallery-box">
               {filteredGallery.map((photo, index) => (

@@ -104,6 +104,8 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
       const afterRemovingService = state.services?.filter((item) => item.id !== action.payload.key) ||
         null;
       return {...state, services: afterRemovingService};
+    case DentistTypes.SET_ALL_SERVICES:
+      return {...state, services: action.payload};
     case DentistTypes.ADD_SERVICES:
       const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};
