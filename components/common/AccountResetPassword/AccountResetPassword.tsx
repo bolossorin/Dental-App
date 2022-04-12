@@ -5,7 +5,6 @@ import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
 
 // components
-import {passwordResetDentistApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 
@@ -16,7 +15,7 @@ const newPasswordSchema = Yup.object().shape({
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Old Password is required"),
   confirmPassword: Yup.string().oneOf([Yup.ref('newPassword'), null], 'Both password needs to be the same').required("New Password is required"),
 });
-export const AccountResetPassword = () => {
+export const AccountResetPassword = ({passwordResetApi, type}) => {
   const {state} = useContext(AppContext);
   const {access_token} = state.dentistState;
 
@@ -30,11 +29,17 @@ export const AccountResetPassword = () => {
       initialValues={{currentPassword: '', newPassword: '', confirmPassword: ''}}
       onSubmit={async (values) => {
         try {
-          const config = {headers: {Authorization: `Bearer ${access_token}`}};
-          await passwordResetDentistApi({
-            old_password: values.currentPassword,
-            new_password: values.newPassword
-          }, config);
+
+          let config;
+          if (type === 'admin') {
+            const token = localStorage.getItem('access_token_admin');
+            config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+            await passwordResetApi({oldPassword: values.currentPassword, newPassword: values.newPassword}, config);
+          }
+          if (type === 'dentist') {
+            config = {headers: {Authorization: `Bearer ${access_token}`}};
+            await passwordResetApi({old_password: values.currentPassword, new_password: values.newPassword}, config);
+          }
           setNotification({type: "success", message: "Successfully changed password!", position: "top-right"});
         } catch (error: any) {
           setNotification({

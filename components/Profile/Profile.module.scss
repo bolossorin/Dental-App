@@ -537,6 +537,11 @@ img {
   &:disabled {
     color: #707070;
   }
+  &.loading {
+    opacity:        .4;
+    pointer-events: none;
+    user-select:    none;
+  }
 }
 
 .services-additionally {

@@ -1,8 +1,7 @@
-import React, {useCallback, useState} from "react";
+import React, {useCallback, useEffect, useContext, useState} from "react";
 
 // libs
-import {useEffect} from "react";
-import {useContext} from "react";
+import cn from "classnames";
 
 // components
 import {addNewServiceApi, deleteServiceApi, getAllServicesApi, updateServiceApi} from "../../../api/AWS-gateway";
@@ -19,6 +18,7 @@ export const ServicesProvided: React.FC = () => {
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingValue, setServiceEditingValue] = useState<any>();
   const [newService, setNewService] = useState("");
+  const [loading, setLoading] = useState(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
@@ -49,6 +49,7 @@ export const ServicesProvided: React.FC = () => {
   };
 
   const deleteService = async (id: string) => {
+    setLoading(true);
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
@@ -58,11 +59,16 @@ export const ServicesProvided: React.FC = () => {
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
     }
+    setLoading(false);
   };
 
   const onHandleEdit = async (id: string) => {
+    setLoading(true);
     setServiceEditing({...serviceEditing, [id]: false});
-    if (!serviceOnPress[id]) return;
+    if (!serviceOnPress[id]) {
+      setLoading(false);
+      return;
+    }
     const target: any = services.find((el) => el.id === id);
     try {
       const token = localStorage.getItem('access_token_admin');
@@ -76,6 +82,7 @@ export const ServicesProvided: React.FC = () => {
         message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message
       });
     }
+    setLoading(false);
   };
 
   const onChangeService = (id: string, name: string) => {
@@ -119,7 +126,7 @@ export const ServicesProvided: React.FC = () => {
             services.length > 0 && services.map((item, idx) => (
               <p key={idx} className="form-login-input">
                 <input
-                  className='services-selected'
+                  className={cn('services-selected', {"loading": loading})}
                   type="text"
                   name={item.service_name}
                   value={item.service_name}

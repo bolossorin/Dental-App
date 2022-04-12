@@ -5,7 +5,7 @@ import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
-import {deleteAccountApi, updateProfileApi} from "../../../api/AWS-gateway";
+import {deleteAccountApi, passwordResetDentistApi, updateProfileApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
@@ -110,7 +110,7 @@ export const AccountInfoBlock: React.FC = () => {
             </div>
           </Form>}
       </Formik>
-      <AccountResetPassword />
+      <AccountResetPassword type='dentist' passwordResetApi={passwordResetDentistApi} />
     </ProfileBox>
   );
 };
