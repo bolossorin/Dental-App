@@ -50,7 +50,7 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => 
           alt="cover image" />
         <div className="person-index-leftmenu-profile-information">
           <img className="profile-photo" src={dentist.avatarUrl || "../images/empty_avatar.png"} alt="/" />
-          <div>
+          <div className='person-index-leftmenu-section'>
             <div className="person-form-login-title">
               {dentist.title} <br />
               {dentist.dentist_name}
@@ -59,43 +59,50 @@ const Person: React.FC<IPersonProps> = ({dentist, gallery, dentistServices}) => 
                 src={"../images/check_circle.svg"}
                 alt="check" />)}
             </div>
-            <p className="person-form-login-subtitle">Qualifications: {dentist.qualifications}</p>
+            <p className="person-form-login-subtitle">
+              Qualifications: {dentist.qualifications ? dentist.qualifications : 'there is no data'}
+            </p>
             <p className="person-form-login-subtitle">GDC No: {dentist.gdc}</p>
           </div>
           <div className="person-index-leftmenu-text">
-            <p>Bio: </p>
-            <p>{dentist.bio}</p>
+            <p className='person-index-leftmenu-title'>Bio</p>
+            <p className="person-index-leftmenu-value">
+              {dentist.bio ? dentist.bio : 'There is no data'}
+            </p>
             <div className="person-button-list">
               {dentist.services?.map((item, index) =>
                 <button key={index} className="person-index-green-button">
                   {item.service_name}
                 </button>)}
             </div>
-            <p>Contact:</p>
-            <div>
-              <span><strong>Phone:</strong> {dentist.phone}</span>
-              <br />
-              <span><strong>Email:</strong> {dentist.email}</span>
-              <br />
+            <p className='person-index-leftmenu-title'>Contact</p>
+            <div className='person-index-leftmenu-section'>
+              <p>
+                <strong>Phone: </strong>{dentist.phone ? dentist.phone : 'there is no data'}
+              </p>
+              <p>
+                <strong>Email: </strong>{dentist.email ? dentist.email : 'there is no data'}
+              </p>
               <Link href={`https://${dentist.website}`}>
-                <a target="_blank">
-                  <span><strong>Website:</strong> {dentist.website}</span>
+                <a target="_blank" className='person-index-leftmenu-title'>
+                  <span><strong>Website:</strong> {dentist.website ? dentist.website : 'there is no data'}</span>
                 </a>
               </Link>
             </div>
-            <p>Locations:</p>
-            <div>
-              {dentist.locations?.map((item, index) =>
-                <div key={index}>
+            <div className='person-index-leftmenu-section'>
+              <p className='person-index-leftmenu-title'>Locations</p>
+              <div className='person-index-leftmenu-value'>
+                {(dentist.locations && dentist.locations.length > 0) ? dentist.locations.map((item, index) =>
+                  <div key={index}>
                   <span>
-                    {/*<strong>{item.location.split(":")[0]}:</strong>*/}
-                    {/*{item.location.split(":")[1]}*/}
+                    <strong>{item.location.split(":")[0]}:</strong>
+                    {item.location.split(":")[1]}
                   </span>
-                  <br />
-                </div>)}
+                  </div>) : 'There is no data'}
+              </div>
             </div>
-            <p>QR Code:</p>
-            <div title='Download' className="qrCode" onClick={downloadQRCode}>
+            <p className='person-index-leftmenu-title'>QR Code:</p>
+            <div title='Download' className="qrCode person-index-leftmenu-value" onClick={downloadQRCode}>
               <canvas id="canvasQrcode" />
               <a id="link" />
             </div>

@@ -91,7 +91,7 @@ export const Services: React.FC = () => {
             <div className="form-profile-label">
               <label className="form-profile-label">Selected Services</label>
             </div>
-            {services.slice(0, 1).map((service) =>
+            {services.length > 0 ? services.slice(0, 1).map((service) =>
               <div className="form-login-input" key={service.id}>
                 <input className='services-selected' type="text" value={service.service_name} disabled />
                 <img
@@ -99,7 +99,7 @@ export const Services: React.FC = () => {
                   src={"../images/close.svg"}
                   onClick={() => handleDeleteService(service.id)}
                   alt='' />
-              </div>)}
+              </div>) : <p className='input-span'>Not selected</p>}
           </div>}
         </div>
         {services && <div className={cn("profile-block-box", {"disabled": subscription_plan === 'FREE'})}>

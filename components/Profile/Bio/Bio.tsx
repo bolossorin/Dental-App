@@ -58,7 +58,7 @@ export const Bio: React.FC = () => {
           try {
             const config = {headers: {Authorization: `Bearer ${access_token}`}};
             await updateProfileApi(values, config);
-            dispatch({type: DentistTypes.SET_INFO, payload: values});
+            dispatch({type: DentistTypes.SET_INFO, payload: {...values}});
             setNotification({type: "success", message: "Successfully updated dentist Bio!"});
           } catch (exp) {
             setNotification({type: "error", message: "Please try again!"});

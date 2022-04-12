@@ -110,6 +110,9 @@
   border-left:   none;
   outline:       none;
   background:    none;
+  &:disabled {
+    color: #707070;
+  }
 }
 
 .account-checkbox {

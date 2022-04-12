@@ -45,8 +45,17 @@
   line-height:    1.33;
 }
 
-.person-index-leftmenu-text p {
-  margin: 18px 0;
+.person-index-leftmenu-title {
+  margin:  0 0 8px 0;
+  display: block;
+}
+
+.person-index-leftmenu-value {
+  margin: 0 0 18px 0;
+}
+
+.person-index-leftmenu-section {
+  margin: 0 0 32px 0;
 }
 
 .cover-image {
@@ -100,7 +109,7 @@
   align-items:     center;
   flex-wrap:       wrap;
   justify-content: flex-start;
-  margin:          34px 0;
+  margin:          28px 0;
 }
 
 .person-button-list > p span {

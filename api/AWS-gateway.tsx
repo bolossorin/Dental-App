@@ -6,6 +6,7 @@ export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_B
 export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
 export const passwordResetDentistApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/reset-password`, body, config);
 export const updateProfileApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, body, config);
+export const deleteAccountApi = (config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, config);
 
 export const setDentistLocationApi = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/location`, body, config);
 export const updateDentistLocationApi = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/location/${id}`, body, config);
@@ -49,7 +50,6 @@ export const deleteServiceApi = (service_id, config) => axios.delete(`${process.
 export const API = {
   PASSWORD_RESET: "/api/dentist/account/reset-password",
 
-  DELETE_ACCOUNT: "/api/dentist/profile/account/deleteAccount",
   UPDATE_ACCOUNT: "/api/dentist/profile/account/updateAccount",
   PASSWORD_RESET_VERIFY: "/api/dentist/verify_password_reset",
 

@@ -7,11 +7,12 @@ import Router from "next/router";
 import {Layout} from "../components";
 import {RegisterForm} from "../components/register/RegisterForm/RegisterForm";
 import {routes} from "../utils/routes";
+import {Null_Or_} from "../reducers/types";
 
 export interface IRegisterFormChildren {
   dentist_name: string;
   email: string;
-  gdc: number | "";
+  gdc: Null_Or_<number>;
   password: string;
 }
 
