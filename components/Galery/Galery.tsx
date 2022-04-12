@@ -13,7 +13,7 @@ import SetServices from "./Uploads/SetServices/SetServices";
 import notify, {ISetNotofication} from "../Toast";
 import {AppContext} from "../../context/app.context";
 import {IUserGallery} from "../../reducers/types";
-import {setDentistGallery, updateDentistGallery} from "../../api/AWS-gateway";
+import {setDentistGalleryApi, updateDentistGalleryApi} from "../../api/AWS-gateway";
 import {DentistTypes} from "../../reducers";
 
 const gallerySchema = Yup.object().shape({
@@ -112,7 +112,7 @@ export const Gallery: React.FC = () => {
             if (!validationFields()) return;
             try {
               const config = {headers: {Authorization: `Bearer ${access_token}`}};
-              const {data} = await setDentistGallery(selectedService, formDataValues(values, false), config);
+              const {data} = await setDentistGalleryApi(selectedService, formDataValues(values, false), config);
               dispatch({type: DentistTypes.ADD_TO_GALLERY, payload: {gallery: data}});
               setNotification({type: "success", message: "Successfully  updated Gallery!"});
               onCancel();
@@ -156,7 +156,7 @@ export const Gallery: React.FC = () => {
           if (!validationFields()) return;
           try {
             const config = {headers: {Authorization: `Bearer ${access_token}`}};
-            const {data} = await updateDentistGallery(formDataValues(values, true), config);
+            const {data} = await updateDentistGalleryApi(formDataValues(values, true), config);
             dispatch({type: DentistTypes.UPDATE_ITEM_GALLERY, payload: {gallery: data}});
             setNotification({type: "success", message: "Successfully  updated Gallery!"});
             onCancel();

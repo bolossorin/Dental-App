@@ -8,7 +8,7 @@ import {GallerySearch} from "../Search/Search";
 import notify from "../../../Toast";
 import {GalleryPhotoSlider} from "./Slider/Slider";
 import {ServicesSelect} from "../../../common/ServicesSelect/ServicesSelect";
-import {deleteDentistGallery} from "../../../../api/AWS-gateway";
+import {deleteDentistGalleryApi} from "../../../../api/AWS-gateway";
 import {DentistTypes} from "../../../../reducers";
 
 interface GalleryPhotosProps {
@@ -54,7 +54,7 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
   const handleDelete = async (serviceId: string) => {
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      await deleteDentistGallery(serviceId, config);
+      await deleteDentistGalleryApi(serviceId, config);
       dispatch({type: DentistTypes.REMOVE_FROM_GALLERY, payload: serviceId});
       setNotification({type: "success", message: "Successfully delete gallery photo!"});
     } catch (exp) {

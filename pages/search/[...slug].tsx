@@ -9,7 +9,7 @@ import {Header, IDentistFullDataResponse} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
-import {getDentistByEmailAPI, getDentistGalleryByEmailAPI, getDentistServices} from "../../api/AWS-gateway";
+import {getDentistByEmailApi, getDentistGalleryByEmailApi, getDentistServicesApi} from "../../api/AWS-gateway";
 
 
 const PersonPage = () => {
@@ -22,15 +22,15 @@ const PersonPage = () => {
 
   useEffect(() => {
     if (slug) {
-      getDentistByEmailAPI(slug[0])
+      getDentistByEmailApi(slug[0])
         .then(({data}) => setDentist(data))
         .catch((error) => console.error(error, 'error'));
 
-      getDentistGalleryByEmailAPI(slug[0])
+      getDentistGalleryByEmailApi(slug[0])
         .then(({data}) => setGallery(data))
         .catch((error) => console.error(error, 'error'));
 
-      getDentistServices(slug[0])
+      getDentistServicesApi(slug[0])
         .then(({data}) => setDentistServices(data))
         .catch((error) => console.log(error, 'error'))
     }

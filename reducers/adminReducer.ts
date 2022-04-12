@@ -11,8 +11,11 @@ export enum AdminTypes {
   ADMIN_LOGOUT = "ADMIN_LOGOUT",
   GET_SUBSCRIBER_SETTINGS = "GET_SUBSCRIBER_SETTINGS",
   SET_SUBSCRIBER_SETTINGS = "SET_SUBSCRIBER_SETTINGS",
+  SET_ALL_SERVICES = "SET_ALL_SERVICES",
   GET_MONTHLY_STATS = "GET_MONTHLY_STATS",
   GET_SERVICES = "GET_SERVICES",
+  ADD_SERVICE = "ADD_SERVICE",
+  UPDATE_SERVICE = "UPDATE_SERVICE",
   DELETE_SERVICE = "DELETE_SERVICE",
   GET_YEAR_STATS = "GET_YEAR_STATS",
 }
@@ -23,9 +26,12 @@ type AdminPayload = {
   [AdminTypes.ADMIN_LOGOUT]: undefined;
   [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings[];
   [AdminTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
+  [AdminTypes.SET_ALL_SERVICES]: IService[];
   [AdminTypes.GET_MONTHLY_STATS]: IAdminMonthStats;
   [AdminTypes.GET_YEAR_STATS]: IAdminYearStats;
   [AdminTypes.GET_SERVICES]: IService[];
+  [AdminTypes.ADD_SERVICE]: IService;
+  [AdminTypes.UPDATE_SERVICE]: IService;
   [AdminTypes.DELETE_SERVICE]: { id: string; };
 };
 
@@ -54,26 +60,7 @@ export const AdminInitialState: TAdminReducerState = {
     setting_code: "",
     terms: "",
   },
-  subscriberSettings:
-    [
-      {
-        appearVerifiedAllowed: false,
-        maxLocations: 0,
-        maxService: 0,
-        phoneAllowed: false,
-        subscription_type: "FREE",
-        websiteAllowed: false
-      },
-      {
-        appearVerifiedAllowed: false,
-        maxLocations: 0,
-        maxService: 0,
-        phoneAllowed: false,
-        subscription_type: "PREMIUM",
-        websiteAllowed: false,
-      }
-
-    ],
+  subscriberSettings: [],
   monthlyStats: {
     amountOfNewAccounts: 0,
     amountOfSubscriptions: 0,
@@ -108,12 +95,22 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
         return item;
       });
       return {...state, subscriberSettings: newSubscriberSettings};
+    case AdminTypes.SET_ALL_SERVICES:
+      return {...state, services: action.payload};
     case AdminTypes.GET_MONTHLY_STATS:
       return {...state, monthlyStats: {...action.payload}};
     case AdminTypes.GET_YEAR_STATS:
       return {...state, yearStats: {...action.payload}};
     case AdminTypes.GET_SERVICES:
       return {...state, services: action.payload};
+    case AdminTypes.ADD_SERVICE:
+      return {...state, services: [action.payload, ...state.services]};
+    case AdminTypes.UPDATE_SERVICE:
+      const newServices = state.services.map(item => {
+        if (item.id === action.payload.id) return action.payload;
+        return item;
+      });
+      return {...state, services: newServices};
     case AdminTypes.DELETE_SERVICE:
       const filterServices = state.services.filter((item) => item.id !== action.payload.id);
       return {...state, services: filterServices};

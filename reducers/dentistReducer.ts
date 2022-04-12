@@ -81,10 +81,7 @@ export const DentistInitialState: TdentistReducerState = {
   website: null,
 };
 
-export const dentistReducer = (
-  state: TdentistReducerState,
-  action: DentistActions
-): TdentistReducerState => {
+export const dentistReducer = (state: TdentistReducerState, action: DentistActions): TdentistReducerState => {
   switch (action.type) {
     case DentistTypes.RESET:
       return {...state, email: ""};

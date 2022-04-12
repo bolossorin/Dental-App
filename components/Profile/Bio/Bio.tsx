@@ -5,7 +5,7 @@ import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
-import {updateProfileAPI} from "../../../api/AWS-gateway";
+import {updateProfileApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import {ISetNotofication} from "../../Toast";
@@ -57,7 +57,7 @@ export const Bio: React.FC = () => {
         onSubmit={async (values) => {
           try {
             const config = {headers: {Authorization: `Bearer ${access_token}`}};
-            await updateProfileAPI(values, config);
+            await updateProfileApi(values, config);
             dispatch({type: DentistTypes.SET_INFO, payload: values});
             setNotification({type: "success", message: "Successfully updated dentist Bio!"});
           } catch (exp) {

@@ -8,7 +8,7 @@ import * as Yup from "yup";
 
 // components
 import {Spinner} from "../../";
-import {API, createSubscriptionPI, getPricePI} from "../../../api/AWS-gateway";
+import {API, createSubscriptionApi, getPriceApi} from "../../../api/AWS-gateway";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {CARD_OPTIONS} from "../../../utils/cardOptions";
@@ -85,11 +85,11 @@ export const StripeForm = ({setSubscriptionPlan}) => {
       const access_token = JSON.parse(localStorage.getItem('access_token') as string);
 
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      createSubscriptionPI(config, process.env.NEXT_PUBLIC_STRIPE_CREATE_SUBSCRIPTION)
+      createSubscriptionApi(config, process.env.NEXT_PUBLIC_STRIPE_CREATE_SUBSCRIPTION)
         .then(({data}) => setClientSecret(data.clientSecret))
         .catch((error) => console.log(error, 'error'));
 
-      getPricePI(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
+      getPriceApi(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
         .then(({data}) => setPrice({original: data, withCoupon: 0}))
         .catch((error) => console.log(error, 'error'));
     }

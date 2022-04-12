@@ -5,7 +5,7 @@ import moment from "moment";
 
 // components
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
-import {deleteSubscriptionPI} from "../../../api/AWS-gateway";
+import {deleteSubscriptionApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {AppContext} from "../../../context/app.context";
 import {Billing} from "../Billing/Billing";
@@ -33,7 +33,7 @@ export const Subscription: React.FC<ISubscription> = ({subscriptionPlan, setSubs
     setLoading(true);
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      const {data} = await deleteSubscriptionPI(config);
+      const {data} = await deleteSubscriptionApi(config);
       setSubscriptionPlan(data.subscription_plan);
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});

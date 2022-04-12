@@ -7,7 +7,7 @@ import {get} from "lodash";
 import * as Yup from "yup";
 
 // components
-import {API, setDentistLocation, updateDentistLocation} from "../../../../api/AWS-gateway";
+import {API, setDentistLocationApi, updateDentistLocationApi} from "../../../../api/AWS-gateway";
 import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
@@ -59,9 +59,9 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
             setNotification({type: "warning", message: "Location already exist!"});
             return;
           }
-          await updateDentistLocation(0, values, config);
+          await updateDentistLocationApi(0, values, config);
         } else {
-          await setDentistLocation(values, config);
+          await setDentistLocationApi(values, config);
         }
         setNotification({type: "success", message: "Successfully", position: "top-right"});
       } catch (error: any) {

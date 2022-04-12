@@ -8,7 +8,7 @@ import {DentistTypes} from "../reducers";
 import {AppContext} from "../context/app.context";
 
 import {routes} from "../utils/routes";
-import {getDentistGallery, getDentistInfoAPI, getDentistServices} from "../api/AWS-gateway";
+import {getDentistGalleryApi, getDentistInfoApi, getDentistServicesApi} from "../api/AWS-gateway";
 
 export const useLocalData = () => {
   const router = useRouter();
@@ -25,9 +25,9 @@ export const useLocalData = () => {
     if (access_token) {
       if (router.pathname.includes("admin")) Router.push(routes.home);
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      getDentistInfoAPI(config).then(({data}) => {
-        getDentistServices(data.email).then((services: any) => {
-          getDentistGallery(data.email)
+      getDentistInfoApi(config).then(({data}) => {
+        getDentistServicesApi(data.email).then((services: any) => {
+          getDentistGalleryApi(data.email)
             .then((gallery) => {
               localStorage.removeItem("admin");
               const payload = {

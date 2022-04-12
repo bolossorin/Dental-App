@@ -4,7 +4,7 @@ import React, {useEffect, useState} from "react";
 import {DentistCards} from "./Card/Card";
 import {GoogleMap} from "./Map/Map";
 import {SearchParams} from "./SearchParams/SearchParams";
-import {getAllDentistAPI} from "../../api/AWS-gateway";
+import {getAllDentistApi} from "../../api/AWS-gateway";
 
 export interface ILocation {
   lat: number;
@@ -42,7 +42,7 @@ const Search: React.FC = () => {
   const [myLocation, setMyLocation] = useState<ILocation>();
 
   useEffect(() => {
-    getAllDentistAPI().then(({data}) => setAllDentists(data)).catch((error) => console.log(error, 'error'))
+    getAllDentistApi().then(({data}) => setAllDentists(data)).catch((error) => console.log(error, 'error'))
   }, []);
 
   return (

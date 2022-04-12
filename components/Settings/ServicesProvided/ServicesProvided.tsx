@@ -1,14 +1,12 @@
 import React, {useCallback, useState} from "react";
 
 // libs
-import axios from "axios";
 import {useEffect} from "react";
 import {useContext} from "react";
 
 // components
-import {API} from "../../../api/AWS-gateway";
+import {addNewServiceApi, deleteServiceApi, getAllServicesApi, updateServiceApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
-import {IService} from "../../../reducers/types";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
@@ -16,11 +14,10 @@ import {AdminTypes} from "../../../reducers";
 
 export const ServicesProvided: React.FC = () => {
   const {dispatch, state} = useContext(AppContext);
-  const defaultServices = state.dentistState.services;
+  const {services} = state.adminState;
   const [serviceEditing, setServiceEditing] = useState<any>();
   const [serviceOnPress, setServiceOnPress] = useState<any>();
   const [serviceEditingValue, setServiceEditingValue] = useState<any>();
-  const [services, setLocalServices] = useState<IService[]>([]);
   const [newService, setNewService] = useState("");
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -28,91 +25,65 @@ export const ServicesProvided: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    if (defaultServices?.length) {
-      setLocalServices(defaultServices);
-      defaultServices.map((item) => {
-        setServiceEditing({...serviceEditing, [item.id]: false});
-        setServiceOnPress({...serviceEditing, [item.id]: false});
-        setServiceEditingValue({...serviceEditing, [item.id]: ""});
-      });
-    }
-  }, [defaultServices]);
+    getAllServicesApi()
+      .then(({data}) => {
+        setServiceEditingValue(data);
+        setServiceEditing(data);
+        setServiceOnPress(data);
+        dispatch({type: AdminTypes.SET_ALL_SERVICES, payload: data});
+      })
+      .catch((error) => console.log(error, 'error'))
+  }, []);
 
-  const onHandleAddService = async () => {
+  const addService = async () => {
     try {
-      const {data} = await axios.post<IService>(API.CHANGE_SERVICES, {service_name: newService});
-      dispatch({type: AdminTypes.GET_SERVICES, payload: [...services, {...data}]});
-      setNotification({
-        type: "success",
-        message: "Successfully added new service",
-        position: "top-right",
-        autoClose: 3,
-      });
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      const {data} = await addNewServiceApi({service_name: newService}, config);
+      dispatch({type: AdminTypes.ADD_SERVICE, payload: data});
+      setNotification({type: "success", message: "Successfully added new service"});
       setNewService("");
-    } catch (error) {
-      console.log(error, 'error');
-      setNotification({
-        type: "error",
-        message: "Failed to add new service",
-        autoClose: 3,
-      });
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 
-  const onHandleDeleteService = async (id: string) => {
+  const deleteService = async (id: string) => {
     try {
-      await axios.delete(`${API.CHANGE_SERVICES}?id=${id}`);
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      await deleteServiceApi(id, config);
       dispatch({type: AdminTypes.DELETE_SERVICE, payload: {id}});
-      setNotification({
-        type: "success",
-        message: "Successfully deleted service",
-        position: "top-right",
-        autoClose: 3,
-      });
-    } catch (exp) {
-      setNotification({
-        type: "error",
-        message: "Failed to delete service",
-        autoClose: 3,
-      });
+      setNotification({type: "success", message: "Successfully deleted service"});
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 
   const onHandleEdit = async (id: string) => {
     setServiceEditing({...serviceEditing, [id]: false});
-
     if (!serviceOnPress[id]) return;
-
-    const target = services.find((el) => el.id === id);
-    const body = {id: target?.id, service_name: target?.service_name};
-
+    const target: any = services.find((el) => el.id === id);
     try {
-      const res = await axios.put(API.CHANGE_SERVICES, body);
-      console.log(res);
-      dispatch({type: AdminTypes.GET_SERVICES, payload: services});
-      setNotification({
-        type: "success",
-        message: "Successfully edited service",
-        position: "top-right",
-        autoClose: 3,
-      });
-    } catch (exp) {
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      await updateServiceApi(target.id, target, config);
+      dispatch({type: AdminTypes.UPDATE_SERVICE, payload: target});
+      setNotification({type: "success", message: "Successfully edited service"});
+    } catch (error: any) {
       setNotification({
         type: "error",
-        message: "Failed to edit service",
-        autoClose: 3,
+        message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message
       });
     }
   };
 
   const onChangeService = (id: string, name: string) => {
     setServiceOnPress({...serviceOnPress, [id]: true});
-
-    const WithEditedService = services.map((item) => {
+    services.map((item) => {
       if (item.id === id) item.service_name = name;
       return item;
     });
-    setLocalServices(WithEditedService);
   };
 
   return (
@@ -136,16 +107,16 @@ export const ServicesProvided: React.FC = () => {
           <p className="account-row-content">
             <button
               className="account-button-green"
-              onClick={onHandleAddService}
+              onClick={addService}
               disabled={!newService.length}>
               Add service
             </button>
           </p>
         </div>
         <div className="profile-block-box">
-          <div>
+          <div className='profile-block-box-services'>
             {serviceEditing && serviceEditingValue &&
-            services.map((item, idx) => (
+            services.length > 0 && services.map((item, idx) => (
               <p key={idx} className="form-login-input">
                 <input
                   className='services-selected'
@@ -163,7 +134,7 @@ export const ServicesProvided: React.FC = () => {
                   <img
                     className="form-login-input-close"
                     src={"../images/close.svg"}
-                    onClick={() => onHandleDeleteService(item.id)}
+                    onClick={() => deleteService(item.id)}
                     alt='' />
                 </>)}
                 {serviceEditing[item.id] && (<button

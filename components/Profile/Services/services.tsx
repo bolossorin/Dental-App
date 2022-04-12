@@ -8,13 +8,13 @@ import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import notify, {ISetNotofication} from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
-import {addDentistService, getAllServices, removeDentistService} from "../../../api/AWS-gateway";
+import {addDentistServiceApi, getAllServicesApi, removeDentistServiceApi} from "../../../api/AWS-gateway";
 import {IService} from "../../../reducers/types";
 
 type IAddServiceResponse = IService[];
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {access_token, services, subscription_plan, email} = state.dentistState;
+  const {access_token, services, subscription_plan} = state.dentistState;
   const [selectedService, setSelectService] = useState<string>("");
   const [allServices, setAllServices] = useState<IAddServiceResponse>([]);
 
@@ -32,7 +32,7 @@ export const Services: React.FC = () => {
     }
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      const {data} = await addDentistService(id, config);
+      const {data} = await addDentistServiceApi(id, config);
       dispatch({type: DentistTypes.ADD_SERVICES, payload: {services: data}});
       setNotification({type: "success", message: `Successfully added new service!`});
       setSelectService("");
@@ -44,7 +44,7 @@ export const Services: React.FC = () => {
   const handleDeleteService = async (key: string) => {
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      await removeDentistService(key, config);
+      await removeDentistServiceApi(key, config);
       dispatch({type: DentistTypes.REMOVE_SERVICE, payload: {key}});
       setNotification({type: "success", message: `Successfully deleted service!`});
     } catch (exp) {
@@ -53,12 +53,10 @@ export const Services: React.FC = () => {
   };
 
   useEffect(() => {
-    if (email) {
-      getAllServices()
-        .then(({data}) => setAllServices(data))
-        .catch((error) => console.log(error, 'error'))
-    }
-  }, [email]);
+    getAllServicesApi()
+      .then(({data}) => setAllServices(data))
+      .catch((error) => console.log(error, 'error'))
+  }, []);
 
   return (
     <ProfileLayout title='Services' subTitle='Information For Patients'>

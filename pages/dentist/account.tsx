@@ -9,7 +9,7 @@ import {AccountInfoBlock} from "../../components/Account/Info/Info";
 import {Subscription} from "../../components/Account/Subscription/Subscription";
 import {Upgrade} from "../../components/Account/Upgrade/Upgrade";
 import {AppContext} from "../../context/app.context";
-import {getSettingsPI} from "../../api/AWS-gateway";
+import {getSettingsApi} from "../../api/AWS-gateway";
 
 const AccountPage: NextPage = (): JSX.Element => {
   const {state} = useContext(AppContext);
@@ -20,9 +20,9 @@ const AccountPage: NextPage = (): JSX.Element => {
   useEffect(() => {
     if (access_token) {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      getSettingsPI(config)
+      getSettingsApi(config)
         .then(({data}) => {
-          console.log(data, 'getSettingsPI')
+          console.log(data, 'getSettingsApi')
         })
         .catch((error) => {
           console.log(error)

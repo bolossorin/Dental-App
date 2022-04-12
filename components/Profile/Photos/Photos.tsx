@@ -3,7 +3,7 @@ import React, {useCallback, useContext, useState} from "react";
 // components
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import {uploadDentistAvatarAPI} from "../../../api/AWS-gateway";
+import {uploadDentistAvatarApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import {resizeFile} from "../../../utils/resizer";
@@ -37,7 +37,7 @@ export const Photos: React.FC = () => {
         formData.append('file', image);
         const config = {headers: {Authorization: `Bearer ${access_token}`}};
         if (what === "avatar") {
-          const {data} = await uploadDentistAvatarAPI(formData, config);
+          const {data} = await uploadDentistAvatarApi(formData, config);
           const avatarUrl = data['avatarUrl'];
           setAvatarSrc(avatarUrl);
           dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
