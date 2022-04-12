@@ -9,6 +9,7 @@ interface GallerySetServiceProps {
   setConfirm: (status: boolean) => void;
   onCancel: () => void;
   isSubmitting: boolean;
+  selectedService: string;
 }
 
 const SetServices: React.FC<GallerySetServiceProps> = (
@@ -17,7 +18,8 @@ const SetServices: React.FC<GallerySetServiceProps> = (
     setConfirm,
     onCancel,
     setSelectedService,
-    isSubmitting
+    isSubmitting,
+    selectedService
   }) => {
   const {state} = useContext(AppContext);
   const {services} = state.dentistState;
@@ -32,6 +34,7 @@ const SetServices: React.FC<GallerySetServiceProps> = (
             </div>
             <div className="row-content space-between">
               <select
+                value={selectedService}
                 onChange={(e: any) => setSelectedService(e.target.value)}
                 className="gallery-select arrows"
                 name="service">

@@ -24,7 +24,6 @@ export enum DentistTypes {
   REMOVE_FROM_GALLERY = "REMOVE_FROM_GALLERY",
   ADD_TO_GALLERY = "ADD_TO_GALLERY",
   UPDATE_ITEM_GALLERY = "UPDATE_ITEM_GALLERY",
-  SET_GALLERY = "SET_GALLERY",
 }
 
 // DENTIST_DATA_LAKE
@@ -43,19 +42,8 @@ export type dentistPayload = {
   };
   [DentistTypes.REMOVE_LOCATION]: { id: string; };
   [DentistTypes.REMOVE_FROM_GALLERY]: string;
-  [DentistTypes.ADD_TO_GALLERY]: { item: IUserGallery; };
-  [DentistTypes.UPDATE_ITEM_GALLERY]: {
-    item: {
-      key: string;
-      altTagsAfter: string;
-      altTagsBefore: string;
-      id: string;
-      service_name: string;
-      titleAfter: string;
-      titleBefore: string;
-    };
-  };
-  [DentistTypes.SET_GALLERY]: { gallery: IUserGallery[]; };
+  [DentistTypes.ADD_TO_GALLERY]: { gallery: IUserGallery };
+  [DentistTypes.UPDATE_ITEM_GALLERY]: { gallery: IUserGallery };
   [DentistTypes.SET_ALL_SERVICES]: IService[];
   [DentistTypes.REMOVE_SERVICE]: { key: string; };
   [DentistTypes.ADD_SERVICES]: { services: IService[]; };
@@ -122,29 +110,16 @@ export const dentistReducer = (
     case DentistTypes.ADD_SERVICES:
       const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};
-    case DentistTypes.SET_GALLERY:
-      return {...state, gallery: action.payload.gallery};
     case DentistTypes.ADD_TO_GALLERY:
-      return {...state, gallery: [action.payload.item, ...state.gallery!]};
+      return {...state, gallery: [action.payload.gallery, ...state.gallery]};
     case DentistTypes.REMOVE_FROM_GALLERY:
       const afterRemovingPhoto = state.gallery.filter((item) => item.id !== action.payload);
       return {...state, gallery: afterRemovingPhoto};
     case DentistTypes.UPDATE_ITEM_GALLERY:
-      const {key, ...updated} = action.payload.item;
-      const afterUpdateGallery =
-        state.gallery?.map((item) => {
-          let i = item;
-          if (item.id === key) {
-            i = {
-              ...updated,
-              key,
-              email: item.email,
-              imageAfterUrl: item.after.url,
-              imageBeforeUrl: item.after.url,
-            };
-          }
-          return i;
-        }) || null;
+      const afterUpdateGallery = state.gallery.map(item => {
+        if (item.id === action.payload.gallery.id) return action.payload.gallery;
+        return item;
+      });
       return {...state, gallery: afterUpdateGallery};
     default:
       return state;

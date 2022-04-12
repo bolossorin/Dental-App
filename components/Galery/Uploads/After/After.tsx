@@ -7,6 +7,7 @@ import {Field} from "formik";
 import notify, {ISetNotofication} from "../../../Toast";
 import {Crop} from "../Crop/Crop";
 import {resizeFile} from "../../../../utils/resizer";
+import {dataURLtoFile, toDataURL} from "../../../../utils/toBase64";
 
 interface UploadProps {
   imgUpload: File | string;
@@ -34,7 +35,14 @@ export const Upload: React.FC<UploadProps> = ({imgUpload, setImgUpload, type, er
   };
 
   const getSrcImage = async (file) => {
-    return await resizeFile(file)
+    if (typeof file.name !== 'string') {
+      let newFile;
+      const dataUrl = await toDataURL(file);
+      newFile = dataURLtoFile(dataUrl, "gallery.jpg");
+      return await resizeFile(newFile)
+    } else {
+      return await resizeFile(file)
+    }
   }
 
   return (

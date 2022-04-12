@@ -27,6 +27,7 @@ export const removeDentistService = (service_id, config) => axios.delete(`${proc
 export const getDentistGallery = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
 export const setDentistGallery = (service_id, body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${service_id}`, body, config);
 export const deleteDentistGallery = (service_id, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${service_id}`, config);
+export const updateDentistGallery = (body,config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery`,body, config);
 
 
 // Patient
