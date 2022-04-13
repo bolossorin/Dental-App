@@ -6,13 +6,16 @@ import {NextPage} from "next";
 // components
 import {ChangePassword} from "../components";
 import {routes} from "../utils/routes";
-import {API} from "../api/AWS-gateway";
+import {newPasswordByCodeApi} from "../api/AWS-gateway";
 
 const ChangePasswordPage: NextPage = (): JSX.Element => {
-  const loginUrl = routes.login;
-  const api = API.PASSWORD_RESET_VERIFY;
 
-  return <ChangePassword title='Current FYD users' loginUrl={loginUrl} api={api} />;
+  return (
+    <ChangePassword
+      title='Current FYD users'
+      loginUrl={routes.login}
+      newPasswordByCodeApi={newPasswordByCodeApi} />
+  );
 };
 
 export default ChangePasswordPage;

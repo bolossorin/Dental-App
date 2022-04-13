@@ -4,7 +4,11 @@ import axios from "axios";
 // DENTIST
 export const loginDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/auth/login`, body);
 export const registerDentistApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/signup`, body);
+
 export const passwordResetDentistApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/reset-password`, body, config);
+export const passwordResetByEmailApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/reset-request`, body);
+export const newPasswordByCodeApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/reset-password`, body);
+
 export const updateProfileApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, body, config);
 export const deleteAccountApi = (config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, config);
 

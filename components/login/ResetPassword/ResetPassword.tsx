@@ -2,7 +2,6 @@ import React, {useEffect, useCallback} from "react";
 
 
 // libs
-import axios from "axios";
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
@@ -11,16 +10,12 @@ import {Layout, Spinner} from "../../../components";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../../components/Toast";
 import Router from "next/router";
-
-export interface ISendEmailFormResponse {
-  message: string;
-  statusCode: number;
-}
+import {passwordResetByEmailApi} from "../../../api/AWS-gateway";
 
 const resetPasswordSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
-export const ResetPassword = ({title, loginUrl, changePasswordUrl, api}) => {
+export const ResetPassword = ({title, loginUrl, changePasswordUrl}) => {
   const setNotification = useCallback<ISetNotofication>(
     ({type, message, position, autoClose}) => {
       notify({type, message, position, autoClose});
@@ -38,21 +33,11 @@ export const ResetPassword = ({title, loginUrl, changePasswordUrl, api}) => {
         initialValues={{email: ''}}
         onSubmit={async (values) => {
           try {
-            const {data} = await axios.post<ISendEmailFormResponse>(api, {email: values.email});
-            if (data) {
-              localStorage.setItem("resetPasswordEmail", values.email);
-              setNotification({
-                type: "success",
-                message: data.message,
-                position: "bottom-center",
-                autoClose: 10,
-              });
-              Router.push(changePasswordUrl)
-            } else {
-              setNotification({type: "error", message: "Server Internal Error"});
-            }
-          } catch (e: any) {
-            setNotification({type: "error", message: 'Incorrect email'});
+            await passwordResetByEmailApi({email: values.email});
+            Router.push(changePasswordUrl)
+            setNotification({type: "success", message: 'Please enter your code'});
+          } catch (error: any) {
+            setNotification({type: "error", message: error.response.data.message});
           }
         }}>
         {({resetForm, isSubmitting, errors, touched}) =>
