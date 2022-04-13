@@ -53,6 +53,7 @@ export type IImageGallery = {
   title: string,
   tag: string,
   url: string
+  water_marked_url: string
 }
 export type IUserGallery = {
   id: string;
