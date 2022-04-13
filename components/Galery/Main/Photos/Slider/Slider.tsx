@@ -1,4 +1,4 @@
-import React, {useContext, useState} from "react";
+import React, {useState} from "react";
 
 // libs
 import ImageGallery from "react-image-gallery";
@@ -6,7 +6,6 @@ import {get} from "lodash";
 
 // components
 import {IUserGallery} from "../../../../../reducers/types";
-import {AppContext} from "../../../../../context/app.context";
 
 interface IGalleryPhotoSlider {
   photo: IUserGallery;
@@ -15,9 +14,6 @@ interface IGalleryPhotoSlider {
 }
 
 export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit, handleDelete}) => {
-  const {state} = useContext(AppContext);
-  const {subscription_plan} = state.dentistState;
-
   const [currentKey, setCurrentKey] = useState("");
   const [currentTitle, setCurrentTitle] = useState("");
   const [currentTag, setCurrentTag] = useState("");
@@ -42,9 +38,7 @@ export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit
           showBullets={true}
           showNav={false}
           onSlide={(idx) => onChangePhoto(idx, photo)}
-          items={subscription_plan === 'FREE'
-            ? [{original: get(photo, 'before.url', '')}, {original: get(photo, 'after.url', '')}]
-            : [{original: get(photo, 'before.water_marked_url', '') ? get(photo, 'before.water_marked_url', '') : get(photo, 'before.url', '')}, {original: get(photo, 'after.water_marked_url', '') ? get(photo, 'after.water_marked_url', '') : get(photo, 'after.url', '')}]} />
+          items={[{original: get(photo, 'before.water_marked_url', '') ? get(photo, 'before.water_marked_url', '') : get(photo, 'before.url', '')}, {original: get(photo, 'after.water_marked_url', '') ? get(photo, 'after.water_marked_url', '') : get(photo, 'after.url', '')}]} />
         <div className="gallery-image-description">
           <p className="gallery-image-title">
             {currentKey === photo.id ? currentTitle : get(photo, 'before.title', '')}
