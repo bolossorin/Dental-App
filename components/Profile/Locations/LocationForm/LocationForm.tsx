@@ -11,6 +11,7 @@ import {deleteDentistLocationApi, setDentistLocationApi, updateDentistLocationAp
 import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
+import {Spinner} from "../../../Spinner/Spinner";
 
 const LocationSchema = Yup.object().shape({
   location_name: Yup.string().required("Town is required"),
@@ -28,8 +29,8 @@ export const LocationForm = ({title, index}) => {
   const handleRemoveLocation = async () => {
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      await deleteDentistLocationApi(index - 1, config);
-      dispatch({type: DentistTypes.REMOVE_LOCATION, payload: index - 1});
+      const {data} = await deleteDentistLocationApi(index - 1, config);
+      dispatch({type: DentistTypes.SET_LOCATIONS, payload: data.Attributes.locations});
       setNotification({type: "success", message: "Successfully deleted location"});
     } catch (exp) {
       setNotification({type: "error", message: "Please try again!"});
@@ -47,11 +48,13 @@ export const LocationForm = ({title, index}) => {
     onSubmit={async (values) => {
       try {
         const config = {headers: {Authorization: `Bearer ${access_token}`}};
-        if (locations && locations.length > 0) {
-          if (locations[index - 1]) {
-            await updateDentistLocationApi(index - 1, values, config);
+        if (locations) {
+          if (locations[index - 1] && locations[index - 1].location_name) {
+            const {data} = await updateDentistLocationApi(index - 1, values, config);
+            dispatch({type: DentistTypes.SET_LOCATIONS, payload: data.Attributes.locations});
           } else {
-            await setDentistLocationApi(values, config);
+            const {data} = await setDentistLocationApi(values, config);
+            dispatch({type: DentistTypes.SET_LOCATIONS, payload: data.locations});
           }
         }
         setNotification({type: "success", message: "Successfully"});
@@ -62,7 +65,7 @@ export const LocationForm = ({title, index}) => {
         });
       }
     }}>
-    {({errors, touched}) =>
+    {({isSubmitting, errors, touched}) =>
       <Form
         className={cn("profile-block-box", "profile-block-box-noWrap")}>
         <div className="form-profile-label">
@@ -85,15 +88,16 @@ export const LocationForm = ({title, index}) => {
           {errors.post_code && touched.post_code ? (
             <div className='error-text'>{errors.post_code}</div>) : null}
         </div>
-        <div className="account-form-login-buttons">
+        <div className="form-profile-buttons">
           {locations && locations[index - 1] && <button
             className="button-green-confirm"
             type="button"
+            disabled={isSubmitting}
             onClick={handleRemoveLocation}>
-            Remove
+            {isSubmitting ? <Spinner /> : "Remove"}
           </button>}
-          <button className="button-green-confirm" type="submit">
-            Confirm
+          <button className="button-green-confirm" type="submit" disabled={isSubmitting}>
+            {isSubmitting ? <Spinner /> : "Confirm"}
           </button>
         </div>
       </Form>}

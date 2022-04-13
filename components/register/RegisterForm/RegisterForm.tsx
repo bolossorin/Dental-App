@@ -11,6 +11,7 @@ import {IRegisterFormChildren} from "../../../pages/register";
 import {loginDentistApi, registerDentistApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {routes} from "../../../utils/routes";
+import {Spinner} from "../../Spinner/Spinner";
 
 const registrationSchema = Yup.object().shape({
   dentist_name: Yup.string().matches(/[A-Za-z]{1,28}/, "Invalid Name").required('Name is required'),
@@ -104,8 +105,8 @@ export const RegisterForm = () => {
             {errors.password && touched.password ? <p className='errorMessage'>{errors.password}</p> : null}
           </div>
           <div className="form-login-buttons">
-            <button type='submit' className="button-nextStep">
-              Next Step
+            <button type='submit' className="button-nextStep" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner /> : "Next Step"}
             </button>
           </div>
         </Form>}

@@ -11,6 +11,7 @@ import {
   removeDentistServiceApi
 } from "../../../api/AWS-gateway";
 import {IService} from "../../../reducers/types";
+import {Spinner} from "../../Spinner/Spinner";
 
 type IAddServiceResponse = IService[];
 export const Services: React.FC = () => {
@@ -18,12 +19,14 @@ export const Services: React.FC = () => {
   const {access_token, services, subscription_plan, settings_account} = state.dentistState;
   const [selectedService, setSelectService] = useState<string>("");
   const [allServices, setAllServices] = useState<IAddServiceResponse>([]);
+  const [isSubmitting, setIsSubmitting] = useState(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
 
   const handleAddService = async (id) => {
+    setIsSubmitting(true);
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
       const {data} = await addDentistServiceApi(id, config);
@@ -36,6 +39,7 @@ export const Services: React.FC = () => {
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
     }
+    setIsSubmitting(false);
   };
 
   const handleDeleteService = async (key: string) => {
@@ -62,7 +66,9 @@ export const Services: React.FC = () => {
   }, [access_token]);
 
   return (
-    <ProfileLayout title='Services' subTitle='Information For Patients'>
+    <ProfileLayout
+      title='Services'
+      subTitle={`Information For Patients (max ${settings_account?.maxService} for ${settings_account?.subscription_type})`}>
       <div className="box-2-box">
         <div className="profile-block-box profile-block-box-noWrap">
           <div>
@@ -87,11 +93,8 @@ export const Services: React.FC = () => {
               className="button-green-confirm"
               onClick={() => handleAddService(selectedService)}
               disabled={selectedService === "" || services?.length >= settings_account!.maxService}>
-              Confirm
+              {isSubmitting ? <Spinner /> : "Confirm"}
             </button>
-            {settings_account?.maxService && <span className='form-profile-notation-mod'>
-              max {settings_account.maxService} services {settings_account.subscription_type}
-            </span>}
           </div>
           {services && <div className="mt-big">
             <div className="form-profile-label">

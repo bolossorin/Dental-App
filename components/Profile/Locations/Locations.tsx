@@ -22,14 +22,16 @@ const Locations: React.FC = () => {
   }, [settings_account]);
 
   return (
-    <ProfileLayout title='Locations' subTitle='Information For Patients'>
+    <ProfileLayout
+      title='Locations'
+      subTitle={`Information For Patients (max ${settings_account?.maxService} for ${settings_account?.subscription_type})`}>
       <div className="box-2-box">
-       {countLocations.map((index) =>
+        {countLocations.map((index) =>
           <div key={index} className="profile-block-box">
             <LocationForm index={index} title={`Location ${index}`} />
           </div>)}
         {subscription_plan === "FREE" && <div className={`profile-block-box disabled`}>
-          <LocationForm index={false} title={`Second Location ${subscription_plan === 'FREE' ? '- Premium' : ''}`} />
+          <LocationForm index={false} title={`Location 2 ${subscription_plan === 'FREE' ? '- Premium' : ''}`} />
         </div>}
       </div>
     </ProfileLayout>

@@ -7,6 +7,7 @@ import {
   IDentist_SpecialState,
   IUserGallery,
   IService, ISubSettings, Null_Or_,
+  UserLocation,
 } from "./types";
 
 export enum DentistTypes {
@@ -15,7 +16,7 @@ export enum DentistTypes {
   LOGOUT = "DENTIST_LOGOUT",
   SET_INFO = "DENTIST_SET_INFO",
   SET_FULL_DATA = "SET_FULL_DATA",
-  REMOVE_LOCATION = "REMOVE_LOCATION",
+  SET_LOCATIONS = "SET_LOCATIONS",
   SET_ALL_SERVICES = "SET_ALL_SERVICES",
   ADD_SERVICES = "ADD_SERVICES",
   REMOVE_SERVICE = "REMOVE_SERVICE",
@@ -40,7 +41,7 @@ export type dentistPayload = {
     website?: string;
     phone?: string;
   };
-  [DentistTypes.REMOVE_LOCATION]: number;
+  [DentistTypes.SET_LOCATIONS]: UserLocation[];
   [DentistTypes.REMOVE_FROM_GALLERY]: string;
   [DentistTypes.ADD_TO_GALLERY]: { gallery: IUserGallery };
   [DentistTypes.UPDATE_ITEM_GALLERY]: { gallery: IUserGallery };
@@ -99,8 +100,8 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
       return {...state, watermarkUrl: action.payload};
     case DentistTypes.SET_FULL_DATA:
       return {...state, ...action.payload};
-    case DentistTypes.REMOVE_LOCATION:
-      return {...state, locations: state.locations ? state.locations.splice(action.payload, 1) : []};
+    case DentistTypes.SET_LOCATIONS:
+      return {...state, locations: action.payload};
     case DentistTypes.REMOVE_SERVICE:
       const afterRemovingService = state.services?.filter((item) => item.id !== action.payload.key) ||
         null;

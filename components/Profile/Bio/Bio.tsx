@@ -11,6 +11,7 @@ import {DentistTypes} from "../../../reducers";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
+import {Spinner} from "../../Spinner/Spinner";
 
 const bioSchema = Yup.object().shape({
   title: Yup.string().matches(/(^[A-Za-z]{2,10})/, 'Invalid Title').required("Title is required"),
@@ -65,7 +66,7 @@ export const Bio: React.FC = () => {
             setNotification({type: "error", message: "Please try again!"});
           }
         }}>
-        {({errors, touched}) =>
+        {({isSubmitting, errors, touched}) =>
           <Form className="box-2-box">
             <div className="profile-block-box">
               <div className="double-blocks">
@@ -117,7 +118,9 @@ export const Bio: React.FC = () => {
                   {errors.bio && touched.bio ? <div className='error-text'>{errors.bio}</div> : null}
                 </div>
                 <div className="form-login-buttons-confirm">
-                  <button type='submit' className="button-green-confirm">Confirm</button>
+                  <button type='submit' className="button-green-confirm" disabled={isSubmitting}>
+                    {isSubmitting ? <Spinner /> : "Confirm"}
+                  </button>
                 </div>
               </div>
             </div>

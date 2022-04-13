@@ -13,6 +13,7 @@ import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {CARD_OPTIONS} from "../../../utils/cardOptions";
 import {AppContext} from "../../../context/app.context";
+import {useLocalData} from "../../../hooks/useLocalData";
 
 const getCurrency = (price: number, oldPrice: number) => {
   return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
@@ -23,6 +24,8 @@ const stripeCheckoutSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
 });
 export const StripeForm = ({setSubscriptionPlan}) => {
+  useLocalData();
+
   const {state} = useContext(AppContext);
   const {email, dentist_name}: any = state.dentistState;
 

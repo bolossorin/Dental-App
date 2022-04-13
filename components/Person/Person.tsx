@@ -69,13 +69,13 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                 alt="check" />)}
             </div>
             <p className="person-form-login-subtitle">
-              Qualifications: {qualifications ? qualifications : 'there is no data'}
+              Qualifications: {qualifications ? qualifications : '-'}
             </p>
             <p className="person-form-login-subtitle">GDC No: {gdc}</p>
           </div>
           <div className="person-index-leftmenu-text">
             <p className='person-index-leftmenu-title'>Bio</p>
-            <p>{bio ? bio : 'There is no data'}</p>
+            <p>{bio ? bio : '-'}</p>
             <div className="person-button-list">
               {services.map((item, index) =>
                 <button key={index} className="person-index-green-button">
@@ -85,14 +85,14 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
             <p className='person-index-leftmenu-title'>Contact</p>
             <div className='person-index-leftmenu-section'>
               <p>
-                <strong>Phone: </strong>{phone ? phone : 'there is no data'}
+                <strong>Phone: </strong>{phone ? phone : '-'}
               </p>
               <p>
-                <strong>Email: </strong>{email ? email : 'there is no data'}
+                <strong>Email: </strong>{email ? email : '-'}
               </p>
               <Link href={`https://${website}`}>
                 <a target="_blank" className='person-index-leftmenu-title'>
-                  <span><strong>Website:</strong> {website ? website : 'there is no data'}</span>
+                  <span><strong>Website:</strong> {website ? website : '-'}</span>
                 </a>
               </Link>
             </div>
@@ -104,7 +104,7 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                   <span>
                     <strong>{item.location_name}</strong>
                   </span>
-                  </div>) : 'There is no data'}
+                  </div>) : '-'}
               </div>
             </div>
             <p className='person-index-leftmenu-title'>QR Code:</p>

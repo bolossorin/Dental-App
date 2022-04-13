@@ -61,14 +61,6 @@ export const userSuspendApi = (email, config) => axios.put(`${process.env.NEXT_P
 export const userDeleteApi = (email, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/delete/${email}`, config);
 
 export const API = {
-  PASSWORD_RESET: "/api/dentist/account/reset-password",
-
-  PASSWORD_RESET_VERIFY: "/api/dentist/verify_password_reset",
-
   SET_DENTIST_LOCATION: "/api/dentist/profile/location",
   STRIPE_CHECK_COUPON: "/api/dentist/payment/activate-coupon",
-
-  // Admin
-  PASSWORD_RESET_ADMIN: "/api/admin/reset-password",
-  PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
 };
