@@ -127,7 +127,9 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                     showPlayButton={false}
                     showBullets={true}
                     showNav={false}
-                    items={[{original: get(photo, 'before.water_marked_url', '')}, {original: get(photo, 'after.water_marked_url', '')}]} />
+                    items={subscription_plan === 'FREE'
+                      ? [{original: get(photo, 'before.url', '')}, {original: get(photo, 'after.url', '')}]
+                      : [{original: get(photo, 'before.water_marked_url', '') ? get(photo, 'before.water_marked_url', '') : get(photo, 'before.url', '')}, {original: get(photo, 'after.water_marked_url', '') ? get(photo, 'after.water_marked_url', '') : get(photo, 'after.url', '')}]} />
                 </div>))}
             </div> : <h2 className='empty'>Not found</h2>}
         </div>

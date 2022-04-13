@@ -33,6 +33,7 @@ export const PremiumInfo: React.FC = () => {
             </p>
             {subscriberSettings[1] &&
             <div className='form-profile-features'>
+              <p>Watermark</p>
               <p>Max Locations: {subscriberSettings[1].maxLocations}</p>
               <p>Max Services: {subscriberSettings[1].maxService}</p>
               {subscriberSettings[1].websiteAllowed && <p>Website Address</p>}

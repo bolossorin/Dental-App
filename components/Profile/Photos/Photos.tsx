@@ -91,7 +91,7 @@ export const Photos: React.FC = () => {
           </p>
           <p className={`row-content ${freeAccountLimit && "disabled"}`}>
             <label className="button-green-file" htmlFor="cover_image">
-              Upload
+              {isSubmitting ? <Spinner /> : "Upload"}
             </label>
             <input
               onChange={(e) => onProfileImageChange(e, "cover")}
