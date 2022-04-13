@@ -16,7 +16,7 @@ import {Spinner} from "../../../Spinner/Spinner";
 const LocationSchema = Yup.object().shape({
   location_name: Yup.string().required("Town is required"),
   address: Yup.string().required("Address is required"),
-  post_code: Yup.number().typeError('Only numbers').required("Post Code is required"),
+  post_code: Yup.string().required("Post Code is required"),
 });
 export const LocationForm = ({title, index}) => {
   const {state, dispatch} = useContext(AppContext);
