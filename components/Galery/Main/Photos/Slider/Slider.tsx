@@ -38,7 +38,7 @@ export const GalleryPhotoSlider: React.FC<IGalleryPhotoSlider> = ({photo, onEdit
           showBullets={true}
           showNav={false}
           onSlide={(idx) => onChangePhoto(idx, photo)}
-          items={[{original: photo.before.url}, {original: photo.after.url}]} />
+          items={[{original: get(photo, 'before.water_marked_url', '') ? get(photo, 'before.water_marked_url', '') : get(photo, 'before.url', '')}, {original: get(photo, 'after.water_marked_url', '') ? get(photo, 'after.water_marked_url', '') : get(photo, 'after.url', '')}]} />
         <div className="gallery-image-description">
           <p className="gallery-image-title">
             {currentKey === photo.id ? currentTitle : get(photo, 'before.title', '')}

@@ -16,7 +16,6 @@ class MyDocument extends Document {
                 href="https://fonts.googleapis.com/css2?family=Open+Sans:wght@300;400;600;700&display=swap" />
           <meta name="description"
                 content="An example of a meta description. These show up in search engine results." />
-          <meta httpEquiv="Content-Security-Policy" content="upgrade-insecure-requests"/>
         </Head>
         <body>
         <Main />
