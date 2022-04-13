@@ -82,7 +82,7 @@ export const Users: React.FC = () => {
       const usersToFilter = alreadyFiltered.byStatus ? filteredByStatus : users;
       const startPoint = getPeriod(period);
       const filUsers = usersToFilter.filter((user: IAdminUser) => {
-        const creationPoint = new Date(user.createdAt);
+        const creationPoint = new Date(user.createdAt as Date);
         return creationPoint > startPoint;
       });
       setUsersToRender(filUsers);

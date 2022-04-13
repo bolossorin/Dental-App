@@ -105,7 +105,7 @@ export interface IAdminUser {
   phone: string | null;
   logged_in_at: number;
   title: string | null;
-  created_at: Date | null;
+  createdAt: Date | null;
   isSuspended?: boolean;
 }
 
