@@ -70,6 +70,7 @@ export type IDentist_SpecialState = {
   subscription_plan: string;
   subscription_end_date: Null_Or_<number>;
   avatarUrl: Null_Or_<string>;
+  watermarkUrl: Null_Or_<string>;
 };
 
 export interface ISubSettings {
@@ -103,7 +104,7 @@ export interface IAdminUser {
   phone: string | null;
   logged_in_at: number;
   title: string | null;
-  createdAt: any;
+  created_at: Date | null;
   isSuspended?: boolean;
 }
 

@@ -23,7 +23,7 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
   return (
     <div className="main-index index-main-box">
       <div className="index-gallery-box">
-        {allDentists.map((dentist, idx) => (
+        {allDentists.length > 0 ? allDentists.map((dentist, idx) => (
           <a key={idx} className="index-gallery-item" href={`/search/${dentist.email}`} target={"_blank"}>
             <div
               className={cn("index-gallery-image-box", {'active': selectedDentist === dentist})}
@@ -49,7 +49,7 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
                 <p className="index-gallery-image-text">{dentist.email}</p>
               </div>
             </div>
-          </a>))}
+          </a>)) : <h2>Nor found</h2>}
       </div>
     </div>
   );

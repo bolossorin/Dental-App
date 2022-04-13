@@ -3,7 +3,7 @@ import React, {useCallback, useContext, useState} from "react";
 // components
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import {uploadDentistAvatarApi} from "../../../api/AWS-gateway";
+import {uploadDentistAvatarApi, uploadDentistWatermarkApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
 import {resizeFile} from "../../../utils/resizer";
@@ -12,8 +12,7 @@ import {Spinner} from "../../Spinner/Spinner";
 
 export const Photos: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {avatarUrl, subscription_plan, access_token} = state.dentistState;
-  const [avatarSrc, setAvatarSrc] = useState<any>("");
+  const {avatarUrl, watermarkUrl, subscription_plan, access_token} = state.dentistState;
   const [isSubmitting, setIsSubmitting] = useState<any>(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -24,6 +23,7 @@ export const Photos: React.FC = () => {
 
   const onProfileImageChange = async (e: any, what: "avatar" | "cover") => {
     setIsSubmitting(true);
+
     const file = e.target.files && e.target.files[0];
     const fileSize = file!.size / (1024 * 1024);
     try {
@@ -38,9 +38,14 @@ export const Photos: React.FC = () => {
         if (what === "avatar") {
           const {data} = await uploadDentistAvatarApi(formData, config);
           const avatarUrl = data['avatarUrl'];
-          setAvatarSrc(avatarUrl);
           dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
-          setNotification({type: "success", message: "Successfully changed avatar image", position: "top-right"});
+          setNotification({type: "success", message: "Successfully changed watermark", position: "top-right"});
+        }
+        if (what === 'cover') {
+          const {data} = await uploadDentistWatermarkApi(formData, config);
+          const watermarkUrl = data['watemark_public_url'];
+          dispatch({type: DentistTypes.SET_WATERMARK_URL, payload: watermarkUrl});
+          setNotification({type: "success", message: "Watermark changed avatar image", position: "top-right"});
         }
       }
     } catch (error: any) {
@@ -48,6 +53,7 @@ export const Photos: React.FC = () => {
     }
     setIsSubmitting(false);
   };
+
   return (
     <ProfileLayout title='Display Photos' subTitle='Information For Patients'>
       <div className="box-2-box">
@@ -57,7 +63,7 @@ export const Photos: React.FC = () => {
               <label className="form-profile-label">Profile Picture</label>
             </p>
             <p className="load-avatar__block">
-              <img src={avatarSrc || avatarUrl || "../../../images/empty_avatar.png"} alt="profile image" />
+              <img src={avatarUrl || "../../../images/empty_avatar.png"} alt="profile image" />
             </p>
           </div>
           <p className="row-content">
@@ -80,7 +86,7 @@ export const Photos: React.FC = () => {
           <p className="profile-photo-box">
             <img
               className="image"
-              src={"../images/empty-image.jpg"}
+              src={watermarkUrl || "../images/empty-image.jpg"}
               alt="cover image" />
           </p>
           <p className={`row-content ${freeAccountLimit && "disabled"}`}>

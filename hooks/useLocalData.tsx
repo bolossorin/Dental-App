@@ -38,6 +38,7 @@ export const useLocalData = () => {
                     email: data.email,
                     gdc: data.gdc,
                     avatarUrl: data.avatarUrl,
+                    watermarkUrl: data.watemark_public_url,
                     locations: data.locations,
                     subscription_plan: data.subscription_plan,
                     subscription_end_date: data.subscription_end_date,

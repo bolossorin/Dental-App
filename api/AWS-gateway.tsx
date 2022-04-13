@@ -12,6 +12,7 @@ export const setDentistLocationApi = (body, config) => axios.post(`${process.env
 export const updateDentistLocationApi = (id, body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/location/${id}`, body, config);
 
 export const uploadDentistAvatarApi = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/avatar`, body, config);
+export const uploadDentistWatermarkApi = (body, config) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/watermark`, body, config);
 
 export const getDentistInfoApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/authenticated`, config);
 

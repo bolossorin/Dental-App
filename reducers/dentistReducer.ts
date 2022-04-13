@@ -20,6 +20,7 @@ export enum DentistTypes {
   ADD_SERVICES = "ADD_SERVICES",
   REMOVE_SERVICE = "REMOVE_SERVICE",
   SET_AVATAR_URL = "SET_AVATAR_URL",
+  SET_WATERMARK_URL = "SET_WATERMARK_URL",
   REMOVE_FROM_GALLERY = "REMOVE_FROM_GALLERY",
   ADD_TO_GALLERY = "ADD_TO_GALLERY",
   UPDATE_ITEM_GALLERY = "UPDATE_ITEM_GALLERY",
@@ -47,6 +48,7 @@ export type dentistPayload = {
   [DentistTypes.REMOVE_SERVICE]: { key: string; };
   [DentistTypes.ADD_SERVICES]: { services: IService[]; };
   [DentistTypes.SET_AVATAR_URL]: string;
+  [DentistTypes.SET_WATERMARK_URL]: string;
   [DentistTypes.SET_FULL_DATA]: TdentistReducerState;
 };
 
@@ -73,6 +75,7 @@ export const DentistInitialState: TdentistReducerState = {
   subscription_plan: "",
   subscription_end_date: null,
   avatarUrl: "",
+  watermarkUrl: "",
   locations: null,
   gallery: [],
   phone: null,
@@ -92,6 +95,8 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
       return {...state, ...action.payload};
     case DentistTypes.SET_AVATAR_URL:
       return {...state, avatarUrl: action.payload};
+    case DentistTypes.SET_WATERMARK_URL:
+      return {...state, watermarkUrl: action.payload};
     case DentistTypes.SET_FULL_DATA:
       return {...state, ...action.payload};
     case DentistTypes.REMOVE_LOCATION:

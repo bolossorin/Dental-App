@@ -24,6 +24,7 @@ export enum MILES {
 export interface SearchDentistResult {
   subscription_plan: string;
   avatarUrl: string;
+  watermarkUrl: string;
   email: string;
   key: string;
   lat: number;
