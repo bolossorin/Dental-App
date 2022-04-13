@@ -5,11 +5,13 @@ import cn from "classnames";
 
 // assets
 import styles from "./User.module.scss";
+import moment from "moment";
+import {routes} from "../../../utils/routes";
 
 interface UserProps {
   username: string;
-  created_at: Date;
-  exp: string | null;
+  created_at: any;
+  subscription_end_date: number;
   subscription_plan: string;
   email: string;
   gdc_number: string;
@@ -37,10 +39,10 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
         <span className={cn(styles.text, theme)}>{props.username}</span>
         <span className={cn(styles.text, theme)}>{creationDate}</span>
         {props.subscription_plan === "PREMIUM" && (<span className={cn(styles.text, theme)}>
-            Paid Subscription Ends: {props.exp}
+            Paid Subscription Ends: {moment.unix(props.subscription_end_date).format("MM/DD/YYYY")}
           </span>)}
         {props.subscription_plan === "FREE" && (<span className={cn(styles.text, theme)}>Account is free</span>)}
-        <a className={cn(styles.link, styles.text, theme)}>
+        <a href={`${routes.search}/${props.email}`} target='_blank' className={cn(styles.link, styles.text, theme)}>
           <img className={svgColor} src={"../images/user.svg"} alt='' />
           <span>View Profile</span>
         </a>

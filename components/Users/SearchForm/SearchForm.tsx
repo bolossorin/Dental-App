@@ -4,7 +4,7 @@ import React from "react";
 import styles from "./SearchForm.module.scss";
 
 type SearchFormProps = {
-  handleSearchFormSubmit: ({keyword: string}) => void;
+  handleSearchFormSubmit: (string) => void;
   setSearchValue: any;
   searchValue: string;
 };
@@ -26,7 +26,7 @@ const SearchForm: React.FC<SearchFormProps> = (
         value={searchValue}
         onChange={(e) => {
           setSearchValue(e.target.value)
-          handleSearchFormSubmit({keyword: e.target.value})
+          handleSearchFormSubmit(e.target.value)
         }} />
       <img src={"../images/search.svg"} alt="search" className={styles.searchIcon} />
     </div>

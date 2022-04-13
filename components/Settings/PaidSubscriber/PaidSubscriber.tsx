@@ -6,7 +6,7 @@ import * as Yup from "yup";
 import {get} from "lodash";
 
 // components
-import {getSettingsSubscriptionsApi, updateSettingsSubscriptionsApi} from "../../../api/AWS-gateway";
+import {getLimitsApi, updateLimitsApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
@@ -33,7 +33,7 @@ export const PaidSubscriber: React.FC = () => {
     const token = localStorage.getItem('access_token_admin');
     if (token) {
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-      getSettingsSubscriptionsApi(config)
+      getLimitsApi(config)
         .then(({data}) => dispatch({type: AdminTypes.GET_SUBSCRIBER_SETTINGS, payload: data}))
         .catch((error) => console.error(error, 'error'));
     }
@@ -80,7 +80,7 @@ export const PaidSubscriber: React.FC = () => {
         try {
           const token = localStorage.getItem('access_token_admin');
           const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-          const {data} = await updateSettingsSubscriptionsApi(body, config);
+          const {data} = await updateLimitsApi(body, config);
           dispatch({type: AdminTypes.SET_SUBSCRIBER_SETTINGS, payload: data});
           setNotification({type: "success", message: "Successfully changed settings"});
         } catch (error: any) {

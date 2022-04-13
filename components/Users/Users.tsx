@@ -2,10 +2,11 @@ import React, {useCallback, useEffect, useState} from "react";
 
 // libs
 import axios from "axios";
+import {get} from "lodash";
 
 // components
 import SearchForm from "./SearchForm/SearchForm";
-import {API} from "../../api/AWS-gateway";
+import {API, getUsersApi} from "../../api/AWS-gateway";
 import {IAdminUser} from "../../reducers/types";
 import {getPeriod} from "../../utils/getDate";
 import FilterUsersForm from "./FilterUsersForm/FilterUsersForm";
@@ -17,45 +18,8 @@ import {User} from "./User/User";
 import styles from "./Users.module.css";
 import notify, {ISetNotofication} from "../Toast";
 
-const usersInitial: any = [
-  {
-    subscription_id: '#StripeID',
-    username: 'Jon',
-    gdc_number: '12345',
-    email: 'email@email.email',
-    post_code: 'Post Code',
-    auth_time: '13:05 04/04/2021',
-    created_at: new Date().toISOString().slice(0, 10),
-    subscription_plan: 'PREMIUM',
-    exp: '03/09/2021',
-    isSuspended: false,
-  },
-  {
-    subscription_id: '#StripeID',
-    gdc_number: '12345',
-    email: 'email@email.email',
-    subscription_plan: 'FREE',
-    username: 'Name',
-    exp: '03/09/2021',
-    auth_time: '01.01.2021',
-    created_at: new Date('01-01-2022').toISOString().slice(0, 10),
-    isSuspended: true,
-  },
-  {
-    subscription_id: '#StripeID',
-    username: 'Name',
-    gdc_number: '12345',
-    email: 'email@email.email',
-    post_code: 'Post Code',
-    auth_time: '13:05 04/04/2021',
-    created_at: new Date('01-01-2022').toISOString().slice(0, 10),
-    subscription_plan: 'PREMIUM',
-    exp: '03/09/2021',
-    isSuspended: false,
-  },
-];
 export const Users: React.FC = () => {
-  const [users, setUsers] = useState(usersInitial);
+  const [users, setUsers] = useState([]);
   const [filteredByPeriod, setFilteredByPeriod] = useState([]);
   const [filteredByStatus, setFilteredByStatus] = useState([]);
   const [usersToRender, setUsersToRender] = useState([]);
@@ -102,12 +66,7 @@ export const Users: React.FC = () => {
         const usersUpdated = users.filter((user: IAdminUser) => user.email !== userEmail);
         setUsersToRender(usersUpdated);
         setUserEmail("");
-        setNotification({
-          type: "success",
-          message: data.message,
-          position: "bottom-center",
-          autoClose: 10,
-        });
+        setNotification({type: "success", message: data.message});
       } catch (e) {
         console.log(e);
         setNotification({type: "error", message: 'Server Internal Error'});
@@ -115,9 +74,9 @@ export const Users: React.FC = () => {
     }
   };
 
-  const handleSearchFormSubmit = ({keyword}) => {
+  const handleSearchFormSubmit = (keyword) => {
     const usersToFilter = alreadyFiltered.byStatus || alreadyFiltered.byPeriod ? usersToRender : users;
-    const filUsers = usersToFilter.filter((user: IAdminUser) => user.username.toLowerCase().indexOf(keyword.toLowerCase()) > -1);
+    const filUsers = usersToFilter.filter((user: IAdminUser) => user.dentist_name.toLowerCase().includes(keyword.toLowerCase()));
     setUsersToRender(filUsers);
     setAlreadyFiltered({...alreadyFiltered, byName: true});
   };
@@ -154,15 +113,17 @@ export const Users: React.FC = () => {
   };
 
   useEffect(() => {
-    // todo: need backend
-    // const res = await axios.get(API.GET_USERS);
-    // const allUsers = res.data;
-    // allUsers.map((user) => {
-    //   if (!user.username) user.username = user.email;
-    // });
-    setUsers(users);
-    setUsersToRender(users);
-  }, [users]);
+    const token = localStorage.getItem('access_token_admin');
+    const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+    getUsersApi(config).then(({data}) => {
+      setUsers(data);
+      setUsersToRender(data);
+      data.map((user) => {
+        if (!user.dentist_name) user.dentist_name = user.email;
+      });
+    }).catch((error) => console.log(error, error));
+
+  }, []);
 
   return (
     <ProfileBox title='Users Catalogue' subTitle='Search Users'>
@@ -181,16 +142,16 @@ export const Users: React.FC = () => {
             handleResetFiltersClick={handleResetFiltersClick}
             alreadyFiltered={filtered} />
           <ul className={styles.usersList}>
-            {usersToRender.length > 0 ? users.map((user: IAdminUser, index) => (
+            {usersToRender.length > 0 ? usersToRender.map((user: IAdminUser, index) => (
               <User
                 key={index}
-                username={user.username ? user.username : user.email}
-                created_at={user.created_at}
-                exp={user.exp}
+                username={user.dentist_name ? user.dentist_name : user.email}
+                created_at={get(user, 'created_at', 'there is no data')}
+                subscription_end_date={get(user, 'subscription_end_date', 0) as number}
                 subscription_plan={user.subscription_plan}
                 email={user.email}
-                post_code={user.post_code}
-                gdc_number={user.gdc_number}
+                post_code={get(user, 'locations[0].post_code', 'there is no data')}
+                gdc_number={get(user, 'gdc', 'there is no data')}
                 auth_time={user.auth_time}
                 subscription_id={user.subscription_id}
                 handleSuspendUserClick={handleSuspendUserClick}

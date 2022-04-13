@@ -92,14 +92,14 @@ export interface IPremiumInformation {
 export interface IAdminUser {
   website: string | null;
   subscription_id: string | null;
-  gdc_number: string;
+  gdc: string;
   bio: string | null;
   email: string;
-  post_code: string;
+  locations: { post_code: string };
   subscription_plan: string;
   qualifications: string | null;
-  username: string;
-  exp: string | null;
+  dentist_name: string;
+  subscription_end_date: string | null;
   phone: string | null;
   auth_time: string | null;
   title: string | null;
