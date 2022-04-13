@@ -31,10 +31,10 @@ const ConfirmPopup: React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => 
         </p>
         <Formik
           initialValues={{confirm: ""}}
-          onSubmit={(values) => {
-            props.handleDeleteUserClick({
-              confirm: values.confirm,
-            });
+          onSubmit={(values, {resetForm}) => {
+            props.handleDeleteUserClick({confirm: values.confirm});
+            props.onBtnCloseClick();
+            resetForm();
           }}>
           {({values}) => (
             <Form className={styles.form}>

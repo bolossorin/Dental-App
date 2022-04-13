@@ -16,9 +16,10 @@ interface UserProps {
   email: string;
   gdc_number: string;
   post_code: string;
+  status: string;
   auth_time: string | null;
   subscription_id: string | null;
-  handleSuspendUserClick: ({email: string}) => void;
+  handleSuspendUserClick: (string) => void;
   openConfirmPopup: ({email: string}) => void;
 }
 
@@ -79,8 +80,8 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
             <button
               type="button"
               className={styles.suspendDeleteBtn}
-              onClick={() => props.handleSuspendUserClick({email: props.email})}>
-              Suspend
+              onClick={() => props.handleSuspendUserClick(props.email)}>
+              {props.status === 'SUSPENDED' ? 'Resolve' : 'Suspend'}
             </button>
           </div>
           <div className={styles.btnWrap}>

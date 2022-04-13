@@ -50,6 +50,8 @@ export const updateServiceApi = (service_id, body, config) => axios.put(`${proce
 export const deleteServiceApi = (service_id, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/services/${service_id}`, config);
 
 export const getUsersApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/dentists`, config);
+export const userSuspendApi = (email, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/suspend/${email}`, '', config);
+export const userDeleteApi = (email, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/delete/${email}`, config);
 
 export const API = {
   PASSWORD_RESET: "/api/dentist/account/reset-password",
@@ -62,6 +64,4 @@ export const API = {
   // Admin
   PASSWORD_RESET_ADMIN: "/api/admin/reset-password",
   PASSWORD_RESET_VERIFY_ADMIN: "/api/admin/verify_password_reset",
-  SUSPEND_USER: "/api/admin/users/suspend",
-  DELETE_USER: "/api/profile/account/deleteAccount",
 };

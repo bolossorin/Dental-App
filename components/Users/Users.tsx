@@ -1,12 +1,11 @@
 import React, {useCallback, useEffect, useState} from "react";
 
 // libs
-import axios from "axios";
 import {get} from "lodash";
 
 // components
 import SearchForm from "./SearchForm/SearchForm";
-import {API, getUsersApi} from "../../api/AWS-gateway";
+import {getUsersApi, userDeleteApi, userSuspendApi} from "../../api/AWS-gateway";
 import {IAdminUser} from "../../reducers/types";
 import {getPeriod} from "../../utils/getDate";
 import FilterUsersForm from "./FilterUsersForm/FilterUsersForm";
@@ -34,18 +33,14 @@ export const Users: React.FC = () => {
       notify({type, message, position, autoClose});
     }, []);
 
-  const handleSuspendUserClick = async ({email}): Promise<void> => {
+  const handleSuspendUserClick = async (email): Promise<void> => {
     try {
-      const {data} = await axios.put(`${API.SUSPEND_USER}?email=${email}`);
-      setNotification({
-        type: "success",
-        message: data.message,
-        position: "bottom-center",
-        autoClose: 10,
-      });
-    } catch (e) {
-      console.log(e);
-      setNotification({type: "error", message: 'Server Internal Error'});
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      const {data} = await userSuspendApi(email, config);
+      setNotification({type: "success", message: data.message});
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
     }
   };
 
@@ -62,14 +57,15 @@ export const Users: React.FC = () => {
   const handleDeleteUserClick = async ({confirm}): Promise<void> => {
     if (confirm === "delete") {
       try {
-        const {data} = await axios.delete(`${API.DELETE_USER}?email=${userEmail}`);
+        const token = localStorage.getItem('access_token_admin');
+        const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+        const {data} = await userDeleteApi(userEmail, config);
         const usersUpdated = users.filter((user: IAdminUser) => user.email !== userEmail);
         setUsersToRender(usersUpdated);
         setUserEmail("");
         setNotification({type: "success", message: data.message});
-      } catch (e) {
-        console.log(e);
-        setNotification({type: "error", message: 'Server Internal Error'});
+      } catch (error: any) {
+        setNotification({type: "error", message: error.response.data.message});
       }
     }
   };
@@ -133,8 +129,10 @@ export const Users: React.FC = () => {
         userEmail={userEmail}
         onBtnCloseClick={closeConfirmPopup} />
       <div className='account-form-info-block-full'>
-        <SearchForm handleSearchFormSubmit={handleSearchFormSubmit} searchValue={searchValue}
-                    setSearchValue={setSearchValue} />
+        <SearchForm
+          handleSearchFormSubmit={handleSearchFormSubmit}
+          searchValue={searchValue}
+          setSearchValue={setSearchValue} />
         <div className='users-wrapper'>
           <FilterUsersForm
             onPeriodChange={handlePeriodChange}
@@ -146,14 +144,15 @@ export const Users: React.FC = () => {
               <User
                 key={index}
                 username={user.dentist_name ? user.dentist_name : user.email}
-                created_at={get(user, 'created_at', 'there is no data')}
+                created_at={get(user, 'created_at', '')}
                 subscription_end_date={get(user, 'subscription_end_date', 0) as number}
-                subscription_plan={user.subscription_plan}
-                email={user.email}
-                post_code={get(user, 'locations[0].post_code', 'there is no data')}
-                gdc_number={get(user, 'gdc', 'there is no data')}
-                auth_time={user.auth_time}
-                subscription_id={user.subscription_id}
+                subscription_plan={get(user, 'subscription_plan', '')}
+                email={get(user, 'email', '')}
+                post_code={get(user, 'locations[0].post_code', '')}
+                gdc_number={get(user, 'gdc', '')}
+                auth_time={get(user, 'auth_time', '')}
+                subscription_id={get(user, 'subscription_id', '')}
+                status={get(user, 'status', '')}
                 handleSuspendUserClick={handleSuspendUserClick}
                 openConfirmPopup={openConfirmPopup}
               />)) : <h2 className='empty'>Not found</h2>}
