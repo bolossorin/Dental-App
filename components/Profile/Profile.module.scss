@@ -575,6 +575,7 @@ img {
   font-style:       normal;
   font-stretch:     normal;
   line-height:      normal;
+  margin-right:     10px;
 }
 
 .button-green-confirm:hover {
@@ -814,7 +815,7 @@ input[type=file]::-webkit-file-upload-button {
 .box-2-box {
   display:         flex;
   align-items:     flex-start;
-  flex-wrap:       nowrap;
+  flex-wrap:       wrap;
   justify-content: space-between;
   width:           100%;
 }

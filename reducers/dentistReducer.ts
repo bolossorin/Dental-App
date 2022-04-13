@@ -40,7 +40,7 @@ export type dentistPayload = {
     website?: string;
     phone?: string;
   };
-  [DentistTypes.REMOVE_LOCATION]: { id: string; };
+  [DentistTypes.REMOVE_LOCATION]: number;
   [DentistTypes.REMOVE_FROM_GALLERY]: string;
   [DentistTypes.ADD_TO_GALLERY]: { gallery: IUserGallery };
   [DentistTypes.UPDATE_ITEM_GALLERY]: { gallery: IUserGallery };
@@ -100,8 +100,7 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
     case DentistTypes.SET_FULL_DATA:
       return {...state, ...action.payload};
     case DentistTypes.REMOVE_LOCATION:
-      const afterRemovingLocation = state.locations?.filter((item) => item.id !== action.payload.id) || null;
-      return {...state, locations: afterRemovingLocation};
+      return {...state, locations: state.locations ? state.locations.splice(action.payload, 1) : []};
     case DentistTypes.REMOVE_SERVICE:
       const afterRemovingService = state.services?.filter((item) => item.id !== action.payload.key) ||
         null;

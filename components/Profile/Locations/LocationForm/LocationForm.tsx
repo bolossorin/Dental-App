@@ -1,40 +1,36 @@
 import React, {useCallback, useContext} from "react";
 
 // libs
-import axios from "axios";
 import {Field, Form, Formik} from "formik";
 import {get} from "lodash";
 import * as Yup from "yup";
+import cn from "classnames";
 
 // components
-import {API, setDentistLocationApi, updateDentistLocationApi} from "../../../../api/AWS-gateway";
+import {deleteDentistLocationApi, setDentistLocationApi, updateDentistLocationApi} from "../../../../api/AWS-gateway";
 import {DentistTypes} from "../../../../reducers";
 import notify, {ISetNotofication} from "../../../Toast";
 import {AppContext} from "../../../../context/app.context";
-import cn from "classnames";
 
 const LocationSchema = Yup.object().shape({
   location_name: Yup.string().required("Town is required"),
   address: Yup.string().required("Address is required"),
   post_code: Yup.number().typeError('Only numbers').required("Post Code is required"),
 });
-export const LocationForm = ({title, primary, locations, location}: any) => {
+export const LocationForm = ({title, index}) => {
   const {state, dispatch} = useContext(AppContext);
-  const {
-    // email,
-    subscription_plan,
-    access_token
-  } = state.dentistState;
+  const {locations, access_token} = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
 
-  const handleRemoveLocation = async (key: string) => {
+  const handleRemoveLocation = async () => {
     try {
-      await axios.delete(`${API.SET_DENTIST_LOCATION}?key=${key}`);
-      dispatch({type: DentistTypes.REMOVE_LOCATION, payload: {id: key}});
-      setNotification({type: "success", message: "successfully deleted location"});
+      const config = {headers: {Authorization: `Bearer ${access_token}`}};
+      await deleteDentistLocationApi(index - 1, config);
+      dispatch({type: DentistTypes.REMOVE_LOCATION, payload: index - 1});
+      setNotification({type: "success", message: "Successfully deleted location"});
     } catch (exp) {
       setNotification({type: "error", message: "Please try again!"});
     }
@@ -44,37 +40,31 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
     validationSchema={LocationSchema}
     enableReinitialize
     initialValues={{
-      location_name: get(location, 'location_name', ''),
-      address: get(location, 'address', ''),
-      post_code: get(location, 'post_code', ''),
+      location_name: get(locations, `[${index - 1}]location_name`, ''),
+      address: get(locations, `[${index - 1}]address`, ''),
+      post_code: get(locations, `[${index - 1}]post_code`, ''),
     }}
     onSubmit={async (values) => {
       try {
         const config = {headers: {Authorization: `Bearer ${access_token}`}};
-        if (locations.length > 0) {
-          //check to unique
-          if (location.location_name === values.location_name &&
-            location.address === values.address &&
-            location.post_code === values.post_code) {
-            setNotification({type: "warning", message: "Location already exist!"});
-            return;
+        if (locations && locations.length > 0) {
+          if (locations[index - 1]) {
+            await updateDentistLocationApi(index - 1, values, config);
+          } else {
+            await setDentistLocationApi(values, config);
           }
-          await updateDentistLocationApi(0, values, config);
-        } else {
-          await setDentistLocationApi(values, config);
         }
-        setNotification({type: "success", message: "Successfully", position: "top-right"});
+        setNotification({type: "success", message: "Successfully"});
       } catch (error: any) {
         setNotification({
           type: "error",
-          message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message,
-          position: "top-right",
+          message: Array.isArray(error.response.data.message) ? error.response.data.message[0] : error.response.data.message
         });
       }
     }}>
-    {({values, errors, touched}) =>
+    {({errors, touched}) =>
       <Form
-        className={cn("profile-block-box", "profile-block-box-noWrap", {"disabled": (!primary && subscription_plan === 'FREE')})}>
+        className={cn("profile-block-box", "profile-block-box-noWrap")}>
         <div className="form-profile-label">
           <label className="form-profile-label">{title}</label>
         </div>
@@ -95,11 +85,11 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
           {errors.post_code && touched.post_code ? (
             <div className='error-text'>{errors.post_code}</div>) : null}
         </div>
-        <div className="form-profile-buttons">
-          {!primary && location?.location_name && <button
+        <div className="account-form-login-buttons">
+          {locations && locations[index - 1] && <button
             className="button-green-confirm"
             type="button"
-            onClick={() => handleRemoveLocation(values.post_code)}>
+            onClick={handleRemoveLocation}>
             Remove
           </button>}
           <button className="button-green-confirm" type="submit">
