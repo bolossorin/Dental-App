@@ -95,14 +95,14 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
           {errors.post_code && touched.post_code ? (
             <div className='error-text'>{errors.post_code}</div>) : null}
         </div>
-        <div className="account-form-login-buttons">
+        <div className="form-profile-buttons">
           {!primary && location?.location_name && <button
-            className="button-green-confirm button-green-confirm-mod"
+            className="button-green-confirm"
             type="button"
             onClick={() => handleRemoveLocation(values.post_code)}>
             Remove
           </button>}
-          <button className="button-green-confirm button-green-confirm-mod" type="submit">
+          <button className="button-green-confirm" type="submit">
             Confirm
           </button>
         </div>

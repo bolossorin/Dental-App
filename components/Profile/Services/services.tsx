@@ -1,8 +1,5 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
-// libs
-import cn from "classnames";
-
 // components
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
@@ -18,7 +15,7 @@ import {IService} from "../../../reducers/types";
 type IAddServiceResponse = IService[];
 export const Services: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
-  const {access_token, services, subscription_plan} = state.dentistState;
+  const {access_token, services, subscription_plan, settings_account} = state.dentistState;
   const [selectedService, setSelectService] = useState<string>("");
   const [allServices, setAllServices] = useState<IAddServiceResponse>([]);
 
@@ -26,14 +23,7 @@ export const Services: React.FC = () => {
     notify({...notifyProps});
   }, []);
 
-  const freeAccountLimit = services?.length === 2 && subscription_plan === "FREE";
-
   const handleAddService = async (id) => {
-    if (freeAccountLimit) {
-      // TODO: connect to account options API
-      setNotification({type: "info", message: "Your cannot add more than 2 services"});
-      return;
-    }
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
       const {data} = await addDentistServiceApi(id, config);
@@ -92,19 +82,22 @@ export const Services: React.FC = () => {
               </select>
             </div>
           </div>
-          <div className="row-content">
+          <div className='form-profile-buttons'>
             <button
-              className="button-green-confirm button-green-confirm-mod"
+              className="button-green-confirm"
               onClick={() => handleAddService(selectedService)}
-              disabled={selectedService === "" || freeAccountLimit}>
+              disabled={selectedService === "" || services?.length >= settings_account!.maxService}>
               Confirm
             </button>
+            {settings_account?.maxService && <span className='form-profile-notation-mod'>
+              max {settings_account.maxService} services {settings_account.subscription_type}
+            </span>}
           </div>
           {services && <div className="mt-big">
             <div className="form-profile-label">
               <label className="form-profile-label">Selected Services</label>
             </div>
-            {services.length > 0 ? services.slice(0, 1).map((service) =>
+            {services.length > 0 ? services.slice(0, settings_account?.maxService).map((service) =>
               <div className="form-login-input" key={service.id}>
                 <input className='services-selected' type="text" value={service.service_name} disabled />
                 <img
@@ -115,13 +108,13 @@ export const Services: React.FC = () => {
               </div>) : <p className='input-span'>Not selected</p>}
           </div>}
         </div>
-        {services && <div className={cn("profile-block-box", {"disabled": subscription_plan === 'FREE'})}>
+        {services && subscription_plan === 'FREE' && <div className={"profile-block-box disabled"}>
           <div className="form-profile-label">
             <label className="form-profile-label">
               Additional Services {subscription_plan === 'FREE' ? '- Premium' : ''}
             </label>
           </div>
-          {services.slice(1, services.length).map((service) =>
+          {services.slice(settings_account?.maxService, services.length).map((service) =>
             <div className="form-login-input" key={service.id}>
               <input className='services-additionally' type="text" value={service.service_name} disabled />
               <img

@@ -137,13 +137,6 @@
   margin-top: 30px;
 }
 
-.profile-block-box {
-  align-self: stretch;
-  flex-basis: 47%;
-  margin-top: 20px;
-  width:      100%;
-}
-
 .gallery-preview {
   position: absolute;
   top:      -10px;
@@ -311,10 +304,6 @@
 @media (max-width: 1200px) {
   .profile-box-form {
     padding: 15px;
-  }
-
-  .profile-block-box {
-    flex-basis: 100%;
   }
 }
 

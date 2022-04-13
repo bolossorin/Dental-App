@@ -121,8 +121,8 @@ export const Bio: React.FC = () => {
                 </div>
               </div>
             </div>
-            <div className={`profile-block-box ${subscription_plan === "FREE" && "disabled"}`}>
-              <div>
+            <div className={`profile-block-box`}>
+              <div className={!settings_account?.websiteAllowed ? "disabled" : ''}>
                 <div className="form-profile-label ">
                   <label className="form-profile-label">
                     Website Address {subscription_plan === 'FREE' && '- Premium'}
@@ -137,7 +137,7 @@ export const Bio: React.FC = () => {
                   {errors.website && touched.website ? (<div className='error-text'>{errors.website}</div>) : null}
                 </div>
               </div>
-              <div>
+              <div className={!settings_account?.phoneAllowed ? "disabled" : ''}>
                 <div className="form-profile-label">
                   <label className="form-profile-label">
                     Phone {subscription_plan === 'FREE' && '- Premium'}
@@ -148,7 +148,7 @@ export const Bio: React.FC = () => {
                     className="form-profile-input"
                     name="phone"
                     placeholder="Phone"
-                    disabled={subscription_plan === "FREE"} />
+                    disabled={!settings_account?.phoneAllowed} />
                   {errors.phone && touched.phone ? (<div className='error-text'>{errors.phone}</div>) : null}
                 </div>
               </div>

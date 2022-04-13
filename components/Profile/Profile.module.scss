@@ -559,7 +559,6 @@ img {
   align-items:      center;
   flex-wrap:        nowrap;
   height:           40px;
-  margin-right:     10px;
   padding:          5px 34px;
   cursor:           pointer;
   transition:       background 0.3s linear;
@@ -576,9 +575,6 @@ img {
   font-style:       normal;
   font-stretch:     normal;
   line-height:      normal;
-  &-mod {
-    margin-left: 80px;
-  }
 }
 
 .button-green-confirm:hover {
@@ -951,10 +947,10 @@ select {
   align-self: stretch;
   flex-basis: 47%;
   margin-top: 20px;
-  &.disabled {
-    //pointer-events: none;
-    //user-select:    none;
-    //opacity:        .7;
+  .disabled {
+    pointer-events: none;
+    user-select:    none;
+    opacity:        .4;
     .button-green-confirm {
       cursor:     auto;
       color:      #fff;
@@ -1190,6 +1186,24 @@ input:disabled:-ms-input-placeholder {
 
     margin-bottom:         30px;
   }
+}
+
+.form-profile-buttons {
+  display:         inline-flex;
+  justify-content: center;
+  align-items:     center;
+  flex-direction:  column;
+  margin-left:     80px;
+}
+
+.form-profile-notation-mod {
+  display:         flex;
+  align-items:     center;
+  justify-content: flex-start;
+  font-size:       10px;
+  color:           red;
+  text-align:      left;
+  margin:          4px auto 4px auto;
 }
 
 @media (max-width: 1200px) {
@@ -1462,6 +1476,11 @@ input:disabled:-ms-input-placeholder {
     max-width:       100%;
     width:           100%;
     margin:          15px 0 0 0;
+  }
+
+  .form-profile-buttons {
+    width:  100%;
+    margin: 0;
   }
 }
 
