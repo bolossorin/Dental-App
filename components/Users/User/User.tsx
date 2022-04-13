@@ -10,14 +10,14 @@ import {routes} from "../../../utils/routes";
 
 interface UserProps {
   username: string;
-  created_at: any;
-  subscription_end_date: number;
+  createdAt: any;
+  subscription_end_date: number | null;
   subscription_plan: string;
   email: string;
   gdc_number: string;
   post_code: string;
   status: string;
-  auth_time: string | null;
+  logged_in_at: number | null;
   subscription_id: string | null;
   handleSuspendUserClick: (string) => void;
   openConfirmPopup: ({email: string}) => void;
@@ -26,7 +26,6 @@ interface UserProps {
 export const User: React.FC<UserProps> = (props: UserProps) => {
   const [opened, setOpened] = useState(false);
 
-  const creationDate = props.created_at.toString().split("/").reverse().join("/");
 
   const theme = cn({[styles.default]: !opened, [styles.green]: opened});
 
@@ -38,9 +37,11 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
     <li className={cn(styles.userItem, theme)}>
       <section className={cn(styles.user, theme)}>
         <span className={cn(styles.text, theme)}>{props.username}</span>
-        <span className={cn(styles.text, theme)}>{creationDate}</span>
+        <span className={cn(styles.text, theme)}>
+          {props.createdAt && moment(props.createdAt).format("MM/DD/YYYY")}
+        </span>
         {props.subscription_plan === "PREMIUM" && (<span className={cn(styles.text, theme)}>
-            Paid Subscription Ends: {moment.unix(props.subscription_end_date).format("MM/DD/YYYY")}
+            Paid Subscription Ends: {props.subscription_end_date && moment.unix(props.subscription_end_date).format("MM/DD/YYYY")}
           </span>)}
         {props.subscription_plan === "FREE" && (<span className={cn(styles.text, theme)}>Account is free</span>)}
         <a href={`${routes.search}/${props.email}`} target='_blank' className={cn(styles.link, styles.text, theme)}>
@@ -69,7 +70,8 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
         </div>
         <div className={styles.userInfo}>
           <span className={styles.key}>Last Logged In:</span>
-          <span className={styles.value}>{props.auth_time}</span>
+          <span
+            className={styles.value}>{props.logged_in_at && moment.unix(props.logged_in_at).format("MM/DD/YYYY")}</span>
         </div>
         <div className={styles.userInfo}>
           <span className={styles.key}>Subscription #:</span>

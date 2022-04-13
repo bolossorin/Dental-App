@@ -952,9 +952,9 @@ select {
   flex-basis: 47%;
   margin-top: 20px;
   &.disabled {
-    pointer-events: none;
-    user-select:    none;
-    opacity:        .7;
+    //pointer-events: none;
+    //user-select:    none;
+    //opacity:        .7;
     .button-green-confirm {
       cursor:     auto;
       color:      #fff;

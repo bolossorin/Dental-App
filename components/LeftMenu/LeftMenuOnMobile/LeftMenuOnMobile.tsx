@@ -22,7 +22,7 @@ export const LeftMenuOnMobile: React.FC<ICollapsedSidebarProps> = ({setToggle, t
               onClick={() => setToggle(false)} alt='' />
             <TopSection />
           </div>
-          <MenuItem/>
+          <MenuItem />
         </div>
       </div>
     </div>

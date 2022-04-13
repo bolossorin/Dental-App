@@ -99,11 +99,11 @@ export interface IAdminUser {
   subscription_plan: string;
   qualifications: string | null;
   dentist_name: string;
-  subscription_end_date: string | null;
+  subscription_end_date: number | null;
   phone: string | null;
-  auth_time: string | null;
+  logged_in_at: number;
   title: string | null;
-  created_at: Date;
+  createdAt: any;
   isSuspended?: boolean;
 }
 

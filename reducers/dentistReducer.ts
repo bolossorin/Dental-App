@@ -6,7 +6,7 @@ import {
   IServices,
   IDentist_SpecialState,
   IUserGallery,
-  IService,
+  IService, ISubSettings, Null_Or_,
 } from "./types";
 
 export enum DentistTypes {
@@ -52,6 +52,7 @@ export type dentistPayload = {
 
 export type TdentistReducerState =
   { access_token: string } &
+  { settings_account: Null_Or_<ISubSettings> } &
   IDentistBio &
   IDentistLocations &
   IServices &
@@ -62,6 +63,7 @@ export type DentistActions = ActionMap<dentistPayload>[keyof ActionMap<dentistPa
 
 export const DentistInitialState: TdentistReducerState = {
   access_token: '',
+  settings_account: null,
   gdc: 0,
   title: "",
   dentist_name: "",

@@ -32,7 +32,8 @@ export const Bio: React.FC = () => {
     bio,
     qualifications,
     website,
-    phone
+    phone,
+    settings_account
   } = state.dentistState;
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
@@ -132,7 +133,7 @@ export const Bio: React.FC = () => {
                     className="form-profile-input"
                     name="website"
                     placeholder="Website..."
-                    disabled={subscription_plan === "FREE"} />
+                    disabled={!settings_account?.websiteAllowed} />
                   {errors.website && touched.website ? (<div className='error-text'>{errors.website}</div>) : null}
                 </div>
               </div>

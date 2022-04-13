@@ -9,26 +9,12 @@ import {AccountInfoBlock} from "../../components/Account/Info/Info";
 import {Subscription} from "../../components/Account/Subscription/Subscription";
 import {Upgrade} from "../../components/Account/Upgrade/Upgrade";
 import {AppContext} from "../../context/app.context";
-import {getSettingsApi} from "../../api/AWS-gateway";
 
 const AccountPage: NextPage = (): JSX.Element => {
   const {state} = useContext(AppContext);
-  const {subscription_plan, access_token}: any = state.dentistState;
+  const {subscription_plan}: any = state.dentistState;
 
   const [subscriptionPlan, setSubscriptionPlan] = useState<string>("");
-
-  useEffect(() => {
-    if (access_token) {
-      const config = {headers: {Authorization: `Bearer ${access_token}`}};
-      getSettingsApi(config)
-        .then(({data}) => {
-          console.log(data, 'getSettingsApi')
-        })
-        .catch((error) => {
-          console.log(error)
-        })
-    }
-  }, [access_token]);
 
   useEffect(() => {
     setSubscriptionPlan(subscription_plan)

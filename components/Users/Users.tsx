@@ -82,7 +82,7 @@ export const Users: React.FC = () => {
       const usersToFilter = alreadyFiltered.byStatus ? filteredByStatus : users;
       const startPoint = getPeriod(period);
       const filUsers = usersToFilter.filter((user: IAdminUser) => {
-        const creationPoint = new Date(user.created_at);
+        const creationPoint = new Date(user.createdAt);
         return creationPoint > startPoint;
       });
       setUsersToRender(filUsers);
@@ -144,13 +144,13 @@ export const Users: React.FC = () => {
               <User
                 key={index}
                 username={user.dentist_name ? user.dentist_name : user.email}
-                created_at={get(user, 'created_at', '')}
-                subscription_end_date={get(user, 'subscription_end_date', 0) as number}
+                createdAt={get(user, 'createdAt', null)}
+                subscription_end_date={get(user, 'subscription_end_date', null)}
                 subscription_plan={get(user, 'subscription_plan', '')}
                 email={get(user, 'email', '')}
                 post_code={get(user, 'locations[0].post_code', '')}
                 gdc_number={get(user, 'gdc', '')}
-                auth_time={get(user, 'auth_time', '')}
+                logged_in_at={get(user, 'logged_in_at', null)}
                 subscription_id={get(user, 'subscription_id', '')}
                 status={get(user, 'status', '')}
                 handleSuspendUserClick={handleSuspendUserClick}

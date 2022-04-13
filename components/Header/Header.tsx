@@ -10,7 +10,7 @@ import {LeftMenuOnMobile} from "../LeftMenu/LeftMenuOnMobile/LeftMenuOnMobile";
 import {routes} from "../../utils/routes";
 
 export const Header: React.FC = () => {
-  const [logOut] = useLogout(() => setToggle(false));
+  const [logOut] = useLogout();
 
   const [toggle, setToggle] = useState(false);
   const [accessToken, setAccessToken] = useState<string | null>(null);
