@@ -21,7 +21,7 @@ export const AccountInfoBlock: React.FC = () => {
   const [logOut] = useLogout();
 
   const {state} = useContext(AppContext);
-  const {email, gdc, access_token, title, dentist_name, qualifications, bio, phone, website}: any = state.dentistState;
+  const {email, gdc, access_token}: any = state.dentistState;
 
   const [canDelete, setCanDelete] = useState(false);
   const [isEdit, setIsEdit] = useState(false);
@@ -54,16 +54,7 @@ export const AccountInfoBlock: React.FC = () => {
         onSubmit={async (values) => {
           try {
             const config = {headers: {Authorization: `Bearer ${access_token}`}};
-            const body = {
-              title: title,
-              dentist_name: dentist_name,
-              email: values.email,
-              qualifications: qualifications,
-              bio: bio,
-              phone: phone,
-              website: website,
-              gdc: values.gdc
-            }
+            const body = {email: values.email, gdc: values.gdc}
             await updateProfileApi(body, config);
             setNotification({type: "success", message: "Successfully updated account information!"});
           } catch (error: any) {
