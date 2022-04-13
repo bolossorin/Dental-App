@@ -1,42 +1,37 @@
-import React, {useContext} from "react";
+import React from "react";
 
 // libs
 import * as Yup from "yup";
 import {Field, Form, Formik} from "formik";
 
 // components
-import {AppContext} from "../../../context/app.context";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AccountResetPassword} from "../../common/AccountResetPassword/AccountResetPassword";
 import {passwordResetAdminApi} from "../../../api/AWS-gateway";
 
 const accountInfoSchema = Yup.object().shape({
   email: Yup.string().email("Invalid email").required("Email is required"),
-  name: Yup.string().required("GDC number is required"),
+  name: Yup.string().required("Name is required"),
 });
 export const AdminDetails: React.FC = () => {
-  const {state} = useContext(AppContext);
-  const {emailAdmin, usernameAdmin} = state.adminState;
 
   return (
     <ProfileBox title='Admin Details' subTitle='Login Details'>
       <Formik
         validationSchema={accountInfoSchema}
         enableReinitialize
-        initialValues={{email: emailAdmin, name: usernameAdmin}}
-        onSubmit={async (values) => {
-          console.log(values, values)
-        }}>
+        initialValues={{email: 'admin@gmail.com', name: 'Admin'}}
+        onSubmit={async (values) => console.log(values, values)}>
         {({errors, touched}) =>
           <Form className="account-profile-block-box">
             <div className="account-form-profile-label">
               <label className="account-form-profile-label">Name</label>
-              <Field className="account-form-profile-input" name='name' placeholder='Name' />
+              <Field disabled className="account-form-profile-input" name='name' placeholder='Name' />
               {errors.name && touched.name ? <p className='account-error-text'>{errors.name}</p> : null}
             </div>
             <div className="account-form-profile-label">
               <label className="account-form-profile-label">Email</label>
-              <Field className="account-form-profile-input" name='email' placeholder='Email' />
+              <Field disabled className="account-form-profile-input" name='email' placeholder='Email' />
               {errors.email && touched.email ? <p className='account-error-text'>{errors.email}</p> : null}
             </div>
           </Form>}

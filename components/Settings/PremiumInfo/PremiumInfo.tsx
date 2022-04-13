@@ -16,9 +16,12 @@ const premiumSchema = Yup.object().shape({
   pricePremiumInfo: Yup.string().matches(/^\d+$/, 'Only numbers').required("Price is required"),
   terms: Yup.string().required("Terms is required"),
 });
+
+const price = 3000;
+const terms = 'https://fyd-dashboard.vercel.app';
 export const PremiumInfo: React.FC = () => {
   const {state} = useContext(AppContext);
-  const {features, price, terms} = state.adminState.premiumInformation;
+  const {subscriberSettings} = state.adminState;
 
   return (
     <ProfileBox title='Premium Information' subTitle='Information for Free Users'>
@@ -28,25 +31,20 @@ export const PremiumInfo: React.FC = () => {
             <p className="form-profile-label">
               <label className="form-profile-label">Premium Features</label>
             </p>
-            {features.map((item) => (<p key={item}>
-              <input className="form-profile-input" type="text" name="" defaultValue={item} placeholder="Feature 2" disabled />
-            </p>))}
-            <p className="add-plus">
-              <input className="form-profile-input " type="text" name="" placeholder="" />
-              <img className="plus" id="plus" src={"../images/plus.svg"} alt="" />
-            </p>
+            {subscriberSettings[1] &&
+            <div className='form-profile-features'>
+              <p>Max Locations: {subscriberSettings[1].maxLocations}</p>
+              <p>Max Services: {subscriberSettings[1].maxService}</p>
+              {subscriberSettings[1].websiteAllowed && <p>Website Address</p>}
+              {subscriberSettings[1].phoneAllowed && <p>Phone Number</p>}
+              {subscriberSettings[1].appearVerifiedAllowed && <p>Appear Verified</p>}
+            </div>}
           </div>
         </div>
         <Formik
           validationSchema={premiumSchema}
           initialValues={{pricePremiumInfo: price / 100, terms: terms}}
-          onSubmit={async (values) => {
-            try {
-              console.log(values, 'values')
-            } catch (error) {
-              console.log(error, 'error')
-            }
-          }}>
+          onSubmit={async (values) => console.log(values, 'values')}>
           {({errors, touched}) =>
             <Form className="account-profile-block-box">
               <div>
@@ -54,7 +52,7 @@ export const PremiumInfo: React.FC = () => {
                   <label className="form-profile-label">Price ({getCurrency(0)})</label>
                 </p>
                 <div className="account-row-content">
-                  <Field className="form-profile-input" name='pricePremiumInfo' />
+                  <Field disabled className="form-profile-input" name='pricePremiumInfo' />
                   {errors.pricePremiumInfo && touched.pricePremiumInfo ?
                     <p className='error-text'>{errors.pricePremiumInfo}</p> : null}
                 </div>
@@ -64,7 +62,7 @@ export const PremiumInfo: React.FC = () => {
                   <label className="form-profile-label">Terms and Conditions</label>
                 </p>
                 <div className="account-row-content">
-                  <Field className="form-profile-input" name="terms" placeholder="Web Link" />
+                  <Field disabled className="form-profile-input" name="terms" placeholder="Web Link" />
                   {errors.terms && touched.terms ?
                     <p className='error-text'>{errors.terms}</p> : null}
                 </div>

@@ -113,6 +113,9 @@
   &:disabled {
     color: #707070;
   }
+  &::placeholder {
+    opacity: .4;
+  }
 }
 
 .account-checkbox {
