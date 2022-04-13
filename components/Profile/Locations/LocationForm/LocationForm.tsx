@@ -34,9 +34,9 @@ export const LocationForm = ({title, primary, locations, location}: any) => {
     try {
       await axios.delete(`${API.SET_DENTIST_LOCATION}?key=${key}`);
       dispatch({type: DentistTypes.REMOVE_LOCATION, payload: {id: key}});
-      setNotification({type: "success", message: "successfully deleted location", position: "top-right"});
+      setNotification({type: "success", message: "successfully deleted location"});
     } catch (exp) {
-      setNotification({type: "error", message: "Please try again!", position: "top-right"});
+      setNotification({type: "error", message: "Please try again!"});
     }
   };
 

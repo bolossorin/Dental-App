@@ -58,6 +58,7 @@
   height: 125px;
   transform: scale(0.85);
   border-radius: 50%;
+  object-fit: cover;
 }
 
 .dentist_target_card_name {
@@ -67,7 +68,7 @@
   width: 100px;
   text-align: center;
   color: rgba(10, 8, 71, 0.438);
-  background: rgba(252, 252, 252, 0.61);
+  background: rgba(252, 252, 252, 0.8);
   font-size: 12px;
   font-weight: bolder;
 }

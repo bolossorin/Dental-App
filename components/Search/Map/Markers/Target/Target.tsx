@@ -24,7 +24,7 @@ export const DentistMarker: React.FC<ICard> = ({setSelectedDentist, selectedDent
       {selectedDentist === currentDentist && (<>
         <div className="dentist_target_card_box" />
         <div className="dentist_target_card_circle">
-          <img src={selectedDentist.avatarUrl} className="dentist_target_card_circle_img" alt="no image" />
+          <img src={selectedDentist.avatarUrl  ? selectedDentist.avatarUrl : '/images/empty_avatar.png'} className="dentist_target_card_circle_img" alt="no image" />
           <p className="dentist_target_card_name">
             {selectedDentist.dentist_name}
           </p>

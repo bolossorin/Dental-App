@@ -32,7 +32,8 @@ export const updateDentistGalleryApi = (body, config) => axios.put(`${process.en
 
 
 // Patient
-export const getAllDentistApi = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
+export const getAllDentistApi = () => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`);
+export const getDentistByFilterApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, body);
 export const getDentistByEmailApi = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/${email}`);
 export const getDentistGalleryByEmailApi = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
 
