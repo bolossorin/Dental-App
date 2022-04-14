@@ -94,7 +94,7 @@ export const ServicesProvided: React.FC = () => {
   };
 
   return (
-    <ProfileBox title='Services Provided' subTitle='Available IService Categories'>
+    <ProfileBox title='Services Provided' subTitle='Available Service Categories'>
       <div className="box-2-box">
         <div className="profile-block-box">
           <div>
@@ -107,7 +107,7 @@ export const ServicesProvided: React.FC = () => {
                 type="text"
                 name="add_service"
                 value={newService}
-                placeholder="IService Name Here"
+                placeholder="Service Name Here"
                 onChange={(e) => setNewService(e.target.value)} />
             </div>
           </div>
