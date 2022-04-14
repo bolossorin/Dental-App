@@ -99,7 +99,7 @@ export const ServicesProvided: React.FC = () => {
         <div className="profile-block-box">
           <div>
             <p className="form-profile-label">
-              <label className="form-profile-label">Add IService</label>
+              <label className="form-profile-label">Add Service</label>
             </p>
             <div className="form-profile-label">
               <input
