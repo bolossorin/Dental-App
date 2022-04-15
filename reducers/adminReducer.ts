@@ -3,7 +3,8 @@ import {
   IPremiumInformation,
   ISubSettings,
   IService,
-  IAdminMonthStats, IAdminYearStats,
+  IAdminStatistics,
+  IAdminUser,
 } from "./types";
 
 export enum AdminTypes {
@@ -12,12 +13,14 @@ export enum AdminTypes {
   GET_SUBSCRIBER_SETTINGS = "GET_SUBSCRIBER_SETTINGS",
   SET_SUBSCRIBER_SETTINGS = "SET_SUBSCRIBER_SETTINGS",
   SET_ALL_SERVICES = "SET_ALL_SERVICES",
-  GET_MONTHLY_STATS = "GET_MONTHLY_STATS",
   GET_SERVICES = "GET_SERVICES",
   ADD_SERVICE = "ADD_SERVICE",
   UPDATE_SERVICE = "UPDATE_SERVICE",
   DELETE_SERVICE = "DELETE_SERVICE",
-  GET_YEAR_STATS = "GET_YEAR_STATS",
+  GET_USER_STATISTICS = "GET_USER_STATISTICS",
+  GET_ALL_USERS = "GET_ALL_USERS",
+  UPDATE_USER = "UPDATE_USER",
+  DELETE_USER = "DELETE_USER",
 }
 
 // ADMIN_DATA_LAKE
@@ -27,8 +30,10 @@ type AdminPayload = {
   [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings[];
   [AdminTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
   [AdminTypes.SET_ALL_SERVICES]: IService[];
-  [AdminTypes.GET_MONTHLY_STATS]: IAdminMonthStats;
-  [AdminTypes.GET_YEAR_STATS]: IAdminYearStats;
+  [AdminTypes.GET_USER_STATISTICS]: IAdminStatistics[];
+  [AdminTypes.GET_ALL_USERS]: IAdminUser[];
+  [AdminTypes.UPDATE_USER]: IAdminUser;
+  [AdminTypes.DELETE_USER]: string;
   [AdminTypes.GET_SERVICES]: IService[];
   [AdminTypes.ADD_SERVICE]: IService;
   [AdminTypes.UPDATE_SERVICE]: IService;
@@ -43,8 +48,8 @@ export type TAdminReducerState =
   { usernameAdmin: string } &
   { premiumInformation: IPremiumInformation } &
   { subscriberSettings: ISubSettings[] } &
-  { monthlyStats: IAdminMonthStats } &
-  { yearStats: IAdminYearStats }
+  { userStatistics: IAdminStatistics[] } &
+  { users: IAdminUser[] }
 
 export type AdminActions =
   ActionMap<AdminPayload>[keyof ActionMap<AdminPayload>];
@@ -53,6 +58,7 @@ export const AdminInitialState: TAdminReducerState = {
   access_token_admin: "",
   emailAdmin: "",
   usernameAdmin: "",
+  users: [],
   services: [],
   premiumInformation: {
     features: [],
@@ -61,22 +67,7 @@ export const AdminInitialState: TAdminReducerState = {
     terms: "",
   },
   subscriberSettings: [],
-  monthlyStats: {
-    amountOfNewAccounts: 0,
-    amountOfSubscriptions: 0,
-    amountOfClosedAccounts: 0,
-    amountOfClosedSubscriptions: 0,
-    amountOfImages: 0,
-  },
-  yearStats: {
-    amountOfNewAccounts: 0,
-    amountOfSubscriptions: 0,
-    amountOfClosedAccounts: 0,
-    amountOfClosedSubscriptions: 0,
-    amountOfImages: 0,
-    graphicOfFreeAccounts: [],
-    graphicOfSubscriptions: [],
-  },
+  userStatistics: [],
   isOpenLeftMenu: true,
 };
 
@@ -87,6 +78,20 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
       return {...state, ...payload};
     case AdminTypes.ADMIN_LOGOUT:
       return {...AdminInitialState};
+    case AdminTypes.GET_ALL_USERS:
+      action.payload.map((user) => {
+        if (!user.dentist_name) user.dentist_name = user.email;
+      });
+      return {...state, users: action.payload};
+    case AdminTypes.UPDATE_USER:
+      const usersUpdated = state.users.map((item: IAdminUser) => {
+        if (item.email === action.payload.email) return action.payload;
+        return item;
+      });
+      return {...state, users: usersUpdated};
+    case AdminTypes.DELETE_USER:
+      const userDeleted = state.users.filter((user: IAdminUser) => user.email !== action.payload);
+      return {...state, users: userDeleted};
     case AdminTypes.GET_SUBSCRIBER_SETTINGS:
       return {...state, subscriberSettings: action.payload};
     case AdminTypes.SET_SUBSCRIBER_SETTINGS:
@@ -97,10 +102,8 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
       return {...state, subscriberSettings: newSubscriberSettings};
     case AdminTypes.SET_ALL_SERVICES:
       return {...state, services: action.payload};
-    case AdminTypes.GET_MONTHLY_STATS:
-      return {...state, monthlyStats: {...action.payload}};
-    case AdminTypes.GET_YEAR_STATS:
-      return {...state, yearStats: {...action.payload}};
+    case AdminTypes.GET_USER_STATISTICS:
+      return {...state, userStatistics: action.payload};
     case AdminTypes.GET_SERVICES:
       return {...state, services: action.payload};
     case AdminTypes.ADD_SERVICE:

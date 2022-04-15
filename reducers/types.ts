@@ -109,20 +109,10 @@ export interface IAdminUser {
   isSuspended?: boolean;
 }
 
-export interface IAdminMonthStats {
-  amountOfNewAccounts: number;
-  amountOfSubscriptions: number;
-  amountOfClosedAccounts: number;
-  amountOfClosedSubscriptions: number;
-  amountOfImages: number;
-}
-
-export interface IAdminYearStats {
-  amountOfNewAccounts: number;
-  amountOfSubscriptions: number;
-  amountOfClosedAccounts: number;
-  amountOfClosedSubscriptions: number;
-  amountOfImages: number;
-  graphicOfFreeAccounts: IGraphicData[];
-  graphicOfSubscriptions: IGraphicData[];
+export interface IAdminStatistics {
+  createdAt: number;
+  email: number;
+  id: number;
+  type: number;
+  updatedAt: number;
 }

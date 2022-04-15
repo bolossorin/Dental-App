@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useState} from "react";
+import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
 import {get} from "lodash";
@@ -16,35 +16,34 @@ import {User} from "./User/User";
 // assets
 import styles from "./Users.module.css";
 import notify, {ISetNotofication} from "../Toast";
+import {AdminTypes} from "../../reducers";
+import {AppContext} from "../../context/app.context";
 
 export const Users: React.FC = () => {
-  const [users, setUsers] = useState([]);
-  const [filteredByPeriod, setFilteredByPeriod] = useState([]);
-  const [filteredByStatus, setFilteredByStatus] = useState([]);
-  const [usersToRender, setUsersToRender] = useState([]);
+  const {state, dispatch} = useContext(AppContext);
+  const {users} = state.adminState;
+
+  const [filteredByPeriod, setFilteredByPeriod] = useState<IAdminUser[]>([]);
+  const [filteredByStatus, setFilteredByStatus] = useState<IAdminUser[]>([]);
+  const [usersToRender, setUsersToRender] = useState<IAdminUser[]>([]);
   const [alreadyFiltered, setAlreadyFiltered] = useState({byStatus: false, byPeriod: false, byName: false});
   const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
   const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
-  const [userEmail, setUserEmail] = useState("");
+  const [userEmail, setUserEmail] = useState<string>("");
   const [searchValue, setSearchValue] = useState("");
   const [type, setType] = useState("");
 
-  const setNotification = useCallback<ISetNotofication>(
-    ({type, message, position, autoClose}) => {
-      notify({type, message, position, autoClose});
-    }, []);
+  const setNotification = useCallback<ISetNotofication>(({type, message, position, autoClose}) => {
+    notify({type, message, position, autoClose});
+  }, []);
 
   const handleSuspendUserClick = async () => {
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
       const {data} = await userSuspendApi(userEmail, config);
-      const usersUpdated: any = users.map((item: IAdminUser) => {
-        if (item.email === data.email) return data;
-        return item;
-      });
-      setUsersToRender(usersUpdated);
       setUserEmail("");
+      dispatch({type: AdminTypes.UPDATE_USER, payload: data});
       setNotification({type: "success", message: "User is Suspended"});
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
@@ -56,12 +55,8 @@ export const Users: React.FC = () => {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
       const {data} = await userResolveApi(userEmail, config);
-      const usersUpdated: any = users.map((item: IAdminUser) => {
-        if (item.email === data.email) return data;
-        return item;
-      });
-      setUsersToRender(usersUpdated);
       setUserEmail("");
+      dispatch({type: AdminTypes.UPDATE_USER, payload: data});
       setNotification({type: "success", message: "User is Resolved"});
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
@@ -73,8 +68,7 @@ export const Users: React.FC = () => {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
       await userDeleteApi(userEmail, config);
-      const usersUpdated = users.filter((user: IAdminUser) => user.email !== userEmail);
-      setUsersToRender(usersUpdated);
+      dispatch({type: AdminTypes.DELETE_USER, payload: userEmail});
       setUserEmail("");
       setNotification({type: "success", message: "User Deleted"});
     } catch (error: any) {
@@ -135,15 +129,15 @@ export const Users: React.FC = () => {
   useEffect(() => {
     const token = localStorage.getItem('access_token_admin');
     const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-    getUsersApi(config).then(({data}) => {
-      setUsers(data);
-      setUsersToRender(data);
-      data.map((user) => {
-        if (!user.dentist_name) user.dentist_name = user.email;
-      });
-    }).catch((error) => console.log(error, error));
+    getUsersApi(config)
+      .then(({data}) => dispatch({type: AdminTypes.GET_ALL_USERS, payload: data}))
+      .catch((error) => console.log(error, error));
 
   }, []);
+
+  useEffect(() => {
+    setUsersToRender(users);
+  }, [users]);
 
   return (
     <ProfileBox title='Users Catalogue' subTitle='Search Users'>
