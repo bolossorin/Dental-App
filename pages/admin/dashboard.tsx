@@ -12,13 +12,13 @@ import {AdminTypes} from "../../reducers";
 import {AppContext} from "../../context/app.context";
 
 const DashboardPage: NextPage = (): JSX.Element => {
-  const { dispatch} = useContext(AppContext);
+  const {dispatch} = useContext(AppContext);
 
   useEffect(() => {
     const token = localStorage.getItem('access_token_admin');
     const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
     getDashboardStatisticsApi(config)
-      .then(({data}) => dispatch({type: AdminTypes.GET_SUBSCRIBER_SETTINGS, payload: data}))
+      .then(({data}) => dispatch({type: AdminTypes.GET_USER_STATISTICS, payload: data}))
       .catch((error) => console.log(error, 'error'))
   }, []);
 

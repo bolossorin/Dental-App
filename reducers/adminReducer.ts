@@ -5,6 +5,7 @@ import {
   IService,
   IAdminStatistics,
   IAdminUser,
+  IAdminStatistic,
 } from "./types";
 
 export enum AdminTypes {
@@ -30,7 +31,7 @@ type AdminPayload = {
   [AdminTypes.GET_SUBSCRIBER_SETTINGS]: ISubSettings[];
   [AdminTypes.SET_SUBSCRIBER_SETTINGS]: ISubSettings;
   [AdminTypes.SET_ALL_SERVICES]: IService[];
-  [AdminTypes.GET_USER_STATISTICS]: IAdminStatistics[];
+  [AdminTypes.GET_USER_STATISTICS]: IAdminStatistic[];
   [AdminTypes.GET_ALL_USERS]: IAdminUser[];
   [AdminTypes.UPDATE_USER]: IAdminUser;
   [AdminTypes.DELETE_USER]: string;
@@ -48,7 +49,7 @@ export type TAdminReducerState =
   { usernameAdmin: string } &
   { premiumInformation: IPremiumInformation } &
   { subscriberSettings: ISubSettings[] } &
-  { userStatistics: IAdminStatistics[] } &
+  { userStatistics: IAdminStatistics } &
   { users: IAdminUser[] }
 
 export type AdminActions =
@@ -67,7 +68,13 @@ export const AdminInitialState: TAdminReducerState = {
     terms: "",
   },
   subscriberSettings: [],
-  userStatistics: [],
+  userStatistics: {
+    IMAGE_UPLOAD: [],
+    ACCOUNT_CLOSED: [],
+    SUBSCRIPTION_CLOSED: [],
+    FREE_ACCOUNT: [],
+    NEW_SUBSCRIPTION: []
+  },
   isOpenLeftMenu: true,
 };
 
@@ -103,7 +110,13 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
     case AdminTypes.SET_ALL_SERVICES:
       return {...state, services: action.payload};
     case AdminTypes.GET_USER_STATISTICS:
-      return {...state, userStatistics: action.payload};
+      const IMAGE_UPLOAD = action.payload.filter((item) => item.type === "IMAGE_UPLOAD");
+      const ACCOUNT_CLOSED = action.payload.filter((item) => item.type === "ACCOUNT_CLOSED");
+      const SUBSCRIPTION_CLOSED = action.payload.filter((item) => item.type === "SUBSCRIPTION_CLOSED");
+      const FREE_ACCOUNT = action.payload.filter((item) => item.type === "FREE_ACCOUNT");
+      const NEW_SUBSCRIPTION = action.payload.filter((item) => item.type === "NEW_SUBSCRIPTION");
+      const data = {IMAGE_UPLOAD, ACCOUNT_CLOSED, SUBSCRIPTION_CLOSED, FREE_ACCOUNT, NEW_SUBSCRIPTION}
+      return {...state, userStatistics: data};
     case AdminTypes.GET_SERVICES:
       return {...state, services: action.payload};
     case AdminTypes.ADD_SERVICE:

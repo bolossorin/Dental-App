@@ -109,10 +109,18 @@ export interface IAdminUser {
   isSuspended?: boolean;
 }
 
+export interface IAdminStatistic {
+  createdAt: string;
+  email: string;
+  id: string;
+  type: string;
+  updatedAt: string;
+}
+
 export interface IAdminStatistics {
-  createdAt: number;
-  email: number;
-  id: number;
-  type: number;
-  updatedAt: number;
+  IMAGE_UPLOAD: IAdminStatistic[];
+  ACCOUNT_CLOSED: IAdminStatistic[];
+  SUBSCRIPTION_CLOSED: IAdminStatistic[];
+  FREE_ACCOUNT: IAdminStatistic[];
+  NEW_SUBSCRIPTION: IAdminStatistic[];
 }
