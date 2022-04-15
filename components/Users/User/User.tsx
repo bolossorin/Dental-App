@@ -19,8 +19,8 @@ interface UserProps {
   status: string;
   logged_in_at: number | null;
   subscription_id: string | null;
-  handleSuspendUserClick: (string) => void;
-  openConfirmPopup: ({email: string}) => void;
+  openConfirmPopup: (string) => void;
+  setType: (string) => void;
 }
 
 export const User: React.FC<UserProps> = (props: UserProps) => {
@@ -82,7 +82,10 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
             <button
               type="button"
               className={styles.suspendDeleteBtn}
-              onClick={() => props.handleSuspendUserClick(props.email)}>
+              onClick={() => {
+                props.setType(props.status === 'SUSPENDED' ? 'Resolve' : 'Suspend')
+                props.openConfirmPopup(props.email);
+              }}>
               {props.status === 'SUSPENDED' ? 'Resolve' : 'Suspend'}
             </button>
           </div>
@@ -90,7 +93,10 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
             <button
               type="button"
               className={styles.suspendDeleteBtn}
-              onClick={() => props.openConfirmPopup({email: props.email})}>
+              onClick={() => {
+                props.setType('Delete')
+                props.openConfirmPopup(props.email);
+              }}>
               Delete
             </button>
           </div>

@@ -8,10 +8,11 @@ import {Formik, Form, Field} from "formik";
 import styles from "./ConfirmPopup.module.scss";
 
 type ConfirmPopupProps = {
-  handleDeleteUserClick: ({confirm: string}) => void;
+  handleUserClick: () => void;
   onBtnCloseClick: () => void;
   opened: boolean;
   userEmail: string;
+  type: string;
 };
 
 const ConfirmPopup: React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => {
@@ -23,24 +24,24 @@ const ConfirmPopup: React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => 
       <div className={styles.content}>
         <h2 className={styles.title}>Warning!</h2>
         <p className={styles.warning}>
-          You are going to delete user {props.userEmail}.
+          You are going to {props.type} user {props.userEmail}.
         </p>
-        <p className={styles.warning}>
+        {props.type === "delete" && <p className={styles.warning}>
           This action is irreversible, you can't recover the account. Please,
           type "delete" to continue
-        </p>
+        </p>}
         <Formik
           initialValues={{confirm: ""}}
           onSubmit={(values, {resetForm}) => {
-            props.handleDeleteUserClick({confirm: values.confirm});
+            props.handleUserClick();
             props.onBtnCloseClick();
             resetForm();
           }}>
           {({values}) => (
             <Form className={styles.form}>
-              <Field name="confirm" type="text" className={styles.input} placeholder='Type "delete"' />
-              <button type="submit" className={styles.btnSubmit} disabled={values.confirm !== "delete"}>
-                Delete user
+              <Field name="confirm" type="text" className={styles.input} placeholder={`Type "${props.type}"`} />
+              <button type="submit" className={styles.btnSubmit} disabled={values.confirm !== `${props.type}`}>
+                {props.type.toUpperCase()} user
               </button>
               <button type="button" className={styles.btnClose} onClick={props.onBtnCloseClick} />
             </Form>)}

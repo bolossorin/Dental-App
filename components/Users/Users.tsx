@@ -5,7 +5,7 @@ import {get} from "lodash";
 
 // components
 import SearchForm from "./SearchForm/SearchForm";
-import {getUsersApi, userDeleteApi, userSuspendApi} from "../../api/AWS-gateway";
+import {getUsersApi, userDeleteApi, userResolveApi, userSuspendApi} from "../../api/AWS-gateway";
 import {IAdminUser} from "../../reducers/types";
 import {getPeriod} from "../../utils/getDate";
 import FilterUsersForm from "./FilterUsersForm/FilterUsersForm";
@@ -27,24 +27,63 @@ export const Users: React.FC = () => {
   const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
   const [userEmail, setUserEmail] = useState("");
   const [searchValue, setSearchValue] = useState("");
+  const [type, setType] = useState("");
 
   const setNotification = useCallback<ISetNotofication>(
     ({type, message, position, autoClose}) => {
       notify({type, message, position, autoClose});
     }, []);
 
-  const handleSuspendUserClick = async (email): Promise<void> => {
+  const handleSuspendUserClick = async () => {
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-      const {data} = await userSuspendApi(email, config);
-      setNotification({type: "success", message: data.message});
+      const {data} = await userSuspendApi(userEmail, config);
+      const usersUpdated: any = users.map((item: IAdminUser) => {
+        if (item.email === data.email) return data;
+        return item;
+      });
+      setUsersToRender(usersUpdated);
+      setUserEmail("");
+      setNotification({type: "success", message: "User is Suspended"});
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
     }
   };
 
-  const openConfirmPopup = ({email}) => {
+  const handleResolveUserClick = async () => {
+    try {
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      const {data} = await userResolveApi(userEmail, config);
+      const usersUpdated: any = users.map((item: IAdminUser) => {
+        if (item.email === data.email) return data;
+        return item;
+      });
+      setUsersToRender(usersUpdated);
+      setUserEmail("");
+      setNotification({type: "success", message: "User is Resolved"});
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
+    }
+  };
+
+  const handleDeleteUserClick = async () => {
+    try {
+      const token = localStorage.getItem('access_token_admin');
+      const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
+      await userDeleteApi(userEmail, config);
+      const usersUpdated = users.filter((user: IAdminUser) => user.email !== userEmail);
+      setUsersToRender(usersUpdated);
+      setUserEmail("");
+      setNotification({type: "success", message: "User Deleted"});
+    } catch (error: any) {
+      setNotification({type: "error", message: error.response.data.message});
+    }
+  };
+
+
+  const openConfirmPopup = (email) => {
     setConfirmPopupOpened(true);
     setUserEmail(email);
   };
@@ -54,21 +93,6 @@ export const Users: React.FC = () => {
     setUserEmail("");
   };
 
-  const handleDeleteUserClick = async ({confirm}): Promise<void> => {
-    if (confirm === "delete") {
-      try {
-        const token = localStorage.getItem('access_token_admin');
-        const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-        const {data} = await userDeleteApi(userEmail, config);
-        const usersUpdated = users.filter((user: IAdminUser) => user.email !== userEmail);
-        setUsersToRender(usersUpdated);
-        setUserEmail("");
-        setNotification({type: "success", message: data.message});
-      } catch (error: any) {
-        setNotification({type: "error", message: error.response.data.message});
-      }
-    }
-  };
 
   const handleSearchFormSubmit = (keyword) => {
     const usersToFilter = alreadyFiltered.byStatus || alreadyFiltered.byPeriod ? usersToRender : users;
@@ -123,11 +147,24 @@ export const Users: React.FC = () => {
 
   return (
     <ProfileBox title='Users Catalogue' subTitle='Search Users'>
-      <ConfirmPopup
-        handleDeleteUserClick={handleDeleteUserClick}
+      {type === 'Delete' && <ConfirmPopup
+        type='delete'
+        handleUserClick={handleDeleteUserClick}
         opened={confirmPopupOpened}
         userEmail={userEmail}
-        onBtnCloseClick={closeConfirmPopup} />
+        onBtnCloseClick={closeConfirmPopup} />}
+      {type === 'Suspend' && <ConfirmPopup
+        type='suspend'
+        handleUserClick={handleSuspendUserClick}
+        opened={confirmPopupOpened}
+        userEmail={userEmail}
+        onBtnCloseClick={closeConfirmPopup} />}
+      {type === 'Resolve' && <ConfirmPopup
+        type='resolve'
+        handleUserClick={handleResolveUserClick}
+        opened={confirmPopupOpened}
+        userEmail={userEmail}
+        onBtnCloseClick={closeConfirmPopup} />}
       <div className='account-form-info-block-full'>
         <SearchForm
           handleSearchFormSubmit={handleSearchFormSubmit}
@@ -153,9 +190,8 @@ export const Users: React.FC = () => {
                 logged_in_at={get(user, 'logged_in_at', null)}
                 subscription_id={get(user, 'subscription_id', '')}
                 status={get(user, 'status', '')}
-                handleSuspendUserClick={handleSuspendUserClick}
                 openConfirmPopup={openConfirmPopup}
-              />)) : <h2 className='empty'>Not found</h2>}
+                setType={setType} />)) : <h2 className='empty'>Not found</h2>}
           </ul>
         </div>
       </div>

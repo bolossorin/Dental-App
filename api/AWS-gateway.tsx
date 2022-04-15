@@ -58,6 +58,7 @@ export const deleteServiceApi = (service_id, config) => axios.delete(`${process.
 
 export const getUsersApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/dentists`, config);
 export const userSuspendApi = (email, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/suspend/${email}`, '', config);
+export const userResolveApi = (email, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/activate/${email}`, '', config);
 export const userDeleteApi = (email, config) => axios.delete(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/delete/${email}`, config);
 
 export const API = {

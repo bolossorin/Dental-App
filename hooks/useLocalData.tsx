@@ -62,7 +62,6 @@ export const useLocalData = () => {
       });
     } else if (access_token_admin) {
       if (router.pathname.includes("dentist")) Router.push(routes.home);
-      //  TODO: need  authenticated API below
     } else {
       if (router.pathname.includes("dentist")) {
         Router.push(routes.login);
