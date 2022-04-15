@@ -14,6 +14,8 @@ import notify from "../../Toast";
 import {CARD_OPTIONS} from "../../../utils/cardOptions";
 import {AppContext} from "../../../context/app.context";
 import {useLocalData} from "../../../hooks/useLocalData";
+import Router from "next/router";
+import {routes} from "../../../utils/routes";
 
 const getCurrency = (price: number, oldPrice: number) => {
   return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
@@ -120,6 +122,7 @@ export const StripeForm = ({setSubscriptionPlan}) => {
         } else {
           if (setSubscriptionPlan) setSubscriptionPlan(data.paymentIntent);
           setNotification({type: "success", message: data.paymentIntent.description});
+          Router.push(routes.account)
           setProcessing(false);
         }
       })
