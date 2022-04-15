@@ -1,7 +1,7 @@
 import React, {useCallback, useEffect, useState} from "react";
 
 // components
-import {ILocation, MILES} from "../Search";
+import {MILES} from "../Search";
 import {IService} from "../../../reducers/types";
 import {getAllServicesApi, getDentistByFilterApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
@@ -10,7 +10,6 @@ interface ISearchParamsProps {
   showMap: boolean;
   myLocation: any;
   setShowMap: (status: boolean) => void;
-  setMyLocation: (loc: ILocation) => void;
   setAllDentists: any;
 }
 

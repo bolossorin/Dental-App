@@ -10,16 +10,9 @@ interface IDentistCardsProps {
   allDentists: any;
   setSelectedDentist: (dent: SearchDentistResult) => void;
   selectedDentist: SearchDentistResult | undefined;
-  setMyLocation: any;
 }
 
-export const DentistCards: React.FC<IDentistCardsProps> = (
-  {
-    setMyLocation,
-    allDentists,
-    selectedDentist,
-    setSelectedDentist
-  }) => {
+export const DentistCards: React.FC<IDentistCardsProps> = ({allDentists, selectedDentist, setSelectedDentist}) => {
   return (
     <div className="main-index index-main-box">
       <div className="index-gallery-box">
@@ -27,12 +20,7 @@ export const DentistCards: React.FC<IDentistCardsProps> = (
           <a key={idx} className="index-gallery-item" href={`/search/${dentist.email}`} target={"_blank"}>
             <div
               className={cn("index-gallery-image-box", {'active': selectedDentist === dentist})}
-              onClick={() => {
-                if (dentist.locations[0] && +dentist.locations[0].lat) {
-                  setMyLocation({lat: +dentist.locations[0].lat, lng: +dentist.locations[0].lng})
-                }
-                setSelectedDentist(dentist);
-              }}>
+              onClick={() => setSelectedDentist(dentist)}>
               <img
                 className="index-gallery-image"
                 src={dentist.avatarUrl || "../images/empty_avatar.png"}

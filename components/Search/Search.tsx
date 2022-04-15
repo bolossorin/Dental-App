@@ -50,7 +50,6 @@ const Search: React.FC = () => {
         setShowMap={setShowMap}
         showMap={showMap}
         myLocation={myLocation}
-        setMyLocation={setMyLocation}
         setAllDentists={setAllDentists} />
       <div className="index-box-to-box">
         {showMap && (<GoogleMap
@@ -62,8 +61,7 @@ const Search: React.FC = () => {
         <DentistCards
           setSelectedDentist={setSelectedDentist}
           selectedDentist={selectedDentist}
-          allDentists={allDentists}
-          setMyLocation={setMyLocation} />
+          allDentists={allDentists} />
       </div>
     </main>
   );

@@ -13,7 +13,7 @@ import {ILocation, SearchDentistResult} from "../Search";
 interface IMapProps {
   allDentists: any;
   setSelectedDentist: (dent: SearchDentistResult) => void;
-  selectedDentist: SearchDentistResult | undefined;
+  selectedDentist: any;
   myLocation: ILocation | undefined;
   setMyLocation: (loc: ILocation) => void;
 }
@@ -55,7 +55,7 @@ export const GoogleMap: React.FC<IMapProps> = (
       <div className="map">
         {myLocation && (<div className="Google-react-map-wrapper">
           <GoogleMapReact
-            center={myLocation}
+            center={selectedDentist ? selectedDentist.locations[0] : myLocation}
             bootstrapURLKeys={{key: `${process.env.NEXT_PUBLIC_GOOGLE_KEY}`}}
             defaultCenter={Locations.cambridge}
             defaultZoom={13}>
