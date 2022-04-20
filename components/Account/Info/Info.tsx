@@ -29,10 +29,6 @@ export const AccountInfoBlock: React.FC = () => {
     notify({...notifyProps});
   }, []);
 
-  const handleDeleteAccount = async () => {
-
-  };
-
   return (
     <ProfileBox title='Account Information' subTitle='Login Details'>
       <Formik
@@ -74,7 +70,7 @@ export const AccountInfoBlock: React.FC = () => {
               </label>
             </div>
             <div className="account-form-login-buttons">
-              <button type='submit' className="account-button-green" onClick={handleDeleteAccount}>
+              <button type='submit' className="account-button-green">
                 Delete Account
               </button>
             </div>
