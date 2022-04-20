@@ -5,7 +5,7 @@ import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
 
 // components
-import {deleteAccountApi, passwordResetDentistApi, updateProfileApi} from "../../../api/AWS-gateway";
+import {deleteAccountApi, passwordResetDentistApi} from "../../../api/AWS-gateway";
 import {AppContext} from "../../../context/app.context";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
@@ -24,25 +24,13 @@ export const AccountInfoBlock: React.FC = () => {
   const {email, gdc, access_token}: any = state.dentistState;
 
   const [canDelete, setCanDelete] = useState(false);
-  const [isEdit, setIsEdit] = useState(false);
 
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
 
   const handleDeleteAccount = async () => {
-    if (canDelete) {
-      try {
-        const config = {headers: {Authorization: `Bearer ${access_token}`}};
-        await deleteAccountApi(config);
-        await logOut();
-      } catch (error: any) {
-        setNotification({type: "error", message: error.response.data.message});
-      }
-    }
-    if (!canDelete) {
-      setNotification({type: "warning", message: "Please check your consent and try deleting again!"});
-    }
+
   };
 
   return (
@@ -51,17 +39,20 @@ export const AccountInfoBlock: React.FC = () => {
         enableReinitialize
         validationSchema={accountInfoSchema}
         initialValues={{email: email, gdc: gdc}}
-        onSubmit={async (values) => {
-          try {
-            const config = {headers: {Authorization: `Bearer ${access_token}`}};
-            const body = {email: values.email, gdc: values.gdc}
-            await updateProfileApi(body, config);
-            setNotification({type: "success", message: "Successfully updated account information!"});
-          } catch (error: any) {
-            setNotification({type: "error", message: error.response.data.message});
+        onSubmit={async () => {
+          if (canDelete) {
+            try {
+              const config = {headers: {Authorization: `Bearer ${access_token}`}};
+              await deleteAccountApi(config);
+              await logOut();
+            } catch (error: any) {
+              setNotification({type: "error", message: error.response.data.message});
+            }
+          } else {
+            setNotification({type: "warning", message: "Please check your consent and try deleting again!"});
           }
         }}>
-        {({resetForm, errors, touched}) =>
+        {({errors, touched}) =>
           <Form className="account-profile-block-box">
             <div className="account-form-profile-label">
               <label className="account-form-profile-label">Account Email</label>
@@ -70,34 +61,22 @@ export const AccountInfoBlock: React.FC = () => {
             </div>
             <div className="account-form-profile-label">
               <label className="account-form-profile-label">GDC Number</label>
-              <Field className="account-form-profile-input" name='gdc' placeholder='GDC Number'
-                     disabled={!isEdit} />
+              <Field className="account-form-profile-input" name='gdc' placeholder='GDC Number' disabled />
               {errors.gdc && touched.gdc ? <p className='account-error-text'>{errors.gdc}</p> : null}
             </div>
-            {!isEdit && <>
-              <div className="account-form-profile-label ">
-                <label className="account-form-profile-label" htmlFor="delete">Delete Account</label>
-              </div>
-              <div className="account-checkbox">
-                <input id='checkbox' type="checkbox" checked={canDelete} onChange={() => setCanDelete(!canDelete)} />
-                <label className="account-checkbox-text" htmlFor="checkbox">
-                  I acknowledge that by deleting my account, my profile and information will be permanently deleted.
-                </label>
-              </div>
-            </>}
+            <div className="account-form-profile-label ">
+              <label className="account-form-profile-label" htmlFor="delete">Delete Account</label>
+            </div>
+            <div className="account-checkbox">
+              <input id='checkbox' type="checkbox" checked={canDelete} onChange={() => setCanDelete(!canDelete)} />
+              <label className="account-checkbox-text" htmlFor="checkbox">
+                I acknowledge that by deleting my account, my profile and information will be permanently deleted.
+              </label>
+            </div>
             <div className="account-form-login-buttons">
-              {isEdit && <button type='submit' className="account-button-green">
-                Update Account
-              </button>}
-              <button type='button' className="account-button-green-outline" onClick={() => {
-                resetForm();
-                setIsEdit(!isEdit);
-              }}>
-                {isEdit ? 'Cancel Account' : 'Edit Account'}
-              </button>
-              {!isEdit && <button type='button' className="account-button-green" onClick={handleDeleteAccount}>
+              <button type='submit' className="account-button-green" onClick={handleDeleteAccount}>
                 Delete Account
-              </button>}
+              </button>
             </div>
           </Form>}
       </Formik>

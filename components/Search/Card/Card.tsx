@@ -7,7 +7,7 @@ import cn from "classnames";
 import {SearchDentistResult} from "../Search";
 
 interface IDentistCardsProps {
-  allDentists: any;
+  allDentists: SearchDentistResult[];
   setSelectedDentist: (dent: SearchDentistResult) => void;
   selectedDentist: SearchDentistResult | undefined;
 }
@@ -17,7 +17,7 @@ export const DentistCards: React.FC<IDentistCardsProps> = ({allDentists, selecte
     <div className="main-index index-main-box">
       <div className="index-gallery-box">
         {allDentists.length > 0 ? allDentists.map((dentist, idx) => (
-          <a key={idx} className="index-gallery-item" href={`/search/${dentist.email}`} target={"_blank"}>
+          <a key={idx} className="index-gallery-item" href={`/search/${dentist.gdc}`} target={"_blank"}>
             <div
               className={cn("index-gallery-image-box", {'active': selectedDentist === dentist})}
               onClick={() => setSelectedDentist(dentist)}>

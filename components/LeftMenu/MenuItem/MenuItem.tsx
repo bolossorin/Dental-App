@@ -24,7 +24,7 @@ export const MenuItem = () => {
   const [accessToken, setAccessToken] = useState<string | null>(null);
 
   const {state} = useContext(AppContext);
-  const {email} = state.dentistState;
+  const {gdc} = state.dentistState;
   const {emailAdmin} = state.adminState;
 
   const [logOut] = useLogout();
@@ -37,7 +37,7 @@ export const MenuItem = () => {
       {
         icon: '../../images/person_black_24dp.svg',
         title: 'View My Profile',
-        url: `${routes.search}/${email ? email : 'exam@exam.exam'}`
+        url: `${routes.search}/${gdc}`
       },
     ];
 
@@ -54,7 +54,7 @@ export const MenuItem = () => {
       setLinks(adminLinks)
       setLoginUrl(routes.loginAdmin)
     }
-  }, [email, emailAdmin])
+  }, [gdc, emailAdmin])
 
   useEffect(() => {
     if (localStorage.getItem('access_token')) {
@@ -69,12 +69,14 @@ export const MenuItem = () => {
   return (
     <div className="leftmenu-navbar">
       {links.length > 0 && links.map(link => (
-        <Link key={link.title} href={link.url}>
-          <li className={cn('leftmenu-list', {active: link.url === router.asPath})}>
-            <img className="leftmenu-link-image" src={link.icon} alt="link image" />
-            <a className="leftmenu-link">{link.title}</a>
-          </li>
-        </Link>))}
+        <li key={link.title} className={cn('leftmenu-list', {active: link.url === router.asPath})}>
+          <img className="leftmenu-link-image" src={link.icon} alt="link image" />
+          <Link href={link.url}>
+            <a className="leftmenu-link">
+              {link.title}
+            </a>
+          </Link>
+        </li>))}
       {(accessToken) && <li className="leftmenu-list logout">
         <img className="leftmenu-link-image" src={"../../images/left-arrow.svg"} alt="link image" />
         <a className="leftmenu-link" href={loginUrl} onClick={logOut}>

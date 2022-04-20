@@ -180,7 +180,7 @@ export const Users: React.FC = () => {
                 subscription_plan={get(user, 'subscription_plan', '')}
                 email={get(user, 'email', '')}
                 post_code={get(user, 'locations[0].post_code', '')}
-                gdc_number={get(user, 'gdc', '')}
+                gdc={get(user, 'gdc', '')}
                 logged_in_at={get(user, 'logged_in_at', null)}
                 subscription_id={get(user, 'subscription_id', '')}
                 status={get(user, 'status', '')}

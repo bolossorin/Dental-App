@@ -62,8 +62,8 @@ export const Bio: React.FC = () => {
             await updateProfileApi(values, config);
             dispatch({type: DentistTypes.SET_INFO, payload: {...values}});
             setNotification({type: "success", message: "Successfully updated dentist Bio!"});
-          } catch (exp) {
-            setNotification({type: "error", message: "Please try again!"});
+          } catch (error: any) {
+            setNotification({type: "error", message: error.response.data.message});
           }
         }}>
         {({isSubmitting, errors, touched}) =>

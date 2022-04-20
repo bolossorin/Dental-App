@@ -35,7 +35,7 @@ export const RegisterForm = () => {
           const response = await registerDentistApi(values)
 
           if (response) {
-            const {data} = await loginDentistApi(values);
+            const {data} = await loginDentistApi({email: values.email, password: values.password});
             localStorage.setItem("access_token", JSON.stringify(data.access_token));
             Router.push(routes.pricing)
           }

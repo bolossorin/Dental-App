@@ -14,7 +14,7 @@ interface UserProps {
   subscription_end_date: number | null;
   subscription_plan: string;
   email: string;
-  gdc_number: string;
+  gdc: string;
   post_code: string;
   status: string;
   logged_in_at: number | null;
@@ -62,7 +62,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
         </div>
         <div className={styles.userInfo}>
           <span className={styles.key}>GDC Number:</span>
-          <span className={styles.value}>{props.gdc_number}</span>
+          <span className={styles.value}>{props.gdc}</span>
         </div>
         <div className={styles.userInfo}>
           <span className={styles.key}>Post Code:</span>
