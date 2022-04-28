@@ -39,13 +39,13 @@ export const Photos: React.FC = () => {
           const {data} = await uploadDentistAvatarApi(formData, config);
           const avatarUrl = data['avatarUrl'];
           dispatch({type: DentistTypes.SET_AVATAR_URL, payload: avatarUrl});
-          setNotification({type: "success", message: "Successfully changed watermark", position: "top-right"});
+          setNotification({type: "success", message: "Successfully changed avatar image", position: "top-right"});
         }
         if (what === 'cover') {
           const {data} = await uploadDentistWatermarkApi(formData, config);
           const watermarkUrl = data['watemark_public_url'];
           dispatch({type: DentistTypes.SET_WATERMARK_URL, payload: watermarkUrl});
-          setNotification({type: "success", message: "Watermark changed avatar image", position: "top-right"});
+          setNotification({type: "success", message: "Successfully changed watermark", position: "top-right"});
         }
       }
     } catch (error: any) {
