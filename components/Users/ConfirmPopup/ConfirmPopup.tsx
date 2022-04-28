@@ -11,7 +11,7 @@ type ConfirmPopupProps = {
   handleUserClick: () => void;
   onBtnCloseClick: () => void;
   opened: boolean;
-  userEmail: string;
+  userGDC: string;
   type: string;
 };
 
@@ -24,7 +24,7 @@ const ConfirmPopup: React.FC<ConfirmPopupProps> = (props: ConfirmPopupProps) => 
       <div className={styles.content}>
         <h2 className={styles.title}>Warning!</h2>
         <p className={styles.warning}>
-          You are going to {props.type} user {props.userEmail}.
+          You are going to {props.type} user {props.userGDC}.
         </p>
         {props.type === "delete" && <p className={styles.warning}>
           This action is irreversible, you can't recover the account. Please,

@@ -30,7 +30,7 @@ export const Users: React.FC = () => {
   const [alreadyFiltered, setAlreadyFiltered] = useState({byStatus: false, byPeriod: false, byName: false});
   const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
   const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
-  const [userEmail, setUserEmail] = useState<string>("");
+  const [userGDC, setUserGDC] = useState<string>("");
   const [searchValue, setSearchValue] = useState("");
   const [type, setType] = useState("");
 
@@ -42,8 +42,8 @@ export const Users: React.FC = () => {
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-      const {data} = await userSuspendApi(userEmail, config);
-      setUserEmail("");
+      const {data} = await userSuspendApi(userGDC, config);
+      setUserGDC("");
       dispatch({type: AdminTypes.UPDATE_USER, payload: data});
       setNotification({type: "success", message: "User is Suspended"});
     } catch (error: any) {
@@ -55,8 +55,8 @@ export const Users: React.FC = () => {
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-      const {data} = await userResolveApi(userEmail, config);
-      setUserEmail("");
+      const {data} = await userResolveApi(userGDC, config);
+      setUserGDC("");
       dispatch({type: AdminTypes.UPDATE_USER, payload: data});
       setNotification({type: "success", message: "User is Resolved"});
     } catch (error: any) {
@@ -68,9 +68,9 @@ export const Users: React.FC = () => {
     try {
       const token = localStorage.getItem('access_token_admin');
       const config = {headers: {Authorization: `Bearer ${JSON.parse(token as string)}`}};
-      await userDeleteApi(userEmail, config);
-      dispatch({type: AdminTypes.DELETE_USER, payload: userEmail});
-      setUserEmail("");
+      await userDeleteApi(userGDC, config);
+      dispatch({type: AdminTypes.DELETE_USER, payload: userGDC});
+      setUserGDC("");
       setNotification({type: "success", message: "User Deleted"});
     } catch (error: any) {
       setNotification({type: "error", message: error.response.data.message});
@@ -78,14 +78,14 @@ export const Users: React.FC = () => {
   };
 
 
-  const openConfirmPopup = (email) => {
+  const openConfirmPopup = (gdc) => {
     setConfirmPopupOpened(true);
-    setUserEmail(email);
+    setUserGDC(gdc);
   };
 
   const closeConfirmPopup = () => {
     setConfirmPopupOpened(false);
-    setUserEmail("");
+    setUserGDC("");
   };
 
 
@@ -148,19 +148,19 @@ export const Users: React.FC = () => {
         type='delete'
         handleUserClick={handleDeleteUserClick}
         opened={confirmPopupOpened}
-        userEmail={userEmail}
+        userGDC={userGDC}
         onBtnCloseClick={closeConfirmPopup} />}
       {type === 'Suspend' && <ConfirmPopup
         type='suspend'
         handleUserClick={handleSuspendUserClick}
         opened={confirmPopupOpened}
-        userEmail={userEmail}
+        userGDC={userGDC}
         onBtnCloseClick={closeConfirmPopup} />}
       {type === 'Resolve' && <ConfirmPopup
         type='resolve'
         handleUserClick={handleResolveUserClick}
         opened={confirmPopupOpened}
-        userEmail={userEmail}
+        userGDC={userGDC}
         onBtnCloseClick={closeConfirmPopup} />}
       <div className='account-form-info-block-full'>
         <SearchForm

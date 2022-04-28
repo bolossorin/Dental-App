@@ -44,7 +44,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
             Paid Subscription Ends: {props.subscription_end_date && moment.unix(props.subscription_end_date).format("MM/DD/YYYY")}
           </span>)}
         {props.subscription_plan === "FREE" && (<span className={cn(styles.text, theme)}>Account is free</span>)}
-        <a href={`${routes.search}/${props.email}`} target='_blank' className={cn(styles.link, styles.text, theme)}>
+        <a href={`${routes.search}/${props.gdc}`} target='_blank' className={cn(styles.link, styles.text, theme)}>
           <img className={svgColor} src={"../images/user.svg"} alt='' />
           <span>View Profile</span>
         </a>
@@ -84,7 +84,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
               className={styles.suspendDeleteBtn}
               onClick={() => {
                 props.setType(props.status === 'SUSPENDED' ? 'Resolve' : 'Suspend')
-                props.openConfirmPopup(props.email);
+                props.openConfirmPopup(props.gdc);
               }}>
               {props.status === 'SUSPENDED' ? 'Resolve' : 'Suspend'}
             </button>
@@ -95,7 +95,7 @@ export const User: React.FC<UserProps> = (props: UserProps) => {
               className={styles.suspendDeleteBtn}
               onClick={() => {
                 props.setType('Delete')
-                props.openConfirmPopup(props.email);
+                props.openConfirmPopup(props.gdc);
               }}>
               Delete
             </button>

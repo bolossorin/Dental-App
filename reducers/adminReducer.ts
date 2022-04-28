@@ -92,12 +92,12 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
       return {...state, users: action.payload};
     case AdminTypes.UPDATE_USER:
       const usersUpdated = state.users!.map((item: IAdminUser) => {
-        if (item.email === action.payload.email) return action.payload;
+        if (item.gdc === action.payload.gdc) return action.payload;
         return item;
       });
       return {...state, users: usersUpdated};
     case AdminTypes.DELETE_USER:
-      const userDeleted = state.users!.filter((user: IAdminUser) => user.email !== action.payload);
+      const userDeleted = state.users!.filter((user: IAdminUser) => user.gdc !== action.payload);
       return {...state, users: userDeleted};
     case AdminTypes.GET_SUBSCRIBER_SETTINGS:
       return {...state, subscriberSettings: action.payload};
