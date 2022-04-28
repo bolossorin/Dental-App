@@ -101,7 +101,7 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                 {(locations && locations.length > 0) ? locations.map((item, index) =>
                   <div key={index}>
                   <span>
-                    <strong>{item.location_name}</strong>
+                    <strong>{item.location_name}:</strong> {item.address}, {item.post_code}
                   </span>
                   </div>) : '-'}
               </div>
@@ -131,7 +131,7 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                       {original: photo.after.water_marked_url ? photo.after.water_marked_url.replace('http', 'https') : photo.after.url.replace('http', 'https')}
                     ]} />
                 </div>))}
-            </div> : <h2 className='empty'>Not found gallery</h2>}
+            </div> : <h2 className='empty'>Not found</h2>}
         </div>
       </div>
     </main>
