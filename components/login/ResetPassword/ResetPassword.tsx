@@ -11,9 +11,10 @@ import {ISetNotofication} from "../../Toast";
 import notify from "../../../components/Toast";
 import Router from "next/router";
 import {passwordResetByEmailApi} from "../../../api/AWS-gateway";
+import {emailSchema} from "../../../utils/schemas";
 
 const resetPasswordSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: emailSchema,
 });
 export const ResetPassword = ({title, loginUrl, changePasswordUrl}) => {
   const setNotification = useCallback<ISetNotofication>(

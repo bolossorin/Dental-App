@@ -16,14 +16,15 @@ import {AppContext} from "../../../context/app.context";
 import {useLocalData} from "../../../hooks/useLocalData";
 import Router from "next/router";
 import {routes} from "../../../utils/routes";
+import {dentistNameSchema, emailSchema} from "../../../utils/schemas";
 
 const getCurrency = (price: number, oldPrice: number) => {
   return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
 };
 
 const stripeCheckoutSchema = Yup.object().shape({
-  name: Yup.string().matches(/^([A-Za-z]){1,28}$/, 'Invalid name').required("Name is required"),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  name: dentistNameSchema,
+  email: emailSchema,
 });
 export const StripeForm = ({setSubscriptionPlan}) => {
   useLocalData();

@@ -12,15 +12,16 @@ import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
 import {ProfileLayout} from "../ProfileLayout/ProfileLayout";
 import {Spinner} from "../../Spinner/Spinner";
+import {dentistNameSchema, emailSchema, phoneSchema, websiteSchema} from "../../../utils/schemas";
 
 const bioSchema = Yup.object().shape({
   title: Yup.string().matches(/(^[A-Za-z]{2,10})/, 'Invalid Title').required("Title is required"),
-  dentist_name: Yup.string().matches(/[A-Za-z]{1,28}/, "Invalid Name").required('Name is required'),
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  dentist_name: dentistNameSchema,
+  email: emailSchema,
   qualifications: Yup.string(),
   bio: Yup.string(),
-  website: Yup.string().matches(/(http(s)?:\/\/.)?(www\.)?[-a-zA-Z0-9@:%._\+~#=]{2,256}\.[a-z]{2,6}\b([-a-zA-Z0-9@:%_\+.~#?&//=]*)/, 'Invalid Website'),
-  phone: Yup.string().matches(/^[\+]?[(]?[0-9]{3}[)]?[-\s\.]?[0-9]{3}[-\s\.]?[0-9]{4,6}$/im, 'Invalid Phone'),
+  website: websiteSchema,
+  phone: phoneSchema,
 });
 export const Bio: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);

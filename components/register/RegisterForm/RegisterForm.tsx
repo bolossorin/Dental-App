@@ -12,11 +12,12 @@ import {loginDentistApi, registerDentistApi} from "../../../api/AWS-gateway";
 import notify, {ISetNotofication} from "../../Toast";
 import {routes} from "../../../utils/routes";
 import {Spinner} from "../../Spinner/Spinner";
+import {dentistNameSchema, emailSchema, gdcSchema} from "../../../utils/schemas";
 
 const registrationSchema = Yup.object().shape({
-  dentist_name: Yup.string().matches(/[A-Za-z]{1,28}/, "Invalid Name").required('Name is required'),
-  email: Yup.string().email("Invalid Email").required('Email is required'),
-  gdc: Yup.string().matches(/[0-9]{5}/, "Invalid GDC").required('GDC Number is required'),
+  dentist_name: dentistNameSchema,
+  email: emailSchema,
+  gdc: gdcSchema,
   password: Yup.string()
     .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });

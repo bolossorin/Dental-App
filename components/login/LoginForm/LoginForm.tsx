@@ -14,6 +14,7 @@ import {IDentistBio, IDentistLocations, IServices, Null_Or_,} from "../../../red
 import {Layout} from "../../Layout/Layout";
 import {ShowPassword} from "../../common/ShowPassword/ShowPassword";
 import {routes} from "../../../utils/routes";
+import {emailSchema} from "../../../utils/schemas";
 
 export interface ILoginForm
   extends DetailedHTMLProps<HTMLAttributes<HTMLDivElement>, HTMLDivElement> {
@@ -29,7 +30,7 @@ export interface IDentistFullDataResponse
 }
 
 const loginSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: emailSchema,
   password: Yup.string()
   // .matches(/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/, "Must Contain 8 Characters, 1 Number and 1 Symbol").required("Password is required"),
 });

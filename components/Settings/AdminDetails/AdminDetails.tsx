@@ -8,9 +8,10 @@ import {Field, Form, Formik} from "formik";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AccountResetPassword} from "../../common/AccountResetPassword/AccountResetPassword";
 import {passwordResetAdminApi} from "../../../api/AWS-gateway";
+import {emailSchema} from "../../../utils/schemas";
 
 const accountInfoSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
+  email: emailSchema,
   name: Yup.string().required("Name is required"),
 });
 export const AdminDetails: React.FC = () => {

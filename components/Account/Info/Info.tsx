@@ -12,10 +12,11 @@ import notify from "../../Toast";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AccountResetPassword} from "../../common/AccountResetPassword/AccountResetPassword";
 import {useLogout} from "../../../hooks/useLogout";
+import {emailSchema, gdcSchema} from "../../../utils/schemas";
 
 const accountInfoSchema = Yup.object().shape({
-  email: Yup.string().email("Invalid email").required("Email is required"),
-  gdc: Yup.string().matches(/[0-9]{5}/, 'Invalid gdc number').required("GDC number is required"),
+  email: emailSchema,
+  gdc: gdcSchema,
 });
 export const AccountInfoBlock: React.FC = () => {
   const [logOut] = useLogout();
