@@ -41,6 +41,7 @@ export const getAllDentistApi = () => axios.post(`${process.env.NEXT_PUBLIC_BASE
 export const getDentistByFilterApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist`, body);
 export const getDentistByEmailApi = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist/${email}`);
 export const getDentistGalleryApi = (email) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/dentist-services/gallery/${email}`);
+export const getSettingsSubscriptionsApi = () => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions`);
 
 
 // Admin

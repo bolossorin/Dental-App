@@ -22,6 +22,7 @@ const subscriberSchema = Yup.object().shape({
 export const PaidSubscriber: React.FC = () => {
   const {state, dispatch} = useContext(AppContext);
   const [plan, setPlan] = useState("")
+  const [settings, setSettings] = useState<any>({premium: {}, free: {}});
 
   const {access_token_admin, subscriberSettings} = state.adminState;
 
@@ -39,21 +40,27 @@ export const PaidSubscriber: React.FC = () => {
     }
   }, [access_token_admin]);
 
+  useEffect(() => {
+    const free = subscriberSettings.filter((item) => item.subscription_type === 'FREE');
+    const premium = subscriberSettings.filter((item) => item.subscription_type === 'PREMIUM');
+    setSettings({premium: premium[0], free: free[0]})
+  }, [subscriberSettings]);
+
   return (
     <Formik
       validationSchema={subscriberSchema}
       enableReinitialize
       initialValues={{
-        freeMaxLocations: get(subscriberSettings, '[0].maxLocations', ''),
-        freeMaxServices: get(subscriberSettings, '[0].maxService', ''),
-        freeHasPhoneNumber: get(subscriberSettings, '[0].phoneAllowed', ''),
-        freeHasWebsite: get(subscriberSettings, '[0].websiteAllowed', ''),
-        freeIsVerified: get(subscriberSettings, '[0].appearVerifiedAllowed', ''),
-        paidMaxLocations: get(subscriberSettings, '[1].maxLocations', ''),
-        paidMaxServices: get(subscriberSettings, '[1].maxService', ''),
-        paidHasPhoneNumber: get(subscriberSettings, '[1].phoneAllowed', ''),
-        paidHasWebsite: get(subscriberSettings, '[1].websiteAllowed', ''),
-        paidIsVerified: get(subscriberSettings, '[1].appearVerifiedAllowed', ''),
+        freeMaxLocations: get(settings, 'free.maxLocations', ''),
+        freeMaxServices: get(settings, 'free.maxService', ''),
+        freeHasPhoneNumber: get(settings, 'free.phoneAllowed', ''),
+        freeHasWebsite: get(settings, 'free.websiteAllowed', ''),
+        freeIsVerified: get(settings, 'free.appearVerifiedAllowed', ''),
+        paidMaxLocations: get(settings, 'premium.maxLocations', ''),
+        paidMaxServices: get(settings, 'premium.maxService', ''),
+        paidHasPhoneNumber: get(settings, 'premium.phoneAllowed', ''),
+        paidHasWebsite: get(settings, 'premium.websiteAllowed', ''),
+        paidIsVerified: get(settings, 'premium.appearVerifiedAllowed', ''),
       }}
       onSubmit={async (values) => {
         let body;

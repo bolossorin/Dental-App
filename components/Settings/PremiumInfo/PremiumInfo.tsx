@@ -1,8 +1,9 @@
-import React, {useContext} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 // libs
 import {Field, Form, Formik} from "formik";
 import * as Yup from "yup";
+import {get} from "lodash";
 
 // components
 import {AppContext} from "../../../context/app.context";
@@ -23,6 +24,13 @@ export const PremiumInfo: React.FC = () => {
   const {state} = useContext(AppContext);
   const {subscriberSettings} = state.adminState;
 
+  const [settings, setSettings] = useState<any>({premium: {}});
+
+  useEffect(() => {
+    const premium = subscriberSettings.filter((item) => item.subscription_type === 'PREMIUM');
+    setSettings({premium: premium[0]})
+  }, [subscriberSettings]);
+
   return (
     <ProfileBox title='Premium Information' subTitle='Information for Free Users'>
       <div className="box-2-box">
@@ -31,15 +39,15 @@ export const PremiumInfo: React.FC = () => {
             <p className="form-profile-label">
               <label className="form-profile-label">Premium Features</label>
             </p>
-            {subscriberSettings[1] &&
             <div className='form-profile-features'>
+              <p>Verified Badge</p>
               <p>Watermark</p>
-              <p>Max Locations: {subscriberSettings[1].maxLocations}</p>
-              <p>Max Services: {subscriberSettings[1].maxService}</p>
-              {subscriberSettings[1].websiteAllowed && <p>Website Address</p>}
-              {subscriberSettings[1].phoneAllowed && <p>Phone Number</p>}
-              {subscriberSettings[1].appearVerifiedAllowed && <p>Appear Verified</p>}
-            </div>}
+              <p>Max Locations: {get(settings, 'premium.maxLocations', '')}</p>
+              <p>Max Services: {get(settings, 'premium.maxService', '')}</p>
+              {get(settings, 'premium.websiteAllowed', '') && <p>Website Address</p>}
+              {get(settings, 'premium.phoneAllowed', '') && <p>Phone Number</p>}
+              {get(settings, 'premium.appearVerifiedAllowed', '') && <p>Appear Verified</p>}
+            </div>
           </div>
         </div>
         <Formik

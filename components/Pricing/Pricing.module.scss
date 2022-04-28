@@ -3,14 +3,14 @@
   .title {
     h1 {
       text-align:    center;
-      margin-bottom: 24px;
+      margin-bottom: 60px;
       font-size:     40px;
     }
     .headerButtons {
-      display:         flex;
+      display:         none;
+      //display:         flex;
       align-items:     center;
       justify-content: center;
-      margin-bottom:   60px;
       p {
         margin: 0 5px;
       }
@@ -24,8 +24,14 @@
   width:           100%;
   :global {
     .account-profile-box-form {
-      margin: 0;
-      width:  30%;
+      margin:         0;
+      width:          30%;
+      display:        flex;
+      flex-direction: column;
+    }
+    .account-box-2-box {
+      flex:        1 1 auto;
+      align-items: stretch;
     }
     .account-form-login-subtitle {
       line-height:    1.4;
@@ -36,12 +42,15 @@
     }
   }
   .inner {
-    width: 100%;
+    width:          100%;
+    display:        flex;
+    flex-direction: column;
     ul {
       list-style-type: none;
       padding:         0;
       line-height:     1.4;
       width:           100%;
+      margin-bottom:   32px;
       li {
         font-family:     Arial, sans-serif;
         font-size:       16px;
@@ -60,7 +69,7 @@
     display:         flex;
     align-items:     center;
     justify-content: space-between;
-    margin-top:      32px;
+    margin-top:      auto;
     span {
       font-weight: 700;
       font-size:   14px;
@@ -77,11 +86,8 @@
   .pricingWrapper {
     .title {
       h1 {
-        margin-bottom: 20px;
-        font-size:     24px;
-      }
-      .headerButtons {
         margin-bottom: 30px;
+        font-size:     24px;
       }
     }
   }
