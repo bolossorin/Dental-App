@@ -31,7 +31,7 @@ const Locations: React.FC = () => {
             <LocationForm index={index} title={`Location ${index}`} />
           </div>)}
         {subscription_plan === "FREE" && <div className={`profile-block-box disabled`}>
-          <LocationForm index={false} title={`Location 2 ${subscription_plan === 'FREE' ? '- Premium' : ''}`} />
+          <LocationForm index={false} title={`Location ${subscription_plan === 'FREE' ? '- Premium' : ''}`} />
         </div>}
       </div>
     </ProfileLayout>

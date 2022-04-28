@@ -26,8 +26,8 @@ export const useLocalData = () => {
       if (router.pathname.includes("admin")) Router.push(routes.home);
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
       getDentistInfoApi(config).then(({data}) => {
-        getDentistServicesApi(data.email).then((services: any) => {
-          getDentistGalleryApi(data.email)
+        getDentistServicesApi(data.gdc).then((services: any) => {
+          getDentistGalleryApi(data.gdc)
             .then((gallery) => {
               getSettingsApi(config)
                 .then((settings) => {

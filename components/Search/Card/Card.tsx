@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 
 // libs
 import cn from "classnames";
@@ -13,10 +13,18 @@ interface IDentistCardsProps {
 }
 
 export const DentistCards: React.FC<IDentistCardsProps> = ({allDentists, selectedDentist, setSelectedDentist}) => {
+  const [filteredDentist, setFilteredDentist] = useState<SearchDentistResult[]>([]);
+
+  useEffect(() => {
+    const filteredFree: SearchDentistResult[] = allDentists.filter((dentist) => dentist.subscription_plan === "FREE");
+    const filteredPremium: SearchDentistResult[] = allDentists.filter((dentist) => dentist.subscription_plan === "PREMIUM");
+    setFilteredDentist([...filteredPremium, ...filteredFree]);
+  }, [allDentists]);
+
   return (
     <div className="main-index index-main-box">
       <div className="index-gallery-box">
-        {allDentists.length > 0 ? allDentists.map((dentist, idx) => (
+        {filteredDentist.length > 0 ? filteredDentist.map((dentist, idx) => (
           <a key={idx} className="index-gallery-item" href={`/search/${dentist.gdc}`} target={"_blank"}>
             <div
               className={cn("index-gallery-image-box", {'active': selectedDentist === dentist})}

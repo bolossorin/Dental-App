@@ -9,7 +9,7 @@ import {Header} from "../../components";
 import {Footer} from "../../components/Footer/Footer";
 import Person from "../../components/Person/Person";
 import {IUserGallery} from "../../reducers/types";
-import {getDentistByEmailApi, getDentistGalleryByEmailApi, getDentistServicesApi} from "../../api/AWS-gateway";
+import {getDentistByEmailApi, getDentistGalleryApi, getDentistServicesApi} from "../../api/AWS-gateway";
 import {AppContext} from "../../context/app.context";
 import {DentistTypes} from "../../reducers";
 
@@ -28,7 +28,7 @@ const PersonPage = () => {
         .then(({data}) => dispatch({type: DentistTypes.SET_FULL_DATA, payload: data}))
         .catch((error) => console.error(error, 'error'));
 
-      getDentistGalleryByEmailApi(slug[0])
+      getDentistGalleryApi(slug[0])
         .then(({data}) => setGallery(data))
         .catch((error) => console.error(error, 'error'));
 

@@ -15,7 +15,7 @@ import {Spinner} from "../../Spinner/Spinner";
 
 const bioSchema = Yup.object().shape({
   title: Yup.string().matches(/(^[A-Za-z]{2,10})/, 'Invalid Title').required("Title is required"),
-  dentist_name: Yup.string().matches(/(^[A-Za-z]{3,16})([ ]{0,1})([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})?([ ]{0,1})?([A-Za-z]{3,16})/, 'Invalid Name').required("Name is required"),
+  dentist_name: Yup.string().matches(/[A-Za-z]{1,28}/, "Invalid Name").required('Name is required'),
   email: Yup.string().email("Invalid email").required("Email is required"),
   qualifications: Yup.string(),
   bio: Yup.string(),
