@@ -26,6 +26,11 @@ export const Services: React.FC = () => {
   }, []);
 
   const handleAddService = async (id) => {
+    if (services?.length >= settings_account!.maxService) {
+      setNotification({type: "warning", message: `Please upgrade to add more services`});
+      return;
+    }
+
     setIsSubmitting(true);
     try {
       const config = {headers: {Authorization: `Bearer ${access_token}`}};
@@ -92,7 +97,7 @@ export const Services: React.FC = () => {
             <button
               className="button-green-confirm"
               onClick={() => handleAddService(selectedService)}
-              disabled={selectedService === "" || services?.length >= settings_account!.maxService}>
+              disabled={selectedService === ""}>
               {isSubmitting ? <Spinner /> : "Confirm"}
             </button>
           </div>
