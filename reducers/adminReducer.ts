@@ -5,7 +5,7 @@ import {
   IService,
   IAdminStatistics,
   IAdminUser,
-  IAdminStatistic,
+  IAdminStatistic, Null_Or_,
 } from "./types";
 
 export enum AdminTypes {
@@ -50,7 +50,7 @@ export type TAdminReducerState =
   { premiumInformation: IPremiumInformation } &
   { subscriberSettings: ISubSettings[] } &
   { userStatistics: IAdminStatistics } &
-  { users: IAdminUser[] }
+  { users: Null_Or_<IAdminUser[]> }
 
 export type AdminActions =
   ActionMap<AdminPayload>[keyof ActionMap<AdminPayload>];
@@ -59,7 +59,7 @@ export const AdminInitialState: TAdminReducerState = {
   access_token_admin: "",
   emailAdmin: "",
   usernameAdmin: "",
-  users: [],
+  users: null,
   services: [],
   premiumInformation: {
     features: [],
@@ -91,13 +91,13 @@ export const adminReducer = (state: TAdminReducerState, action: AdminActions): T
       });
       return {...state, users: action.payload};
     case AdminTypes.UPDATE_USER:
-      const usersUpdated = state.users.map((item: IAdminUser) => {
+      const usersUpdated = state.users!.map((item: IAdminUser) => {
         if (item.email === action.payload.email) return action.payload;
         return item;
       });
       return {...state, users: usersUpdated};
     case AdminTypes.DELETE_USER:
-      const userDeleted = state.users.filter((user: IAdminUser) => user.email !== action.payload);
+      const userDeleted = state.users!.filter((user: IAdminUser) => user.email !== action.payload);
       return {...state, users: userDeleted};
     case AdminTypes.GET_SUBSCRIBER_SETTINGS:
       return {...state, subscriberSettings: action.payload};

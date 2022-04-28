@@ -20,7 +20,7 @@ const PersonPage = () => {
 
   const {dispatch} = useContext(AppContext);
 
-  const [gallery, setGallery] = useState<IUserGallery[]>([]);
+  const [gallery, setGallery] = useState<IUserGallery[] | null>(null);
 
   useEffect(() => {
     if (slug) {
@@ -41,8 +41,7 @@ const PersonPage = () => {
   return (
     <>
       <Header />
-      {!(gallery) && <Skeleton width="100wh" height="90vh" />}
-      {!!(gallery) && (<Person gallery={gallery} />)}
+      {!gallery ? <Skeleton height="90vh" /> : <Person gallery={gallery} />}
       <Footer />
     </>
   );

@@ -38,7 +38,7 @@ export interface SearchDentistResult {
 const Search: React.FC = () => {
   const [showMap, setShowMap] = useState(true);
   const [selectedDentist, setSelectedDentist] = useState<SearchDentistResult>();
-  const [allDentists, setAllDentists] = useState<SearchDentistResult[]>([]);
+  const [allDentists, setAllDentists] = useState<SearchDentistResult[] | null>(null);
   const [myLocation, setMyLocation] = useState<ILocation>();
 
   useEffect(() => {

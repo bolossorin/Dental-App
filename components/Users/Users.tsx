@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
 import {get} from "lodash";
+import Skeleton from "react-loading-skeleton";
 
 // components
 import SearchForm from "./SearchForm/SearchForm";
@@ -25,7 +26,7 @@ export const Users: React.FC = () => {
 
   const [filteredByPeriod, setFilteredByPeriod] = useState<IAdminUser[]>([]);
   const [filteredByStatus, setFilteredByStatus] = useState<IAdminUser[]>([]);
-  const [usersToRender, setUsersToRender] = useState<IAdminUser[]>([]);
+  const [usersToRender, setUsersToRender] = useState<IAdminUser[] | null>(null);
   const [alreadyFiltered, setAlreadyFiltered] = useState({byStatus: false, byPeriod: false, byName: false});
   const filtered = alreadyFiltered.byStatus || alreadyFiltered.byPeriod || alreadyFiltered.byName;
   const [confirmPopupOpened, setConfirmPopupOpened] = useState(false);
@@ -90,7 +91,7 @@ export const Users: React.FC = () => {
 
   const handleSearchFormSubmit = (keyword) => {
     const usersToFilter = alreadyFiltered.byStatus || alreadyFiltered.byPeriod ? usersToRender : users;
-    const filUsers = usersToFilter.filter((user: IAdminUser) => user.dentist_name.toLowerCase().includes(keyword.toLowerCase()));
+    const filUsers = usersToFilter!.filter((user: IAdminUser) => user.dentist_name.toLowerCase().includes(keyword.toLowerCase()));
     setUsersToRender(filUsers);
     setAlreadyFiltered({...alreadyFiltered, byName: true});
   };
@@ -99,7 +100,7 @@ export const Users: React.FC = () => {
     if (period) {
       const usersToFilter = alreadyFiltered.byStatus ? filteredByStatus : users;
       const startPoint = getPeriod(period);
-      const filUsers = usersToFilter.filter((user: IAdminUser) => {
+      const filUsers = usersToFilter!.filter((user: IAdminUser) => {
         const creationPoint = new Date(user.createdAt as Date);
         return creationPoint > startPoint;
       });
@@ -113,7 +114,7 @@ export const Users: React.FC = () => {
     if (status) {
       const usersToFilter = alreadyFiltered.byPeriod ? filteredByPeriod : users;
       const formattedStatus = status === "Paid" ? "PREMIUM" : "FREE";
-      const filUsers = usersToFilter.filter((user: IAdminUser) => user.subscription_plan === formattedStatus);
+      const filUsers = usersToFilter!.filter((user: IAdminUser) => user.subscription_plan === formattedStatus);
       setUsersToRender(filUsers);
       setFilteredByStatus(filUsers);
       setAlreadyFiltered({...alreadyFiltered, byStatus: true});
@@ -136,7 +137,9 @@ export const Users: React.FC = () => {
   }, []);
 
   useEffect(() => {
-    setUsersToRender(users);
+    if (users) {
+      setUsersToRender(users);
+    }
   }, [users]);
 
   return (
@@ -171,21 +174,23 @@ export const Users: React.FC = () => {
             handleResetFiltersClick={handleResetFiltersClick}
             alreadyFiltered={filtered} />
           <ul className={styles.usersList}>
-            {usersToRender.length > 0 ? usersToRender.map((user: IAdminUser, index) => (
-              <User
-                key={index}
-                username={user.dentist_name ? user.dentist_name : user.email}
-                createdAt={get(user, 'createdAt', null)}
-                subscription_end_date={get(user, 'subscription_end_date', null)}
-                subscription_plan={get(user, 'subscription_plan', '')}
-                email={get(user, 'email', '')}
-                post_code={get(user, 'locations[0].post_code', '')}
-                gdc={get(user, 'gdc', '')}
-                logged_in_at={get(user, 'logged_in_at', null)}
-                subscription_id={get(user, 'subscription_id', '')}
-                status={get(user, 'status', '')}
-                openConfirmPopup={openConfirmPopup}
-                setType={setType} />)) : <h2 className='empty'>Not found</h2>}
+            {!usersToRender
+              ? <Skeleton count={6} height="44px" />
+              : usersToRender.length > 0 ? usersToRender.map((user: IAdminUser, index) => (
+                <User
+                  key={index}
+                  username={user.dentist_name ? user.dentist_name : user.email}
+                  createdAt={get(user, 'createdAt', null)}
+                  subscription_end_date={get(user, 'subscription_end_date', null)}
+                  subscription_plan={get(user, 'subscription_plan', '')}
+                  email={get(user, 'email', '')}
+                  post_code={get(user, 'locations[0].post_code', '')}
+                  gdc={get(user, 'gdc', '')}
+                  logged_in_at={get(user, 'logged_in_at', null)}
+                  subscription_id={get(user, 'subscription_id', '')}
+                  status={get(user, 'status', '')}
+                  openConfirmPopup={openConfirmPopup}
+                  setType={setType} />)) : <h2 className='empty'>Not found users</h2>}
           </ul>
         </div>
       </div>

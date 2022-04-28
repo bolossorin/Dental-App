@@ -78,7 +78,7 @@ export const DentistInitialState: TdentistReducerState = {
   avatarUrl: "",
   watermarkUrl: "",
   locations: null,
-  gallery: [],
+  gallery: null,
   phone: null,
   services: [],
   website: null,
@@ -112,12 +112,12 @@ export const dentistReducer = (state: TdentistReducerState, action: DentistActio
       const afterAddingServices = state.services?.concat(action.payload.services) || action.payload.services;
       return {...state, services: afterAddingServices};
     case DentistTypes.ADD_TO_GALLERY:
-      return {...state, gallery: [action.payload.gallery, ...state.gallery]};
+      return {...state, gallery: [action.payload.gallery, ...state.gallery!]};
     case DentistTypes.REMOVE_FROM_GALLERY:
-      const afterRemovingPhoto = state.gallery.filter((item) => item.id !== action.payload);
+      const afterRemovingPhoto = state.gallery!.filter((item) => item.id !== action.payload);
       return {...state, gallery: afterRemovingPhoto};
     case DentistTypes.UPDATE_ITEM_GALLERY:
-      const afterUpdateGallery = state.gallery.map(item => {
+      const afterUpdateGallery = state.gallery!.map(item => {
         if (item.id === action.payload.gallery.id) return action.payload.gallery;
         return item;
       });

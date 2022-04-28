@@ -65,7 +65,7 @@ export type IUserGallery = {
 };
 
 export type IDentistGallery = {
-  gallery: IUserGallery[];
+  gallery: IUserGallery[] | null;
 };
 export type IDentist_SpecialState = {
   subscription_plan: string;

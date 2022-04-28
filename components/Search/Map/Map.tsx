@@ -60,7 +60,7 @@ export const GoogleMap: React.FC<IMapProps> = (
             defaultCenter={Locations.cambridge}
             defaultZoom={13}>
             <MeMarker {...myLocation} />
-            {allDentists.map((locations, index) =>
+            {allDentists && allDentists.map((locations, index) =>
               locations.locations && locations.locations.map(location =>
                 location.lat && <DentistMarker
                   currentDentist={allDentists[index]}
