@@ -101,7 +101,7 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
                 {(locations && locations.length > 0) ? locations.map((item, index) =>
                   <div key={index}>
                   <span>
-                    <strong>{item.location_name}:</strong> {item.address}
+                    <strong>{item.location_name}:</strong> {item.address}, {item.post_code}
                   </span>
                   </div>) : '-'}
               </div>
