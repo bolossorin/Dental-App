@@ -2,14 +2,18 @@
   width: 100%;
 }
 
+.cropped-image {
+  margin: 10px 0;
+}
+
 .row-gallery {
   &-upload {
-    flex-wrap:       wrap;
+    flex-wrap: wrap;
     .profile-box-form {
       width: calc(33% - 30px);
     }
   }
-  .ReactCrop, .cropped-image {
+  .ReactCrop {
     margin: 10px 0;
   }
   .canvas-wrapper {

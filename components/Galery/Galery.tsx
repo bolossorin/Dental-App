@@ -33,10 +33,10 @@ export const Gallery: React.FC = () => {
   const [step, setStep] = useState<"gallery" | "uploads" | "edit">("gallery");
   const [confirm, setConfirm] = useState<boolean>(false);
   const [selectedService, setSelectedService] = useState("");
-  const [afterUploadImg, setAfterUploadImg] = useState<File | string>("");
-  const [beforeUploadImg, setBeforeUploadImg] = useState<File | string>("");
-  const [afterImg, setAfterImg] = useState<File | string>("");
-  const [beforeImg, setBeforeImg] = useState<File | string>("");
+  const [afterUploadImg, setAfterUploadImg] = useState<File | null | string>(null);
+  const [beforeUploadImg, setBeforeUploadImg] = useState<File | null | string>(null);
+  const [afterImg, setAfterImg] = useState<File | null>(null);
+  const [beforeImg, setBeforeImg] = useState<File | null>(null);
   const [idGallery, setIdGallery] = useState<File | string>("");
   const [initialValues, setInitialValues] = useState(initial);
 
@@ -45,8 +45,8 @@ export const Gallery: React.FC = () => {
   }, []);
 
   const resetForm = () => {
-    setAfterImg("");
-    setBeforeImg("");
+    setAfterImg(null);
+    setBeforeImg(null);
     setAfterUploadImg("");
     setBeforeUploadImg("");
     setSelectedService("");
@@ -78,15 +78,16 @@ export const Gallery: React.FC = () => {
 
   const formDataValues = (values, id) => {
     let formData = new FormData();
-    formData.append('after', afterImg);
+    formData.append('after', afterImg!);
     formData.append('afterTitle', values.afterTitle);
     formData.append('afterTag', values.afterTag);
-    formData.append('before', beforeImg);
+    formData.append('before', beforeImg!);
     formData.append('beforeTitle', values.beforeTitle);
     formData.append('beforeTag', values.beforeTag);
     if (id) formData.append('id', idGallery);
     return formData;
-  }
+  };
+
   const validationFields = () => {
     if (!confirm) {
       setNotification({type: "warning", message: "Please check confirmation"});
@@ -100,7 +101,8 @@ export const Gallery: React.FC = () => {
     } else {
       return true;
     }
-  }
+  };
+
   return (
     <>
       {step === "uploads" && (

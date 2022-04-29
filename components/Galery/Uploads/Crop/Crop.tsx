@@ -3,18 +3,30 @@ import React, {useState, useCallback, useRef, useEffect} from "react";
 // libs
 import ReactCrop from "react-image-crop";
 import {dataURLtoFile, toDataURL} from "../../../../utils/toBase64";
+import {Spinner} from "../../../Spinner/Spinner";
 
 interface CropProps {
+  aspect: number;
   getSrcImage: any;
-  setImgUpload: (src: string) => void;
-  setImg: (src: File | string) => void;
+  onSubmitButton: boolean;
+  isSubmitting: boolean;
+  setImgUpload: (src: null) => void;
+  setImg: (src: File | null) => void;
 }
 
-export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) => {
+export const Crop: React.FC<CropProps> = (
+  {
+    getSrcImage,
+    setImgUpload,
+    onSubmitButton,
+    setImg,
+    isSubmitting,
+    aspect
+  }) => {
 
   const imgRef = useRef(null);
   const previewCanvasRef = useRef(null);
-  const [crop, setCrop] = useState({unit: "%", width: 25, aspect: 1});
+  const [crop, setCrop] = useState<any>({unit: "%", width: 25, height: 25, aspect: 1});
   const [completedCrop, setCompletedCrop] = useState<any>(null);
   const [savedImg, setSavedImg] = useState("");
   const [step, setStep] = useState<"save" | "edit">("edit");
@@ -25,6 +37,12 @@ export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) =
   }, []);
 
   getSrcImage.then((data) => setSrc(data));
+
+  useEffect(() => {
+    if (aspect) {
+      setCrop({unit: "%", width: 25, aspect: aspect})
+    }
+  }, [aspect]);
 
   useEffect(() => {
     if (!completedCrop || !previewCanvasRef.current || !imgRef.current) return;
@@ -83,13 +101,13 @@ export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) =
               type="button"
               disabled={!completedCrop?.width || !completedCrop?.height}
               onClick={() => generateDownload(previewCanvasRef.current, completedCrop)}>
-              Save
+              Crop
             </button>
           </div>
           <div className="form-login-buttons">
             <button className="button-green" type="button" onClick={() => {
-              setImg("");
-              setImgUpload("");
+              setImg(null);
+              setImgUpload(null);
             }}>
               Cancel
             </button>
@@ -98,9 +116,18 @@ export const Crop: React.FC<CropProps> = ({getSrcImage, setImgUpload, setImg}) =
       </>)}
       {step === "save" && (<div className="form-login-buttons ai-fs">
         <img className='cropped-image' src={savedImg} alt="" />
-        <button className="button-green" type="button" onClick={() => setStep("edit")}>
-          Edit
-        </button>
+        <div style={{display: "flex"}}>
+          <div className="form-login-buttons">
+            <button className="button-green" type="button" onClick={() => setStep("edit")} disabled={isSubmitting}>
+              Edit
+            </button>
+          </div>
+          {onSubmitButton && <div className="form-login-buttons">
+            <button className="button-green" type="submit" disabled={isSubmitting}>
+              {isSubmitting ? <Spinner /> : "Save"}
+            </button>
+          </div>}
+        </div>
       </div>)}
     </>
   );

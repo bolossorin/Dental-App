@@ -6,44 +6,21 @@ import {Field} from "formik";
 // components
 import notify, {ISetNotofication} from "../../../Toast";
 import {Crop} from "../Crop/Crop";
-import {resizeFile} from "../../../../utils/resizer";
-import {dataURLtoFile, toDataURL} from "../../../../utils/toBase64";
+import {getSrcImage, handleImgChange} from "../../../../utils/handleImgChange";
 
 interface UploadProps {
-  imgUpload: File | string;
-  setImg: (src: File | string) => void;
-  setImgUpload: (src: File | string) => void;
+  imgUpload: File | string | null;
+  setImg: (src: File | null) => void;
+  setImgUpload: (src: File | null) => void;
   type: string;
   errors: any;
   touched: any;
 }
 
 export const Upload: React.FC<UploadProps> = ({imgUpload, setImgUpload, type, errors, touched, setImg}) => {
-
   const setNotification = useCallback<ISetNotofication>(({...notifyProps}) => {
     notify({...notifyProps});
   }, []);
-
-  const handleImgChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
-    const file = e.target.files && e.target.files[0];
-    const fileSize = file!.size / (1024 * 1024);
-    if (fileSize <= 2) {
-      setImgUpload(file as any);
-    } else {
-      setNotification({type: "warning", message: "Please  upload file size no bigger than 2 mb"});
-    }
-  };
-
-  const getSrcImage = async (file) => {
-    if (typeof file.name !== 'string') {
-      let newFile;
-      const dataUrl = await toDataURL(file);
-      newFile = dataURLtoFile(dataUrl, "gallery.jpg");
-      return await resizeFile(newFile)
-    } else {
-      return await resizeFile(file)
-    }
-  }
 
   return (
     <div className="profile-box-form cut-block">
@@ -52,7 +29,13 @@ export const Upload: React.FC<UploadProps> = ({imgUpload, setImgUpload, type, er
         <p className="form-login-subtitle gray px12 mb-6px">Add and edit your images</p>
       </div>
       <div className="profile-block-box">
-        {imgUpload ? <Crop setImg={setImg} getSrcImage={getSrcImage(imgUpload)} setImgUpload={setImgUpload} />
+        {imgUpload
+          ? <Crop
+            aspect={1}
+            isSubmitting={false}
+            onSubmitButton={false}
+            setImg={setImg} getSrcImage={getSrcImage(imgUpload)}
+            setImgUpload={setImgUpload} />
           : <div className="gallery-block-image">
             <p className="gallery-upload">
               <label className="button-green-file" htmlFor={`cover_image_${type.toLowerCase()}`}>Upload</label>
@@ -61,7 +44,7 @@ export const Upload: React.FC<UploadProps> = ({imgUpload, setImgUpload, type, er
                 type="file"
                 className="input-file2"
                 name='cover_image'
-                onChange={(e) => handleImgChange(e)} />
+                onChange={(e) => handleImgChange(e, setNotification, setImgUpload)} />
               <span className="upload-subtitle">Max Size 2MB</span>
             </p>
           </div>}

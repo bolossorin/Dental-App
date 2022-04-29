@@ -77,18 +77,17 @@ export const GalleryPhotos: React.FC<GalleryPhotosProps> = ({onUpload, onEdit}) 
           setFilteredGallery={setFilteredByServices}
           services={services} gallery={gallery} />
       </div>
-      <div className="gallery-box">
-        {!filtered ? <>
-            <Skeleton height="216px" />
-            <Skeleton height="216px" />
-            <Skeleton height="216px" />
-            <Skeleton height="216px" />
-            <Skeleton height="216px" />
-          </>
-          : filtered.length > 0 ? filtered.map((photo, index) =>
-              <GalleryPhotoSlider key={index} photo={photo} onEdit={onEdit} handleDelete={handleDelete} />)
-            : <h2 className='empty'>Not found gallery</h2>}
-      </div>
+      {!filtered
+        ? <div className="gallery-box">
+          <Skeleton height="216px" />
+          <Skeleton height="216px" />
+          <Skeleton height="216px" />
+          <Skeleton height="216px" />
+          <Skeleton height="216px" />
+        </div>
+        : filtered.length > 0 ? <div className="gallery-box">{filtered.map((photo, index) =>
+            <GalleryPhotoSlider key={index} photo={photo} onEdit={onEdit} handleDelete={handleDelete} />)}</div>
+          : <h2 className='empty'>Not found gallery</h2>}
     </>
   );
 };
