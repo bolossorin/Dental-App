@@ -8,28 +8,32 @@ import {get} from "lodash";
 // components
 import {AppContext} from "../../../context/app.context";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
-
-const getCurrency = (price: number) => {
-  return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price);
-};
+import {getCurrency} from "../../../utils/cardOptions";
+import {getPriceApi} from "../../../api/AWS-gateway";
 
 const premiumSchema = Yup.object().shape({
   pricePremiumInfo: Yup.string().matches(/^\d+$/, 'Only numbers').required("Price is required"),
   terms: Yup.string().required("Terms is required"),
 });
 
-const price = 3000;
 const terms = 'https://fyd-dashboard.vercel.app';
 export const PremiumInfo: React.FC = () => {
   const {state} = useContext(AppContext);
   const {subscriberSettings} = state.adminState;
 
   const [settings, setSettings] = useState<any>({premium: {}});
+  const [price, setPrice] = useState<number>(0);
 
   useEffect(() => {
     const premium = subscriberSettings.filter((item) => item.subscription_type === 'PREMIUM');
     setSettings({premium: premium[0]})
   }, [subscriberSettings]);
+
+  useEffect(() => {
+    getPriceApi(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
+      .then(({data}) => setPrice(data))
+      .catch((error) => console.log(error, 'error'));
+  }, []);
 
   return (
     <ProfileBox title='Premium Information' subTitle='Information for Free Users'>
@@ -51,14 +55,15 @@ export const PremiumInfo: React.FC = () => {
           </div>
         </div>
         <Formik
+          enableReinitialize
           validationSchema={premiumSchema}
-          initialValues={{pricePremiumInfo: price / 100, terms: terms}}
+          initialValues={{pricePremiumInfo: price, terms: terms}}
           onSubmit={async (values) => console.log(values, 'values')}>
           {({errors, touched}) =>
             <Form className="account-profile-block-box">
               <div>
                 <p className="form-profile-label">
-                  <label className="form-profile-label">Price ({getCurrency(0)})</label>
+                  <label className="form-profile-label">Price ({getCurrency(price, 0)})</label>
                 </p>
                 <div className="account-row-content">
                   <Field disabled className="form-profile-input" name='pricePremiumInfo' />

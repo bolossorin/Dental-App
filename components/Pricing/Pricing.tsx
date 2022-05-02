@@ -7,7 +7,8 @@ import {get} from "lodash";
 // components
 import {ProfileBox} from "../common/ProfileBox/ProfileBox";
 import {routes} from "../../utils/routes";
-import {getSettingsSubscriptionsApi} from "../../api/AWS-gateway";
+import {getPriceApi, getSettingsSubscriptionsApi} from "../../api/AWS-gateway";
+import {getCurrency} from "../../utils/cardOptions";
 
 // assets
 import styles from "./Pricing.module.scss";
@@ -15,6 +16,7 @@ import styles from "./Pricing.module.scss";
 export const Pricing = () => {
   const [showMap, setShowMap] = useState(false);
   const [settings, setSettings] = useState<any>({premium: {}, free: {}});
+  const [price, setPrice] = useState<number>(0);
 
   const handleSwitch = () => setShowMap(!showMap);
 
@@ -30,6 +32,10 @@ export const Pricing = () => {
           setSettings({premium: premium[0], free: free[0]})
         }
       )
+      .catch((error) => console.log(error, 'error'));
+
+    getPriceApi(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
+      .then(({data}) => setPrice(data))
       .catch((error) => console.log(error, 'error'));
   }, []);
 
@@ -86,7 +92,7 @@ export const Pricing = () => {
                 <li>Verified Badge</li>
               </ul>
               <div className={styles.buttons}>
-                <span>$3,000.00/month</span>
+                <span>{getCurrency(price, 0)}/month</span>
                 <button type='button' className='button-green' onClick={() => handleSubmit()}>Get Premium</button>
               </div>
             </div>

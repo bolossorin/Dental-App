@@ -11,16 +11,13 @@ import {Spinner} from "../../";
 import {API, createSubscriptionApi, getPriceApi} from "../../../api/AWS-gateway";
 import {ISetNotofication} from "../../Toast";
 import notify from "../../Toast";
-import {CARD_OPTIONS} from "../../../utils/cardOptions";
+import {CARD_OPTIONS, getCurrency} from "../../../utils/cardOptions";
 import {AppContext} from "../../../context/app.context";
 import {useLocalData} from "../../../hooks/useLocalData";
 import Router from "next/router";
 import {routes} from "../../../utils/routes";
 import {dentistNameSchema, emailSchema} from "../../../utils/schemas";
 
-const getCurrency = (price: number, oldPrice: number) => {
-  return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
-};
 
 const stripeCheckoutSchema = Yup.object().shape({
   name: dentistNameSchema,
@@ -151,7 +148,7 @@ export const StripeForm = ({setSubscriptionPlan}) => {
               className="btn btn-success"
               type="submit"
               disabled={processing || (!stripe || checking)}>
-              Pay ${getCurrency(price.withCoupon, price.original)}
+              Pay {getCurrency(price.withCoupon, price.original)}
             </button>}
             {couponField ? (<div id="coupon_input_container">
                 <Field

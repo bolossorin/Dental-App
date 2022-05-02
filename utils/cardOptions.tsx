@@ -29,3 +29,7 @@ export const ELEMENTS_OPTIONS = {
     },
   ],
 };
+
+export const getCurrency = (price: number, oldPrice: number) => {
+  return new Intl.NumberFormat("en-IN", {style: "currency", currency: "GBP",}).format(price || oldPrice);
+};
