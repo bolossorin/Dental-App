@@ -1,7 +1,7 @@
 import React, {useContext} from "react";
 
 // components
-import {Chart} from "./chart2";
+import {Chart2} from "./Chart2/Chart2";
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AppContext} from "../../../context/app.context";
 
@@ -63,7 +63,7 @@ export const TotalSubs: React.FC = () => {
           </div>
         </div>
         <div className="profile-block-box">
-          <Chart />
+          <Chart2 />
         </div>
       </div>
     </ProfileBox>

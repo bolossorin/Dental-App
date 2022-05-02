@@ -1,0 +1,24 @@
+.period {
+  text-align:      center;
+  display:         flex;
+  align-items:     center;
+  justify-content: center;
+  margin-bottom:   10px;
+  span {
+    font-size:   14px;
+    color:       #095C5C;
+    font-weight: 700;
+  }
+  img {
+    width:      16px;
+    margin:     10px;
+    transition: .3s linear;
+    cursor:     pointer;
+    &:hover, &:active {
+      opacity: .5;
+    }
+    &:nth-child(3) {
+      transform: rotate(180deg);
+    }
+  }
+}

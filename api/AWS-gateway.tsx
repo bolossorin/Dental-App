@@ -49,6 +49,7 @@ export const loginAdminApi = (body) => axios.post(`${process.env.NEXT_PUBLIC_BAS
 export const passwordResetAdminApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/admin/reset-password`, body, config);
 
 export const getDashboardStatisticsApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/statistics`, config);
+export const getMonthlyReportApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/monthly-report`, config);
 
 export const getLimitsApi = (config) => axios.get(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions`, config);
 export const updateLimitsApi = (body, config) => axios.put(`${process.env.NEXT_PUBLIC_BASE_API_URL}/settings/subscriptions`, body, config);
