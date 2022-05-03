@@ -1,5 +1,8 @@
 import React, {useContext} from "react";
 
+// libs
+import Skeleton from "react-loading-skeleton";
+
 // components
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AppContext} from "../../../context/app.context";
@@ -27,72 +30,81 @@ export const CurrentMonth: React.FC = () => {
   return (
     <ProfileBox title='Current Month' subTitle='Summary'>
       <div className="double-blocks-5">
-        <div>
-          <p className="form-profile-label">
-            <label className="form-profile-label">
-              New Subscriptions
-            </label>
-          </p>
-          <p>
-            <input
-              className="form-profile-input"
-              type="text"
-              defaultValue={filterByDate(NEW_SUBSCRIPTION, "Last month").length}
-              disabled />
-          </p>
-        </div>
-        <div>
-          <p className="form-profile-label">
-            <label className="form-profile-label">
-              New Free Accounts
-            </label>
-          </p>
-          <p>
-            <input
-              className="form-profile-input"
-              type="text"
-              defaultValue={filterByDate(FREE_ACCOUNT, "Last month").length}
-              disabled />
-          </p>
-        </div>
-        <div>
-          <p className="form-profile-label">
-            <label className="form-profile-label">
-              Subscriptions Closed
-            </label>
-          </p>
-          <p>
-            <input
-              className="form-profile-input"
-              type="text"
-              defaultValue={filterByDate(SUBSCRIPTION_CLOSED, "Last month").length}
-              disabled />
-          </p>
-        </div>
-        <div>
-          <p className="form-profile-label">
-            <label className="form-profile-label">Accounts Closed</label>
-          </p>
-          <p>
-            <input
-              className="form-profile-input"
-              type="text"
-              defaultValue={filterByDate(ACCOUNT_CLOSED, "Last month").length}
-              disabled />
-          </p>
-        </div>
-        <div>
-          <p className="form-profile-label">
-            <label className="form-profile-label">Images Uploaded</label>
-          </p>
-          <p>
-            <input
-              className="form-profile-input"
-              type="text"
-              defaultValue={filterByDate(IMAGE_UPLOAD, "Last month").length}
-              disabled />
-          </p>
-        </div>
+        {NEW_SUBSCRIPTION ? <>
+            <div>
+              <p className="form-profile-label">
+                <label className="form-profile-label">
+                  New Subscriptions
+                </label>
+              </p>
+              <p>
+                <input
+                  className="form-profile-input"
+                  type="text"
+                  defaultValue={filterByDate(NEW_SUBSCRIPTION, "Last month").length}
+                  disabled />
+              </p>
+            </div>
+            <div>
+              <p className="form-profile-label">
+                <label className="form-profile-label">
+                  New Free Accounts
+                </label>
+              </p>
+              <p>
+                <input
+                  className="form-profile-input"
+                  type="text"
+                  defaultValue={filterByDate(FREE_ACCOUNT, "Last month").length}
+                  disabled />
+              </p>
+            </div>
+            <div>
+              <p className="form-profile-label">
+                <label className="form-profile-label">
+                  Subscriptions Closed
+                </label>
+              </p>
+              <p>
+                <input
+                  className="form-profile-input"
+                  type="text"
+                  defaultValue={filterByDate(SUBSCRIPTION_CLOSED, "Last month").length}
+                  disabled />
+              </p>
+            </div>
+            <div>
+              <p className="form-profile-label">
+                <label className="form-profile-label">Accounts Closed</label>
+              </p>
+              <p>
+                <input
+                  className="form-profile-input"
+                  type="text"
+                  defaultValue={filterByDate(ACCOUNT_CLOSED, "Last month").length}
+                  disabled />
+              </p>
+            </div>
+            <div>
+              <p className="form-profile-label">
+                <label className="form-profile-label">Images Uploaded</label>
+              </p>
+              <p>
+                <input
+                  className="form-profile-input"
+                  type="text"
+                  defaultValue={filterByDate(IMAGE_UPLOAD, "Last month").length}
+                  disabled />
+              </p>
+            </div>
+          </>
+          : <>
+            <Skeleton count={1} height="80px" />
+            <Skeleton count={1} height="80px" />
+            <Skeleton count={1} height="80px" />
+            <Skeleton count={1} height="80px" />
+            <Skeleton count={1} height="80px" />
+          </>}
       </div>
     </ProfileBox>
   );

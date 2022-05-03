@@ -118,9 +118,9 @@ export interface IAdminStatistic {
 }
 
 export interface IAdminStatistics {
-  IMAGE_UPLOAD: IAdminStatistic[];
-  ACCOUNT_CLOSED: IAdminStatistic[];
-  SUBSCRIPTION_CLOSED: IAdminStatistic[];
-  FREE_ACCOUNT: IAdminStatistic[];
-  NEW_SUBSCRIPTION: IAdminStatistic[];
+  IMAGE_UPLOAD: Null_Or_<IAdminStatistic[]>;
+  ACCOUNT_CLOSED: Null_Or_<IAdminStatistic[]>;
+  SUBSCRIPTION_CLOSED: Null_Or_<IAdminStatistic[]>;
+  FREE_ACCOUNT: Null_Or_<IAdminStatistic[]>;
+  NEW_SUBSCRIPTION: Null_Or_<IAdminStatistic[]>;
 }

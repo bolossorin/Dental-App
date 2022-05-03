@@ -69,11 +69,11 @@ export const AdminInitialState: TAdminReducerState = {
   },
   subscriberSettings: [],
   userStatistics: {
-    IMAGE_UPLOAD: [],
-    ACCOUNT_CLOSED: [],
-    SUBSCRIPTION_CLOSED: [],
-    FREE_ACCOUNT: [],
-    NEW_SUBSCRIPTION: []
+    IMAGE_UPLOAD: null,
+    ACCOUNT_CLOSED: null,
+    SUBSCRIPTION_CLOSED: null,
+    FREE_ACCOUNT: null,
+    NEW_SUBSCRIPTION: null
   },
   isOpenLeftMenu: true,
 };
