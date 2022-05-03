@@ -125,7 +125,6 @@
   max-width:        180px;
   margin:           10px 10px 0 0;
   padding:          13px 13px;
-  cursor:           pointer;
   transition:       background 0.3s linear;
   text-align:       center;
   letter-spacing:   0.75px;
@@ -141,11 +140,6 @@
   font-style:       normal;
   font-stretch:     normal;
   line-height:      normal;
-}
-
-.person-index-green-button:hover {
-  color:      var(--color-green);
-  background: var(--color-white);
 }
 
 @media (max-width: 768px) {

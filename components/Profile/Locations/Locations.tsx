@@ -27,7 +27,7 @@ const Locations: React.FC = () => {
   return (
     <ProfileLayout
       title='Locations'
-      subTitle={`Information For Patients (max ${settings_account?.maxService} for ${settings_account?.subscription_type})`}>
+      subTitle={`Information For Patients (max ${settings_account?.maxLocations} for ${settings_account?.subscription_type})`}>
       {settings_account ? <div className="box-2-box">
         {countLocations.map((index) =>
           <div key={index} className="profile-block-box">

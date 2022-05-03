@@ -14,6 +14,7 @@ import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
 import {AccountResetPassword} from "../../common/AccountResetPassword/AccountResetPassword";
 import {useLogout} from "../../../hooks/useLogout";
 import {emailSchema, gdcSchema} from "../../../utils/schemas";
+import {Spinner} from "../../Spinner/Spinner";
 
 const accountInfoSchema = Yup.object().shape({
   email: emailSchema,
@@ -51,7 +52,7 @@ export const AccountInfoBlock: React.FC = () => {
               setNotification({type: "warning", message: "Please check your consent and try deleting again!"});
             }
           }}>
-          {({errors, touched}) =>
+          {({errors, touched, isSubmitting}) =>
             <Form className="account-profile-block-box">
               <div className="account-form-profile-label">
                 <label className="account-form-profile-label">Account Email</label>
@@ -73,8 +74,8 @@ export const AccountInfoBlock: React.FC = () => {
                 </label>
               </div>
               <div className="account-form-login-buttons">
-                <button type='submit' className="account-button-green">
-                  Delete Account
+                <button type='submit' className="account-button-green" disabled={isSubmitting}>
+                  {isSubmitting ? <Spinner /> : "Delete Account"}
                 </button>
               </div>
             </Form>}
