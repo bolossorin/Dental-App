@@ -1,5 +1,8 @@
 import React, {useCallback, useContext, useEffect, useState} from "react";
 
+// libs
+import Skeleton from "react-loading-skeleton";
+
 // components
 import {AppContext} from "../../../context/app.context";
 import {DentistTypes} from "../../../reducers";
@@ -74,7 +77,7 @@ export const Services: React.FC = () => {
     <ProfileLayout
       title='Services'
       subTitle={`Information For Patients (max ${settings_account?.maxService} for ${settings_account?.subscription_type})`}>
-      <div className="box-2-box">
+      {settings_account ? <div className="box-2-box">
         <div className="profile-block-box profile-block-box-noWrap">
           <div>
             <div className="form-profile-label">
@@ -132,7 +135,7 @@ export const Services: React.FC = () => {
                 alt='' />
             </div>)}
         </div>}
-      </div>
+      </div> : <Skeleton count={5} height="5vh" />}
     </ProfileLayout>
   );
 };

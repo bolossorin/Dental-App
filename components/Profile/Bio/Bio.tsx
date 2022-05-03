@@ -3,6 +3,7 @@ import React, {useCallback, useContext} from "react";
 // libs
 import {Formik, Field, Form} from "formik";
 import * as Yup from "yup";
+import Skeleton from "react-loading-skeleton";
 
 // components
 import {updateProfileApi} from "../../../api/AWS-gateway";
@@ -44,7 +45,7 @@ export const Bio: React.FC = () => {
 
   return (
     <ProfileLayout title='Bio and Contact Information' subTitle='Information For Patients'>
-      <Formik
+      {dentist_name ? <Formik
         validationSchema={bioSchema}
         enableReinitialize
         initialValues={{
@@ -158,7 +159,7 @@ export const Bio: React.FC = () => {
               </div>
             </div>
           </Form>}
-      </Formik>
+      </Formik> : <Skeleton count={5} height="5vh" />}
     </ProfileLayout>
   );
 };

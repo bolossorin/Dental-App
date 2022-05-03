@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useState} from "react";
 
 // libs
 import {Field, Form, Formik} from "formik";
+import Skeleton from "react-loading-skeleton";
 
 // components
 import {ISetNotofication} from "../../Toast";
@@ -28,7 +29,7 @@ export const Photos: React.FC = () => {
 
   return (
     <ProfileLayout title='Display Photos' subTitle='Information For Patients'>
-      <div className="box-2-box">
+      {subscription_plan ? <div className="box-2-box">
         <Formik initialValues={{profile_picture: ''}} onSubmit={async () => {
           const fileSize = img!.size / (1024 * 1024);
           try {
@@ -136,7 +137,7 @@ export const Photos: React.FC = () => {
               </div>
             </Form>}
         </Formik>
-      </div>
+      </div> : <Skeleton count={5} height="5vh" />}
     </ProfileLayout>
   );
 };

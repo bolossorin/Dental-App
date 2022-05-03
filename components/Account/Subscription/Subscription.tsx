@@ -2,6 +2,7 @@ import React, {useCallback, useContext, useEffect, useState} from "react";
 
 // libs
 import moment from "moment";
+import Skeleton from "react-loading-skeleton";
 
 // components
 import {ProfileBox} from "../../common/ProfileBox/ProfileBox";
@@ -55,31 +56,33 @@ export const Subscription: React.FC<ISubscription> = ({subscriptionPlan, setSubs
 
   return (
     <ProfileBox title='My Subscription' subTitle='Subscription Information'>
-      <div className="account-profile-block-box">
-        <div className="account-double-blocks-2">
-          <div className="account-form-profile-label">
-            <label className="account-form-profile-label">Status</label>
-            <input className="account-form-profile-input" type="text" defaultValue="ACTIVE" disabled />
+      {access_token ? <>
+        <div className="account-profile-block-box">
+          <div className="account-double-blocks-2">
+            <div className="account-form-profile-label">
+              <label className="account-form-profile-label">Status</label>
+              <input className="account-form-profile-input" type="text" defaultValue="ACTIVE" disabled />
+            </div>
+            {date && <div className="account-form-profile-label">
+              <label className="account-form-profile-label">Renewal</label>
+              <input type="text" className="account-form-profile-input" value={date} disabled />
+            </div>}
           </div>
-          {date && <div className="account-form-profile-label">
-            <label className="account-form-profile-label">Renewal</label>
-            <input type="text" className="account-form-profile-input" value={date} disabled />
-          </div>}
+          <div className="account-form-login-buttons">
+            <button type='button' className="account-button-green" onClick={() => setShowBilling(!showBilling)}>
+              Update subscription
+            </button>
+            <button
+              disabled={loading}
+              type='button'
+              className="account-button-green-outline"
+              onClick={() => cancelSubscription()}>
+              Cancel subscription
+            </button>
+          </div>
         </div>
-        <div className="account-form-login-buttons">
-          <button type='button' className="account-button-green" onClick={() => setShowBilling(!showBilling)}>
-            Update subscription
-          </button>
-          <button
-            disabled={loading}
-            type='button'
-            className="account-button-green-outline"
-            onClick={() => cancelSubscription()}>
-            Cancel subscription
-          </button>
-        </div>
-      </div>
-      {showBilling && <Billing setSubscriptionPlan={setSubscriptionPlan} />}
+        {showBilling && <Billing setSubscriptionPlan={setSubscriptionPlan} />}
+      </> : <div style={{width: '100%'}}><Skeleton count={5} height="5vh" /></div>}
     </ProfileBox>
   );
 };
