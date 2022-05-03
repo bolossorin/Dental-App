@@ -67,7 +67,6 @@ export const Pricing = () => {
                 {get(settings, 'free.appearVerifiedAllowed', '') && <li>Appear Verified</li>}
               </ul>
               <div className={styles.buttons}>
-                <span>{getCurrency(0, 0)}/month</span>
                 <button type='button' className='button-green' onClick={() => handleFreeSubmit()}>Get Free</button>
               </div>
             </div>
