@@ -55,19 +55,19 @@ export const AccountResetPassword = ({passwordResetApi, type}) => {
           </div>
           <div className="account-row-content">
             <span className="account-input-span">Current</span>
-            <Field className="account-form-profile-input" name='currentPassword' placeholder='Old Password' />
+            <Field type='password' className="account-form-profile-input" name='currentPassword' placeholder='Old Password' />
             {errors.currentPassword && touched.currentPassword ?
               <p className='account-error-text'>{errors.currentPassword}</p> : null}
           </div>
           <div className="account-row-content">
             <span className="account-input-span">New</span>
-            <Field className="account-form-profile-input" name='newPassword' placeholder='New Password' />
+            <Field type='password' className="account-form-profile-input" name='newPassword' placeholder='New Password' />
             {errors.newPassword && touched.newPassword ?
               <p className='account-error-text'>{errors.newPassword}</p> : null}
           </div>
           <div className="account-row-content">
             <span className="account-input-span">Confirm</span>
-            <Field className="account-form-profile-input" name='confirmPassword' placeholder='Confirm Password' />
+            <Field type='password' className="account-form-profile-input" name='confirmPassword' placeholder='Confirm Password' />
             {errors.confirmPassword && touched.confirmPassword ?
               <p className='account-error-text'>{errors.confirmPassword}</p> : null}
           </div>
