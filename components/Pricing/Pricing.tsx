@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from "react";
+import React, {useContext, useEffect, useState} from "react";
 
 //libs
 import Router from "next/router";
@@ -7,15 +7,18 @@ import {get} from "lodash";
 // components
 import {ProfileBox} from "../common/ProfileBox/ProfileBox";
 import {routes} from "../../utils/routes";
-import {getPriceApi, getSettingsSubscriptionsApi} from "../../api/AWS-gateway";
+import {getPriceApi} from "../../api/AWS-gateway";
 import {getCurrency} from "../../utils/cardOptions";
+import {AppContext} from "../../context/app.context";
 
 // assets
 import styles from "./Pricing.module.scss";
 
 export const Pricing = () => {
+  const {state} = useContext(AppContext);
+  const {settings} = state.userState;
+
   const [showMap, setShowMap] = useState(false);
-  const [settings, setSettings] = useState<any>({premium: {}, free: {}});
   const [price, setPrice] = useState<number>(0);
 
   const handleSwitch = () => setShowMap(!showMap);
@@ -25,15 +28,6 @@ export const Pricing = () => {
   const handleFreeSubmit = () => Router.push(routes.account);
 
   useEffect(() => {
-    getSettingsSubscriptionsApi()
-      .then(({data}) => {
-          const free = data.filter((item) => item.subscription_type === 'FREE');
-          const premium = data.filter((item) => item.subscription_type === 'PREMIUM');
-          setSettings({premium: premium[0], free: free[0]})
-        }
-      )
-      .catch((error) => console.log(error, 'error'));
-
     getPriceApi(process.env.NEXT_PUBLIC_STRIPE_PRICE_ID)
       .then(({data}) => setPrice(data))
       .catch((error) => console.log(error, 'error'));
@@ -89,7 +83,6 @@ export const Pricing = () => {
                 {get(settings, 'premium.phoneAllowed', '') && <li>Phone Number</li>}
                 {get(settings, 'premium.appearVerifiedAllowed', '') && <li>Appear Verified</li>}
                 <li>Watermark</li>
-                <li>Verified Badge</li>
               </ul>
               <div className={styles.buttons}>
                 <span>{getCurrency(price, 0)}/month</span>

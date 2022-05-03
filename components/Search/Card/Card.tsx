@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, {useContext, useEffect, useState} from 'react';
 
 // libs
 import cn from "classnames";
@@ -6,6 +6,7 @@ import Skeleton from "react-loading-skeleton";
 
 // components
 import {SearchDentistResult} from "../Search";
+import {AppContext} from "../../../context/app.context";
 
 interface IDentistCardsProps {
   allDentists: SearchDentistResult[] | null;
@@ -14,6 +15,9 @@ interface IDentistCardsProps {
 }
 
 export const DentistCards: React.FC<IDentistCardsProps> = ({allDentists, selectedDentist, setSelectedDentist}) => {
+  const {state} = useContext(AppContext);
+  const {settings} = state.userState;
+
   const [filteredDentist, setFilteredDentist] = useState<SearchDentistResult[] | null>(null);
 
   useEffect(() => {
@@ -43,13 +47,14 @@ export const DentistCards: React.FC<IDentistCardsProps> = ({allDentists, selecte
                   className="index-gallery-image"
                   src={dentist.avatarUrl || "../images/empty_avatar.png"}
                   alt="gallery image" />
-                {dentist.subscription_plan !== "FREE" && (<>
+                {((dentist.subscription_plan === "FREE" && settings.free.appearVerifiedAllowed) ||
+                  (dentist.subscription_plan === "PREMIUM" && settings.premium.appearVerifiedAllowed)) && <>
                   <p className="index-gallery-image-watermark" />
                   <img
                     className="index-gallery-image-watermark-img"
                     src={"../images/check_circle.svg"}
                     alt="check" />
-                </>)}
+                </>}
                 <div className="index-gallery-image-description">
                   <p className="index-gallery-image-title">{dentist.dentist_name}</p>
                   <p className="index-gallery-image-text">{dentist.email}</p>

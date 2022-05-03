@@ -44,7 +44,6 @@ export const PremiumInfo: React.FC = () => {
               <label className="form-profile-label">Premium Features</label>
             </p>
             <div className='form-profile-features'>
-              <p>Verified Badge</p>
               <p>Watermark</p>
               <p>Max Locations: {get(settings, 'premium.maxLocations', '')}</p>
               <p>Max Services: {get(settings, 'premium.maxService', '')}</p>

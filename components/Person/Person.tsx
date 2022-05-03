@@ -30,6 +30,7 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
     bio,
     website
   } = state.dentistState;
+  const {settings} = state.userState;
 
   const [filteredGallery, setFilteredGallery] = useState<IUserGallery[]>([]);
 
@@ -62,7 +63,8 @@ const Person: React.FC<IPersonProps> = ({gallery}) => {
             <div className="person-form-login-title">
               <p>{title}</p>
               <p>{dentist_name}</p>
-              {subscription_plan === "PREMIUM" && (<img
+              {((subscription_plan === "FREE" && settings.free.appearVerifiedAllowed) ||
+                (subscription_plan === "PREMIUM" && settings.premium.appearVerifiedAllowed)) && (<img
                 className="person-index-gallery-image-watermark-img person-relative-img"
                 src={"../images/check_circle.svg"}
                 alt="check" />)}

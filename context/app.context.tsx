@@ -1,4 +1,4 @@
-import React, {createContext, useReducer, Dispatch} from "react";
+import React, {createContext, useReducer, Dispatch, useEffect} from "react";
 import {
   userReducer,
   UserActions,
@@ -9,7 +9,9 @@ import {
   AdminInitialState,
   AdminActions,
   adminReducer,
+  UserTypes,
 } from "../reducers";
+import {getSettingsSubscriptionsApi} from "../api/AWS-gateway";
 
 type InitialStateType = {
   userState: typeof UserInitialState;
@@ -41,6 +43,18 @@ const mainReducer = (
 
 const AppProvider: React.FC = ({children}) => {
   const [state, dispatch] = useReducer<React.Reducer<InitialStateType, UserActions | DentistActions | AdminActions>>(mainReducer, initialState);
+
+  useEffect(() => {
+    getSettingsSubscriptionsApi()
+      .then(({data}) => {
+          const free = data.filter((item) => item.subscription_type === 'FREE');
+          const premium = data.filter((item) => item.subscription_type === 'PREMIUM');
+          const settings = {premium: premium[0], free: free[0]};
+          dispatch({type: UserTypes.SET_ALL_SETTINGS, payload: settings});
+        }
+      )
+      .catch((error) => console.log(error, 'error'));
+  }, []);
 
   return (
     <AppContext.Provider value={{state, dispatch}}>
