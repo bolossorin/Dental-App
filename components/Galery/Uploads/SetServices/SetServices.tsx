@@ -2,6 +2,7 @@ import React, {useContext} from "react";
 
 // components
 import {AppContext} from "../../../../context/app.context";
+import {Spinner} from "../../../Spinner/Spinner";
 
 interface GallerySetServiceProps {
   setSelectedService: (value: string) => void;
@@ -58,7 +59,9 @@ const SetServices: React.FC<GallerySetServiceProps> = (
       </div>
       <div className="gallery-button-block services-buttons">
         <div className="form-login-buttons">
-          <button disabled={isSubmitting} className="gallery-button-green" type="submit">Confirm</button>
+          <button disabled={isSubmitting} className="gallery-button-green" type="submit">
+            {isSubmitting ? <Spinner /> : "Confirm"}
+          </button>
         </div>
         <div className="form-login-buttons">
           <button type='button' className="gallery-button-green-outline" onClick={() => onCancel()}>

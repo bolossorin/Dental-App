@@ -42,12 +42,14 @@ export const Header: React.FC = () => {
           </svg>) : null}
         </div>
         <Link href="/">
-          <img
-            src={"../images/FYD4_beige-on-green@2x.png"}
-            srcSet={"../images/FYD4_beige-on-green@2x.png 2x, ../images/FYD4_beige-on-green@3x.png 3x"}
-            className="logo-image"
-            style={{cursor: "pointer"}}
-            alt='' />
+          <a>
+            <img
+              src={"../images/FYD4_beige-on-green@2x.png"}
+              srcSet={"../images/FYD4_beige-on-green@2x.png 2x, ../images/FYD4_beige-on-green@3x.png 3x"}
+              className="logo-image"
+              style={{cursor: "pointer"}}
+              alt='' />
+          </a>
         </Link>
         <div className="header_actions">
           {(!accessToken) ? <>

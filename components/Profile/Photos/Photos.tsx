@@ -83,9 +83,7 @@ export const Photos: React.FC = () => {
               </div>
             </Form>}
         </Formik>
-        <Formik initialValues={{cover_image: ''}} onSubmit={async (values) => {
-          console.log(values, 'values');
-          console.log(values, 'values');
+        <Formik initialValues={{cover_image: ''}} onSubmit={async () => {
           const fileSize = img!.size / (1024 * 1024);
           try {
             if (fileSize > 2) {
